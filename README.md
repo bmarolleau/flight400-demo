@@ -184,11 +184,7 @@ CL: CPYFRMSTMF FROMSTMF('/home/YOURUSER/ibmi-lab/FLGHT400.FILE')
    - **Target format:** ILE RPG Free Format
    - Accept the other defaults and click **Run Workflow**.
 
-4. Bob converts the fixed-format RPG to modern free-format ILE RPG. Review the diff — notice:
-   - `C` specs replaced with free-format `DCL-C`, `DCL-DS`, `DCL-PR` declarations
-   - `CASEQ`/`ENDCS` replaced with `SELECT`/`WHEN`/`ENDSL`
-   - `DOUEQ` loop replaced with a `DOW` loop
-   - `MOVE` opcodes replaced with assignment statements
+4. Bob converts the fixed-format RPG to modern free-format ILE RPG. Review the diff.
 
 5. Bob will prompt: **"Do you want to compile the modernized program?"** — answer **Yes**.
 
