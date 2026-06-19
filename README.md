@@ -30,7 +30,7 @@ To complete this lab, you need access to an IBM i environment. You can provision
 2. Go to the **Extensions** view (`Cmd+Shift+X` / `Ctrl+Shift+X`).
 3. Search for **"IBM i Developer"** and install the **IBM i Developer Pack** (publisher: *IBM*). This bundle includes:
    - **Code for IBM i** — source editing, object browser, IFS browser, SQL runner
-4. After installation, reload VS Code when prompted.
+4. After installation, reload Bob IDE when prompted.
 5. In the **Bob AI** extension settings (or via the Bob sidebar), ensure the **Premium Package for i** is activated — this unlocks the IBM i Developer and IBM i Database modes used in later exercises.
 
 ---
@@ -42,7 +42,7 @@ In this section you will deploy the FLIGHT400 save file to your IBM i LPAR and r
 ### 1.1 — Create a new local workspace
 
 1. On your laptop, create an empty folder — for example `~/ibmi-lab`.
-2. In VS Code, go to **File → Open Folder** and open this new folder.  
+2. In Bob IDE go to **File → Open Folder** and open this new folder.  
    Bob IDE will use this folder as your local workspace.
 
 ### 1.2 — Copy the lab files into your workspace
@@ -56,9 +56,9 @@ From the [Bob Folder](https://ibm.box.com/v/flight400-box), Download (or copy) t
 
 Both files should now be visible in the VS Code **Explorer** panel.
 
-### 1.3 — Connect VS Code to your IBM i
+### 1.3 — Connect Bob IDE to your IBM i
 
-1. In the VS Code Activity Bar, click the **IBM i** icon (plug icon).
+1. In the Bob IDE Activity Bar, click the **IBM i** icon (plug icon).
 2. Click **➕ New Connection** and enter the details from your TechZone reservation:
    - **Host:** `<your-lpar-hostname>`
    - **User:** `<your-user-profile>`
@@ -67,10 +67,10 @@ Both files should now be visible in the VS Code **Explorer** panel.
 
 ### 1.4 — Deploy the files to the IFS
 
-1. In the VS Code **Explorer**, right-click on **`Install-Flight400.sql`** (you can also select both files with `Ctrl/Cmd+Click`).
+1. In the Bob IDE **Explorer**, right-click on **`Install-Flight400.sql`** (you can also select both files with `Ctrl/Cmd+Click`).
 2. Choose **Deploy Selected Files** (or right-click on the workspace root and choose **Deploy Workspace to IBM i**).  
    This uploads the entire workspace to an IFS directory on IBM i. The target IFS path is shown in the output panel — note it (e.g. `/home/YOURUSER/builds/ibmi-lab`).
-3. In the VS Code **Explorer**, right-click on **`FLGHT400.FILE`** (you can also select both files with `Ctrl/Cmd+Click`).
+3. In the Bob IDE **Explorer**, right-click on **`FLGHT400.FILE`** (you can also select both files with `Ctrl/Cmd+Click`).
 4. Choose **Deploy Selected Files** (or right-click on the workspace root and choose **Deploy Workspace to IBM i**).  
    This uploads the entire workspace to an IFS directory on IBM i. The target IFS path is shown in the output panel — note it (e.g. `/home/YOURUSER/builds/ibmi-lab`).
 
@@ -86,7 +86,7 @@ Both files should now be visible in the VS Code **Explorer** panel.
 
 ### 1.6 — Update the SQL install script
 
-1. Open `Install-Flight400.sql` in the VS Code editor.
+1. Open `Install-Flight400.sql` in the Bob IDE editor.
 2. Locate the `CPYFRMSTMF` command. Update the `FROMSTMF` parameter with the IFS path you just copied:
 
 ```sql
@@ -277,7 +277,7 @@ Save this as `FRS409-Modernization-Report.md` in your workspace for documentatio
 
 ### 4b — Run the React App
 
-1. Open a terminal in VS Code (`Ctrl+\`` / `Cmd+\``).
+1. Open a terminal in Bob IDE (`Ctrl+\`` / `Cmd+\``).
 2. Navigate to the app folder and install dependencies:
 
    ```bash
