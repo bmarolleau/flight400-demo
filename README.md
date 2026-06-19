@@ -1,7 +1,7 @@
 # FLIGHT400 Application — IBM i Modernization Lab Guide
 
 > **Estimated time:** 2–3 hours  
-> **Prerequisites:** VS Code installed, internet access, IBM i TechZone LPAR (see below)
+> **Prerequisites:** IBM Bob IDE installed, internet access, IBM i TechZone LPAR (see below) , and the Premium Package for i 
 
 ---
 
@@ -24,13 +24,12 @@ To complete this lab, you need access to an IBM i environment. You can provision
 
 ## Part 0 — Environment Setup
 
-### Install the IBM i Developer Pack for VS Code
+### Install the IBM i Developer Pack for VS Code / Bob IDE
 
-1. Open **VS Code**.
+1. Open **Bob IDE**.
 2. Go to the **Extensions** view (`Cmd+Shift+X` / `Ctrl+Shift+X`).
 3. Search for **"IBM i Developer"** and install the **IBM i Developer Pack** (publisher: *IBM*). This bundle includes:
    - **Code for IBM i** — source editing, object browser, IFS browser, SQL runner
-   - **Bob AI** — the AI assistant you'll be using throughout this lab
 4. After installation, reload VS Code when prompted.
 5. In the **Bob AI** extension settings (or via the Bob sidebar), ensure the **Premium Package for i** is activated — this unlocks the IBM i Developer and IBM i Database modes used in later exercises.
 
