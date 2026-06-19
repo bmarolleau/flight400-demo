@@ -66,21 +66,24 @@ Both files should now be visible in the VS Code **Explorer** panel.
    - **Password:** `<your-password>`
 3. Click **Connect**. A green status bar message confirms a successful connection.
 
-### 1.4 — Deploy the save file to the IFS
+### 1.4 — Deploy the files to the IFS
 
-1. In the VS Code **Explorer**, right-click on **`FLGHT400.FILE`** (you can also select both files with `Ctrl/Cmd+Click`).
+1. In the VS Code **Explorer**, right-click on **`Install-Flight400.sql`** (you can also select both files with `Ctrl/Cmd+Click`).
 2. Choose **Deploy Selected Files** (or right-click on the workspace root and choose **Deploy Workspace to IBM i**).  
-   This uploads the entire workspace to an IFS directory on IBM i. The target IFS path is shown in the output panel — note it (e.g. `/home/YOURUSER/ibmi-lab`).
+   This uploads the entire workspace to an IFS directory on IBM i. The target IFS path is shown in the output panel — note it (e.g. `/home/YOURUSER/builds/ibmi-lab`).
+3. In the VS Code **Explorer**, right-click on **`FLGHT400.FILE`** (you can also select both files with `Ctrl/Cmd+Click`).
+4. Choose **Deploy Selected Files** (or right-click on the workspace root and choose **Deploy Workspace to IBM i**).  
+   This uploads the entire workspace to an IFS directory on IBM i. The target IFS path is shown in the output panel — note it (e.g. `/home/YOURUSER/builds/ibmi-lab`).
 
-> ☕ This may take a minute or two. Perfect time for a coffee break!
+> ☕ This may take a two or three minutes as the Save File `FLGHT400.FILE` contains the code, programs, database files etc. Everything you need to run the application. Perfect time for a coffee break!
 
 ### 1.5 — Verify the upload in the IFS Browser
 
 1. In the IBM i sidebar, expand **IFS Browser**.
-2. Navigate to the upload directory noted above (e.g. `/home/YOURUSER/ibmi-lab`).
+2. Navigate to the upload directory noted above (e.g. `/home/YOURUSER/builds/ibmi-lab`).
 3. You should see `FLGHT400.FILE` and `Install-Flight400.sql` listed.
 4. Right-click on `FLGHT400.FILE` and choose **Copy Path**. It will look something like:  
-   `/home/YOURUSER/ibmi-lab/FLGHT400.FILE`
+   `/home/YOURUSER/builds/ibmi-lab/FLGHT400.FILE`
 
 ### 1.6 — Update the SQL install script
 
@@ -94,15 +97,14 @@ CL: CPYFRMSTMF FROMSTMF('/home/YOURUSER/ibmi-lab/FLGHT400.FILE')
 
 3. Save the file (`Ctrl+S` / `Cmd+S`).
 
-### 1.7 — Deploy and run the SQL script
+### 1.7 — Run the SQL script
 
-1. Right-click `Install-Flight400.sql` in the Explorer and choose **Deploy Selected Files** — this pushes the updated script to the IFS.
-2. In the **IFS Browser**, refresh the folder. You should see `Install-Flight400.sql` updated.
-3. Right-click `Install-Flight400.sql` → **Run Action** → **Run SQL Statements**.
-4. Wait for the three CL commands to execute (create save file, copy from IFS, restore library).  
+1. In the **IFS Browser**, refresh the folder. You should see `Install-Flight400.sql` updated.
+2. Right-click `Install-Flight400.sql` → **Run Action** → **Run SQL Statements**.
+3. Wait for the three CL commands to execute (create save file, copy from IFS, restore library).  
    The output console will confirm each step. The final `RSTLIB` command restores the full **FLIGHT400** library including programs, source members, and database files.
 
-> ✅ **End of Quick Setup.** The FLIGHT400 application is now restored on your IBM i in the `FLIGHT400` library.
+> ✅ **End of Quick Setup.** The FLIGHT400 application is now restored on your IBM i in the `FLGHT400` library.
 
 ---
 
@@ -113,7 +115,7 @@ CL: CPYFRMSTMF FROMSTMF('/home/YOURUSER/ibmi-lab/FLGHT400.FILE')
 ### 1a — Browse the Application in the Object Browser
 
 1. In the IBM i sidebar, expand **Object Browser**.
-2. Navigate to the **FLIGHT400** library. You will see its contents organized by object type:
+2. Navigate to the **FLGHT400** library. You will see its contents organized by object type:
    - `*PGM` — RPG and CL programs (e.g. `FRS001`, `FRS021`, `FRS409`)
    - `*FILE` — Display files and database physical/logical files
    - `*MENU` — Application menus
@@ -139,7 +141,7 @@ CL: CPYFRMSTMF FROMSTMF('/home/YOURUSER/ibmi-lab/FLGHT400.FILE')
 1. In the Bob chat panel, switch to **IBM i Database** mode using the mode selector.
 2. Type the following slash command:
 
-   > `/erd FLIGHT400`
+   > `/erd FLGHT400`
 
 3. Bob will introspect the physical files (`FLIGHTS`, `ORDERS`, `CUSTOMERS`, `AGENTS`, etc.) and their logical files, then generate a **Mermaid ERD** showing the relationships between entities.
 4. Observe the key relationships:
@@ -158,7 +160,7 @@ CL: CPYFRMSTMF FROMSTMF('/home/YOURUSER/ibmi-lab/FLGHT400.FILE')
 ### 2a — Understand FRS409 (Order Modification Confirmation)
 
 1. Switch Bob back to **IBM i Developer** mode.
-2. In the Object Browser, navigate to `FLIGHT400/QRPGSRC` and open `FRS409`.
+2. In the Object Browser, navigate to `FLGHT400/QRPGSRC` and open `FRS409`.
 3. In the Bob chat panel, type:
 
    > *"What does this program do?"*
@@ -179,7 +181,7 @@ CL: CPYFRMSTMF FROMSTMF('/home/YOURUSER/ibmi-lab/FLGHT400.FILE')
 
 3. The workflow form opens. Fill in the details:
    - **Source member:** `FRS409` (Bob pre-fills this from the open editor)
-   - **Source file:** `FLIGHT400/QRPGSRC`
+   - **Source file:** `FLGHT400/QRPGSRC`
    - **Target format:** ILE RPG Free Format
    - Accept the other defaults and click **Run Workflow**.
 
@@ -194,8 +196,8 @@ CL: CPYFRMSTMF FROMSTMF('/home/YOURUSER/ibmi-lab/FLGHT400.FILE')
 6. Bob runs the **Code for IBM i** compile action for ILE RPG, triggering a `CRTBNDRPG` command on your LPAR. Watch the output in the terminal panel. A successful compile looks like:
 
    ```
-   > CRTBNDRPG PGM(FLIGHT400/FRS409) SRCFILE(FLIGHT400/QRPGSRC) SRCMBR(FRS409)
-   Program FRS409 created in library FLIGHT400.
+   > CRTBNDRPG PGM(FLGHT400/FRS409) SRCFILE(FLGHT400/QRPGSRC) SRCMBR(FRS409)
+   Program FRS409 created in library FLGHT400.
    ```
 
 ### 2c — Review the Modernization Summary
@@ -218,7 +220,7 @@ Save this as `FRS409-Modernization-Report.md` in your workspace for documentatio
 
 ### 3a — Open the Flight Maintenance Screen
 
-1. In the Object Browser, navigate to `FLIGHT400/QDDSSRCD` and open `FRS021DF`.
+1. In the Object Browser, navigate to `FLGHT400/QDDSSRCD` and open `FRS021DF`.
 2. Use the **DDS Previewer** to visualize the current screen layout. Note the existing fields:
    - Flight Number, Day of the Week, From/To City
    - Departure/Arrival Time
@@ -337,10 +339,10 @@ SELECT
     MIN(o.DEPAR00001)                               AS EARLIEST_BOOKING_DATE,
     MAX(o.DEPAR00001)                               AS LATEST_BOOKING_DATE
 
-FROM FLIGHT400/FLIGHTS       f
-JOIN FLIGHT400/ORDERS        o  ON o.FLIGH00001  = f.FLIGH00001
-JOIN FLIGHT400/AGENTS        ag ON ag.AGENT_NO   = o.AGENT_NO
-LEFT JOIN FLIGHT400/CUSTOMERS c  ON c.CUSTO00001  = o.CUSTO00001
+FROM FLGHT400/FLIGHTS       f
+JOIN FLGHT400/ORDERS        o  ON o.FLIGH00001  = f.FLIGH00001
+JOIN FLGHT400/AGENTS        ag ON ag.AGENT_NO   = o.AGENT_NO
+LEFT JOIN FLGHT400/CUSTOMERS c  ON c.CUSTO00001  = o.CUSTO00001
 
 WHERE o.DEPAR00001 >= CURRENT TIMESTAMP
 
@@ -401,9 +403,9 @@ Switch back to **IBM i Developer** mode and try these prompts:
 Bob will query the system performance views (e.g. `QSYS2.ACTIVE_JOB_INFO`) and return a summary of active jobs with CPU utilization — giving you an instant health check on your LPAR.
 
 **Prompt 2:**
-> *"Which programs in the FLIGHT400 library have not been recompiled in the last 5 years?"*
+> *"Which programs in the FLGHT400 library have not been recompiled in the last 5 years?"*
 
-Bob will query `QSYS2.OBJECT_STATISTICS` filtering on object type `*PGM` in `FLIGHT400`, compare the `LAST_USED_TIMESTAMP` or `OBJCREATED` attributes, and list the stale programs — perfect input for a modernization backlog.
+Bob will query `QSYS2.OBJECT_STATISTICS` filtering on object type `*PGM` in `FLGHT400`, compare the `LAST_USED_TIMESTAMP` or `OBJCREATED` attributes, and list the stale programs — perfect input for a modernization backlog.
 
 ---
 
