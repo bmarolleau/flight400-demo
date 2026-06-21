@@ -29,9 +29,9 @@ To complete this lab, you need access to an IBM i environment. You can provision
 1. Open **Bob IDE**.
 2. Go to the **Extensions** view (`Cmd+Shift+X` / `Ctrl+Shift+X`).
 3. Search for **"IBM i Developer"** and install the **IBM i Developer Pack** (publisher: *IBM*). This bundle includes:
-   - **Code for IBM i** — source editing, object browser, IFS browser, SQL runner
+   - **Code for IBM i** — source editing, object browser, IFS browser, Db2 for i extension etc. 
 4. After installation, reload Bob IDE when prompted.
-5. In the **Bob AI** extension settings (or via the Bob sidebar), ensure the **Premium Package for i** is activated — this unlocks the IBM i Developer and IBM i Database modes used in later exercises.
+5. In the **Bob** extension settings (Activity sidebar), ensure the **Premium Package for i** is activated — this unlocks the IBM i Developer and IBM i Database modes used in later exercises.
 
 ---
 
@@ -60,21 +60,23 @@ Both files should now be visible in the VS Code **Explorer** panel.
 
 1. In the Bob IDE Activity Bar, click the **IBM i** icon (plug icon).
 2. Click **➕ New Connection** and enter the details from your TechZone reservation:
-   - **Host:** `<your-lpar-hostname>`
-   - **User:** `<your-user-profile>`
+   - **IP/Host:** `<your-lpar-hostname>`
+   - **Username:** `<your-user-profile>`
    - **Password:** `<your-password>`
+   - **Private Key** If using PowerVS , let the **Password** field empty, download the private key, and set its path in this field.
 3. Click **Connect**. A green status bar message confirms a successful connection.
 
 ### 1.4 — Deploy the files to the IFS
 
-1. In the Bob IDE **Explorer**, right-click on **`Install-Flight400.sql`** (you can also select both files with `Ctrl/Cmd+Click`).
-2. Choose **Deploy Selected Files** (or right-click on the workspace root and choose **Deploy Workspace to IBM i**).  
+1. In the Bob IDE **Explorer**, right-click on **`Install-Flight400.sql`**.
+2. Choose **Deploy Selected Files**.  
    This uploads the entire workspace to an IFS directory on IBM i. The target IFS path is shown in the output panel — note it (e.g. `/home/YOURUSER/builds/ibmi-lab`).
-3. In the Bob IDE **Explorer**, right-click on **`FLGHT400.FILE`** (you can also select both files with `Ctrl/Cmd+Click`).
-4. Choose **Deploy Selected Files** (or right-click on the workspace root and choose **Deploy Workspace to IBM i**).  
+3. In the Bob IDE **Explorer**, right-click on **`FLGHT400.FILE`**.
+4. Choose **Deploy Selected Files**. 
    This uploads the entire workspace to an IFS directory on IBM i. The target IFS path is shown in the output panel — note it (e.g. `/home/YOURUSER/builds/ibmi-lab`).
 
-> ☕ This may take a two or three minutes as the Save File `FLGHT400.FILE` contains the code, programs, database files etc. Everything you need to run the application. Perfect time for a coffee break!
+> ☕ This may take a one minute or two, Perfect time for a coffee break! 
+The Save File `FLGHT400.FILE` contains the code, programs, database files etc. Everything you need to run the application. 
 
 ### 1.5 — Verify the upload in the IFS Browser
 
@@ -87,12 +89,7 @@ Both files should now be visible in the VS Code **Explorer** panel.
 ### 1.6 — Update the SQL install script
 
 1. Open `Install-Flight400.sql` in the Bob IDE editor.
-2. Locate the `CPYFRMSTMF` command. Update the `FROMSTMF` parameter with the IFS path you just copied:
-
-```sql
-CL: CPYFRMSTMF FROMSTMF('/home/YOURUSER/ibmi-lab/FLGHT400.FILE')
-               TOMBR('/QSYS.LIB/QGPL.LIB/FLIGHT400.FILE') MBROPT(*REPLACE);
-```
+2. Locate the `v_ifs_path` and `v_new_owner` variables  , and update them with the IFS path you just copied and the user profile used to connect to the IBM i. 
 
 3. Save the file (`Ctrl+S` / `Cmd+S`).
 
@@ -100,10 +97,14 @@ CL: CPYFRMSTMF FROMSTMF('/home/YOURUSER/ibmi-lab/FLGHT400.FILE')
 
 1. In the **IFS Browser**, refresh the folder. You should see `Install-Flight400.sql` updated.
 2. Right-click `Install-Flight400.sql` → **Run Action** → **Run SQL Statements**.
-3. Wait for the three CL commands to execute (create save file, copy from IFS, restore library).  
+3. Wait for the script execute (create save file, restore library, update library ownership).  
    The output console will confirm each step. The final `RSTLIB` command restores the full **FLIGHT400** library including programs, source members, and database files.
 
-> ✅ **End of Quick Setup.** The FLIGHT400 application is now restored on your IBM i in the `FLGHT400` library.
+> ✅ **End of Quick Setup.** The FLIGHT400 application is now restored on your IBM i in the `FLGHT400` library. 
+
+> ✅ Make sure `FLGHT400`library is in your library list (in the Code for i settings). 
+
+> ✅  If you have a 5250 terminal to your IBM i available, you can add the library to your lib list `ADDLIBLE FLGHT400` if not already done, and launch the application: `GO FLGHT400/FRSMAIN` 
 
 ---
 
@@ -119,15 +120,18 @@ CL: CPYFRMSTMF FROMSTMF('/home/YOURUSER/ibmi-lab/FLGHT400.FILE')
    - `*FILE` — Display files and database physical/logical files
    - `*MENU` — Application menus
 3. Expand **Source Files** and browse `QRPGSRC` — open a couple of RPG programs to get a feel for the classic fixed-format style.
-4. Navigate to **`QDDSSRCD`** and open the display file `FRS001DF`. In the editor, right-click and choose **Preview DDS** (or click the preview icon in the top right). The **DDS Previewer** renders the green-screen layout visually — notice the classic 5250 style.
+4. Navigate to **`QDDSSRCD`** and open the display file `FRS001DF`. In the editor, Click on **Preview All** on the first line of code. It renders the green-screen layout visually — notice the classic 5250 style.
 
 > 💡 Try previewing `FRS021DF` as well — this is the **Flight Maintenance** screen you will work on later in Exercise 4.
 
+> 💡 Again in the **Object Browser**, same library,  click on the program `FRS000.pgm`that is the flight reservation logon. You'll see in the `Detail` that this program was compiled in 1997, 30 years ago ! 
+
+
 ### 1b — Generate an Architecture Explanation with Bob
 
-1. Click the **Bob AI** icon in the Activity Bar to open the chat panel.
+1. Click the **Open Bob** icon in the top right Activity Bar to open the chat panel.
 2. If not already in **IBM i Developer** mode, switch to it using the mode selector at the top of the chat.
-3. Click the **`+` (Scope) button** and add **QSYS Library List** as the context scope. This gives Bob visibility into the full application structure.
+3. Click the **`+` (Scope) button** and add **QSYS Library List** as the context scope. This gives Bob visibility into the full application structure. Again, make sure that `FLGHT400` is in the library list. Bob will first search in this list before searching in all QSYS. 
 4. Type the following prompt:
 
    > *"Generate a comprehensive architecture overview of the FLIGHT400 application in Markdown format. Include a high-level description, the main program flows, key programs and their roles, a Mermaid architecture diagram, and a summary of the database tables used."*
@@ -179,21 +183,20 @@ CL: CPYFRMSTMF FROMSTMF('/home/YOURUSER/ibmi-lab/FLGHT400.FILE')
    → Choose **Workflow mode** and click to start it.
 
 3. The workflow form opens. Fill in the details:
-   - **Source member:** `FRS409` (Bob pre-fills this from the open editor)
    - **Source file:** `FLGHT400/QRPGSRC`
-   - **Target format:** ILE RPG Free Format
-   - Accept the other defaults and click **Run Workflow**.
+   - **Source member:** `FRS409` (Bob pre-fills this from the open editor)
+   - Accept the other defaults and click **Analyze Member**.
 
-4. Bob converts the fixed-format RPG to modern free-format ILE RPG. Review the diff.
-
-5. Bob will prompt: **"Do you want to compile the modernized program?"** — answer **Yes**.
-
-6. Bob runs the **Code for IBM i** compile action for ILE RPG, triggering a `CRTBNDRPG` command on your LPAR. Watch the output in the terminal panel. A successful compile looks like:
-
-   ```
+Bob converts the fixed-format RPG to modern free-format ILE RPG.
+runs the **Code for IBM i** compile action for ILE RPG, triggering a `CRTBNDRPG` command on your LPAR. Watch the output in the terminal panel. 
+  ```
    > CRTBNDRPG PGM(FLGHT400/FRS409) SRCFILE(FLGHT400/QRPGSRC) SRCMBR(FRS409)
    Program FRS409 created in library FLGHT400.
    ```
+
+4. Bob will also prompt: **"Confirm Output Member Location** — choose the suggested location. Bob will use all its RPG skills to modernize this source code. Approve the requested tasks.
+
+**Program FLGHT400/FRS409 was created successfully (highest severity: 00).**
 
 ### 2c — Review the Modernization Summary
 
@@ -205,7 +208,11 @@ Bob automatically generates a **Modernization Summary Report** in Markdown. It i
 
 Save this as `FRS409-Modernization-Report.md` in your workspace for documentation.
 
-> ✅ You've just modernized a 40-year-old RPG program to modern free-format ILE RPG — with AI-assisted compilation — in minutes!
+> ✅ You've just modernized a 30-year-old RPG program to modern free-format ILE RPG — with AI-assisted compilation — in minutes!
+
+> ✅ At the Bottom of the Bob Chat Panel , Click on the 'File Changed' item, see `FRS409.RPGLE` diff. This resulting source is the new FRS409 ILE (RPGLE) program source deriving from the old `FRS409.RPG` OPM program. 
+
+> ✅ In the Object Browser, check the new FRS409.PGM timestamp in `Detail` (right click on the file). Your new program is ready for further testing. 
 
 ---
 
