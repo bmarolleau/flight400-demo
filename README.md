@@ -104,9 +104,9 @@ The Save File `FLGHT400.FILE` contains the code, programs, database files etc. E
 
 > ✅ Make sure `FLGHT400`library is in your library list (in the Code for i settings). 
 
-> ✅  If you have a 5250 terminal to your IBM i available, you can add the library to your lib list `ADDLIBLE FLGHT400` if not already done, and launch the application: `GO FLGHT400/FRSMAIN`
+> ✅  If you have a 5250 terminal to your IBM i available, you can add the library to your lib list with `ADDLIBLE FLGHT400` if not already done, and launch the application from the CL (Green Screen) command prompt :  `GO FLGHT400/FRSMAIN` .
 
-> 💡 Want to explore or troubleshoot the green-screen app? See the [FLIGHT400 Quick Reference Guide](FLIGHT400-GUIDE.md) for navigation tips, menu structure, and common operations.
+ > 💡 **Want to explore or troubleshoot the green-screen app?** See the [FLIGHT400 Quick Reference Guide](FLIGHT400-GUIDE.md) for navigation tips, menu structure, and common operations.
 
 ---
 
