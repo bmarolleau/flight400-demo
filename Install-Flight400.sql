@@ -79,12 +79,12 @@ BEGIN
   -- ==========================================================================
   SET v_cmd =
     'CHGOWN OBJ(''/QSYS.LIB/FLGHT400.LIB'') NEWOWN(' CONCAT TRIM(v_new_owner) CONCAT
-    ') ERROPT(*IGNORE)';
+    ') ';
   CALL QSYS2.QCMDEXC(v_cmd);
 
   SET v_cmd =
     'CHGOWN OBJ(''/QSYS.LIB/FLGHT400.LIB/*'') NEWOWN(' CONCAT TRIM(v_new_owner) CONCAT
-    ') SUBTREE(*ALL) ERROPT(*IGNORE)';
+    ') SUBTREE(*ALL) ';
   CALL QSYS2.QCMDEXC(v_cmd);
 
 END;
