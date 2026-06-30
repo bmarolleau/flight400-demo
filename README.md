@@ -3,6 +3,8 @@
 > **Estimated time:** 2–3 hours  
 > **Prerequisites:** IBM Bob IDE installed, internet access, IBM i TechZone LPAR (see below) , and the Premium Package for i 
 
+![alt text](pics/flight400.png)
+
 ---
 
 ## How to Get an IBM i Virtual Machine (aka LPAR)
@@ -112,6 +114,51 @@ The Save File `FLGHT400.FILE` contains the code, programs, database files etc. E
 
 ---
 
+## Exercise 0 — Optional Warm-Up: Generate a React Carbon App from a Green Screen
+
+**Goal:** Use Bob in **IBM i Developer** mode to analyze the FLIGHT400 *Create Order* 5250 screen and generate a modern React web application styled with the IBM Carbon Design System, running directly on IBM i PASE.
+
+![Flight400 React agentic demo](pics/Flight-react-agentic.png)
+
+### Prompt in Bob Chat UI
+
+- Click on the `+` button (top right) in IBM i Developer mode, with the `FLGHT400` (library list) in context of task, paste this [screenshot](./pics/flight400.png) in the prompt, and ask:
+
+> *"Here is the Create Order screen of the FLGHT400 application, order screen. Generate the equivalent in React using the IBM Carbon Design System. Create the app in the IFS in my \$HOME directory in a dedicated folder."*
+
+![alt text](pics/image.png)
+
+### Expected Result
+
+Bob generates a full React application, including:
+- Carbon components (`Tile`, `TextInput`, `RadioButtonGroup`, `Modal`, `Button`) mirroring the 5250 layout
+- Selection modals replacing DDS subfile windows
+- The RPG pricing formula ported to JavaScript
+- pure JavaScript, no native binaries, running natively in IBM i PASE
+
+Start the app from your IBM i PASE shell:
+
+```bash
+cd /home/<your-user>/flight400-react
+npm run build   # compile
+npm start       # serve on port 3001
+```
+
+Then open `http://<your-ibm-i-host>:3001` in your browser.
+
+### Skills & Tools Used Behind the Scene
+
+| Tool / Skill | Role |
+|---|---|
+| `dds-primer-basics` skill | Parses `FRS001DF.DSPF` — screen layout, field names, subfile windows |
+| `rpg-primer-basics` skill | Reads `FRS001.RPG` — extracts pricing logic and field definitions |
+| IFS write tools | Creates project files directly in `$HOME/flight400-react/` on IBM i |
+| IBM i PASE | Runs `npm install`, `npm run build`, `npm start` natively on IBM i |
+
+> ⚠️ This app runs with sample data only. The natural next step is to add a REST / Web Services layer connecting the React front end to the real IBM i business logic and Db2 for i database.
+
+---
+
 ## Exercise 1 — Code Explanation & Architecture Documentation
 
 **Goal:** Use Bob's IBM i Developer mode to automatically generate an architecture overview with diagrams, then switch to Database mode to produce an Entity Relationship Diagram.
@@ -158,6 +205,22 @@ The Save File `FLGHT400.FILE` contains the code, programs, database files etc. E
 
 > ✅ You now have a living architecture document generated entirely from the legacy codebase — no manual reverse-engineering required!
 
+### 1d — *(Optional)* Generate a Draw.io Architecture Diagram
+
+> **Prerequisite:** Install the **Draw.io Integration** extension in Bob IDE (`Cmd+Shift+X` → search *"Draw.io Integration"* → Install).
+
+1. In the Bob chat panel (**IBM i Developer** mode), make sure the scope is set to **QSYS Library List**.
+2. Type:
+
+   > *"Analyze the FLIGHT400 application from the library list and generate a draw.io architecture diagram showing the main programs, menus, and database files. Save the file as `FLGHT400-architecture.drawio` in `$HOME/docs/` on IBM i."*
+
+3. Bob introspects the library list, maps the program call graph and database relationships, and writes the `.drawio` XML file to `/home/<your-user>/docs/FLGHT400-architecture.drawio`.
+
+4. In the **IFS Browser**, navigate to `$HOME/docs/` and click `FLGHT400-architecture.drawio` to open it — the Draw.io Integration extension renders the diagram directly in the editor.
+
+> ✅ You now have a visual, editable architecture diagram of the legacy application — generated in seconds.
+
+![alt text](pics/drawio.png)
 ---
 
 ## Exercise 2 — Program-Level Explanation & Modernization
