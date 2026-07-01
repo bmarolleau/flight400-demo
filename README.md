@@ -7,7 +7,9 @@
 
 ---
 
-## How to Get an IBM i Virtual Machine (aka LPAR)
+## Part 0 — Environment Setup 
+
+### How to Get an IBM i Virtual Machine (aka LPAR)
 
 To complete this lab, you need access to an IBM i environment. You can provision a free IBM i LPAR through **IBM TechZone**.
 
@@ -24,31 +26,29 @@ To complete this lab, you need access to an IBM i environment. You can provision
 
 ---
 
-## Part 0 — Environment Setup
-
-### Install the IBM i Developer Pack for VS Code / Bob IDE
+### Install the Premium Package for i / IBM i Developer Pack for VS Code and Bob IDE
 
 1. Open **Bob IDE**.
 2. Go to the **Extensions** view (`Cmd+Shift+X` / `Ctrl+Shift+X`).
-3. Search for **"IBM i Developer"** and install the **IBM i Developer Pack** (publisher: *IBM*). This bundle includes:
+3. Search for **"Premium Package"** and install the **Premium Package for i** (publisher: *IBM*), that depends on extensions contained in the **IBM i Developer Pack** . This bundle includes:
    - **Code for IBM i** — source editing, object browser, IFS browser, Db2 for i extension etc. 
 4. After installation, reload Bob IDE when prompted.
 5. In the **Bob** extension settings (Activity sidebar), ensure the **Premium Package for i** is activated — this unlocks the IBM i Developer and IBM i Database modes used in later exercises.
 
 ---
 
-## Part 1 — Quick Setup: Restore the FLIGHT400 Application
+### Restore the FLIGHT400 Application
 
-In this section you will deploy the FLIGHT400 save file to your IBM i LPAR and restore the application library.
+In this section you will deploy the FLIGHT400 save file to your IBM i LPAR and restore the application library. Please Skip if Flight400 is already installed and go to the first Exercise.
 
-### 1.1 — Create a new local workspace
+#### 1.1 — Create a new local workspace
 
 1. On your laptop, create an empty folder — for example `~/ibmi-lab`.
 2. In Bob IDE go to **File → Open Folder** and open this new folder.
    Bob IDE will use this folder as your local workspace.
 3. Download [`Install-Flight400.sql`](https://github.ibm.com/benoit-marolleau/flight400-demo/raw/main/Install-Flight400.sql) from this repository into that folder.
 
-### 1.2 — Download the save file into your workspace
+#### 1.2 — Download the save file into your workspace
 
 From the [Bob Folder](https://ibm.box.com/v/flight400-box), download **`FLGHT400.FILE`** into the folder you just opened.
 This is an IBM i save file — a binary archive that contains the entire FLIGHT400 application (programs, source members, and database files), ready to be restored directly onto your LPAR.
@@ -60,7 +60,7 @@ Both files should now be visible in the IBM Bob IDE **Explorer** panel:
 | `FLGHT400.FILE` | IBM i save file containing the FLIGHT400 application |
 | `Install-Flight400.sql` | SQL script that restores the application on IBM i |
 
-### 1.3 — Connect Bob IDE to your IBM i
+#### 1.3 — Connect Bob IDE to your IBM i
 
 1. In the Bob IDE Activity Bar, click the **IBM i** icon (plug icon).
 2. Click **➕ New Connection** and enter the details from your TechZone reservation:
@@ -70,7 +70,7 @@ Both files should now be visible in the IBM Bob IDE **Explorer** panel:
    - **Private Key** If using PowerVS , let the **Password** field empty, download the private key, and set its path in this field.
 3. Click **Connect**. A green status bar message confirms a successful connection.
 
-### 1.4 — Deploy the files to the IFS
+#### 1.4 — Deploy the files to the IFS
 
 1. In the Bob IDE **Explorer**, right-click on **`Install-Flight400.sql`**.
 2. Choose **Deploy Selected Files**.  
@@ -82,7 +82,7 @@ Both files should now be visible in the IBM Bob IDE **Explorer** panel:
 > ☕ This may take a one minute or two, Perfect time for a coffee break! 
 The Save File `FLGHT400.FILE` contains the code, programs, database files etc. Everything you need to run the application. 
 
-### 1.5 — Verify the upload in the IFS Browser
+#### 1.5 — Verify the upload in the IFS Browser
 
 1. In the IBM i sidebar, expand **IFS Browser**.
 2. Navigate to the upload directory noted above (e.g. `/home/YOURUSER/builds/ibmi-lab`).
@@ -90,14 +90,14 @@ The Save File `FLGHT400.FILE` contains the code, programs, database files etc. E
 4. Right-click on `FLGHT400.FILE` and choose **Copy Path**. It will look something like:  
    `/home/YOURUSER/builds/ibmi-lab/FLGHT400.FILE`
 
-### 1.6 — Update the SQL install script
+#### 1.6 — Update the SQL install script
 
 1. Open `Install-Flight400.sql` in the Bob IDE editor.
 2. Locate the `v_ifs_path` and `v_new_owner` variables  , and update them with the IFS path you just copied and the user profile used to connect to the IBM i. 
 
 3. Save the file (`Ctrl+S` / `Cmd+S`).
 
-### 1.7 — Run the SQL script
+#### 1.7 — Run the SQL script
 
 1. In the **IFS Browser**, refresh the folder. You should see `Install-Flight400.sql` updated.
 2. Right-click `Install-Flight400.sql` → **Run Action** → **Run SQL Statements**.
@@ -114,7 +114,7 @@ The Save File `FLGHT400.FILE` contains the code, programs, database files etc. E
 
 ---
 
-## Exercise 0 — Optional Warm-Up: Generate a React Carbon App from a Green Screen
+## Exercise 1 — Optional Warm-Up: Generate a React Carbon App from a Green Screen
 
 **Goal:** Use Bob in **IBM i Developer** mode to analyze the FLIGHT400 *Create Order* 5250 screen and generate a modern React web application styled with the IBM Carbon Design System, running directly on IBM i PASE.
 
@@ -159,7 +159,7 @@ Then open `http://<your-ibm-i-host>:3001` in your browser.
 
 ---
 
-## Exercise 1 — Code Explanation & Architecture Documentation
+## Exercise 2 — Code Explanation & Architecture Documentation
 
 **Goal:** Use Bob's IBM i Developer mode to automatically generate an architecture overview with diagrams, then switch to Database mode to produce an Entity Relationship Diagram.
 
@@ -223,7 +223,7 @@ Then open `http://<your-ibm-i-host>:3001` in your browser.
 ![alt text](pics/drawio.png)
 ---
 
-## Exercise 2 — Program-Level Explanation & Modernization
+## Exercise 3 — Program-Level Explanation & Modernization
 
 **Goal:** Understand an old OPM RPG program, then modernize it to free-format ILE RPG using the Bob modernization workflow.
 
@@ -283,7 +283,7 @@ Save this as `FRS409-Modernization-Report.md` in your workspace for documentatio
 
 ---
 
-## Exercise 3 — Field Expansion: Adding a New Field to a Screen
+## Exercise 4 — Field Expansion: Adding a New Field to a Screen
 
 **Goal:** Add a new business field — *Total Flight Hours* — to the Flight Maintenance screen, using Bob in IBM i Developer mode.
 
@@ -316,7 +316,7 @@ Save this as `FRS409-Modernization-Report.md` in your workspace for documentatio
 
 ---
 
-## Exercise 4 — UI Modernization: Generate a React Application
+## Exercise 5 — UI Modernization: Generate a React Application
 
 **Goal:** Take the Flight Maintenance 5250 screen and generate a modern React web UI equivalent as a proof-of-concept.
 
@@ -365,7 +365,7 @@ Save this as `FRS409-Modernization-Report.md` in your workspace for documentatio
 
 ---
 
-## Exercise 5 — Database Optimization
+## Exercise 6 — Database Optimization
 
 **Goal:** Review a complex SQL query written by a junior developer, validate it, and apply Bob's index advisor to improve performance.
 
@@ -460,7 +460,7 @@ Bob will:
 
 ---
 
-## Exercise 6 — Ask Bob About Your System
+## Exercise 7 — Ask Bob About Your System
 
 **Goal:** Use Bob in IBM i Developer mode to answer system-level questions using two natural language prompts.
 
@@ -485,11 +485,12 @@ Congratulations! In this lab you:
 | Exercise | What You Did |
 |---|---|
 | **Setup** | Restored the FLIGHT400 application onto IBM i from a save file |
-| **Exercise 1** | Generated architecture docs and an ERD with Bob |
-| **Exercise 2** | Explained and modernized OPM RPG `FRS409` to free-format ILE RPG |
-| **Exercise 3** | Added a new field to a 5250 display file with Bob's help |
-| **Exercise 4** | Generated a React UI from a classic green-screen definition |
-| **Exercise 5** | Reviewed and optimized a SQL query using Bob's database tools |
-| **Exercise 6** | Queried your IBM i system using natural language |
+| **Exercise 1** | Optional : UI modernization, 5250 to React |
+| **Exercise 2** | Generated architecture docs and an ERD with Bob |
+| **Exercise 3** | Explained and modernized OPM RPG `FRS409` to free-format ILE RPG |
+| **Exercise 4** | Added a new field to a 5250 display file with Bob's help |
+| **Exercise 5** | Generated a React UI from a classic green-screen definition |
+| **Exercise 6** | Reviewed and optimized a SQL query using Bob's database tools |
+| **Exercise 7** | Queried your IBM i system using natural language |
 
 > **Next steps:** Explore connecting the React app to live IBM i data via a Node.js or Java REST API, or dive deeper into the RPG modernization workflow for the other FLIGHT400 programs.
