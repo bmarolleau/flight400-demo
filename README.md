@@ -4,7 +4,7 @@
 > **Prerequisites:** IBM Bob IDE installed, internet access, IBM i TechZone LPAR (see below) , and the Premium Package for i 
 
 ![alt text](pics/flight400.png)
-
+ 
 ---
 
 ## Part 0 — Environment Setup 
