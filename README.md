@@ -147,7 +147,8 @@ npm run build   # compile
 npm start       # serve on port 3001
 ```
 
-Then open `http://<your-ibm-i-host>:3001` in your browser.
+Then open `http://<your-ibm-i-host>:3001` in your browser. Note that port number, and application look & feel can differ. 
+
 
 ### Skills & Tools Used Behind the Scene
 
@@ -223,7 +224,7 @@ Then open `http://<your-ibm-i-host>:3001` in your browser.
 
 > ✅ You now have a visual, editable architecture diagram of the legacy application — generated in seconds.
 
-![alt text](pics/drawio.png)
+![alt text](pics/drawIo.png)
 ---
 
 ## Exercise 3 — Program-Level Explanation & Modernization
