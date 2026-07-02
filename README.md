@@ -46,11 +46,11 @@ In this section you will deploy the FLIGHT400 save file to your IBM i LPAR and r
 1. On your laptop, create an empty folder — for example `~/ibmi-lab`.
 2. In Bob IDE go to **File → Open Folder** and open this new folder.
    Bob IDE will use this folder as your local workspace.
-3. Download [`Install-Flight400.sql`](https://github.ibm.com/benoit-marolleau/flight400-demo/raw/main/Install-Flight400.sql) from this repository into that folder.
+3. Download [`Install-Flight400.sql`](https://github.com/bmarolleau/flight400-demo/blob/main/Install-Flight400.sql) from this repository into that folder.
 
 #### 1.2 — Download the save file into your workspace
 
-From the [Bob Folder](https://ibm.box.com/v/flight400-box), download **`FLGHT400.FILE`** into the folder you just opened.
+From the [Box Folder](https://ibm.box.com/v/flight400-box), download **`FLGHT400.FILE`** into the folder you just opened.
 This is an IBM i save file — a binary archive that contains the entire FLIGHT400 application (programs, source members, and database files), ready to be restored directly onto your LPAR.
 
 Both files should now be visible in the IBM Bob IDE **Explorer** panel:
