@@ -8,13 +8,16 @@
 -- =============================================================================
 
 -- -----------------------------------------------------------------------------
--- CONFIGURATION - edit these two values before running
+-- CONFIGURATION - edit these values before running
 -- -----------------------------------------------------------------------------
 -- IFS path where FLGHT400.FILE was uploaded
--- v_ifs_path  = '/home/BENOIT/builds/Flight400-demo/FLGHT400.FILE'
+-- v_ifs_path   = '/home/BENOIT/builds/Flight400-demo/FLGHT400.FILE'
 --
--- Target owner for the library and all its objects (your user profile, max 10 chars)
--- v_new_owner = 'BENOIT'
+-- Target library name where the save file will be restored (max 10 chars)
+-- v_rst_lib    = 'FLGHT400'
+--
+-- The owner is resolved automatically from the session user (CURRENT_USER).
+-- No need to hard-code a profile name.
 -- -----------------------------------------------------------------------------
 
 ---- Initial version: 
@@ -29,9 +32,10 @@
 ---- End initial version.
 
 BEGIN
-  -- configurable variables ** edit these two values before running ** 
-  DECLARE v_ifs_path  VARCHAR(256) DEFAULT '/home/BENOIT/builds/Flight400-demo/FLIGHT74.FILE'; --path in the IFS (IBM i)
-  DECLARE v_new_owner VARCHAR(10)  DEFAULT 'BENOIT'; --this is your use profile. 
+  -- configurable variables ** edit these before running **
+  DECLARE v_ifs_path  VARCHAR(256) DEFAULT '/home/BENOIT/builds/Flight400-demo/FLIGHT74.FILE'; -- path in the IFS (IBM i)
+  DECLARE v_rst_lib   VARCHAR(10)  DEFAULT 'FLGHT400'; -- target library name after restore
+  DECLARE v_new_owner VARCHAR(10); -- resolved from CURRENT_USER at runtime
 
   -- working variables
   DECLARE v_exists    INT          DEFAULT 0;
@@ -39,6 +43,9 @@ BEGIN
 
   -- ignore CPF223A: some QSYS objects cannot have owner changed - that is expected
   DECLARE CONTINUE HANDLER FOR SQLSTATE '38501' BEGIN END;
+
+  -- resolve owner from the session user so no hard-coded profile is needed
+  SET v_new_owner = LEFT(CURRENT_USER, 10);
 
   -- ==========================================================================
   -- Step 1: Create the save file in QGPL (skip if it already exists)
@@ -63,13 +70,15 @@ BEGIN
   -- Step 3: Restore the library (skip if it already exists)
   -- ==========================================================================
   SELECT COUNT(*) INTO v_exists
-  FROM TABLE(QSYS2.OBJECT_STATISTICS('QSYS', '*LIB', 'FLGHT400')) AS x;
+  FROM TABLE(QSYS2.OBJECT_STATISTICS('QSYS', '*LIB', v_rst_lib)) AS x;
 
   IF v_exists = 0 THEN
-    CALL QSYS2.QCMDEXC('RSTLIB SAVLIB(FLGHT400) DEV(*SAVF) SAVF(QGPL/FLIGHT400)');
+    SET v_cmd =
+      'RSTLIB SAVLIB(FLGHT400) DEV(*SAVF) SAVF(QGPL/FLIGHT400) RSTLIB(' CONCAT TRIM(v_rst_lib) CONCAT ')';
+    CALL QSYS2.QCMDEXC(v_cmd);
   ELSE
     SIGNAL SQLSTATE '01000'
-      SET MESSAGE_TEXT = 'Library FLGHT400 already exists - RSTLIB skipped. Drop it first to force a full restore.';
+      SET MESSAGE_TEXT = 'Target library already exists - RSTLIB skipped. Drop it first to force a full restore.';
   END IF;
 
   -- ==========================================================================
@@ -78,13 +87,11 @@ BEGIN
   --         Second call: everything inside, SUBTREE(*ALL) recurses into files/members
   -- ==========================================================================
   SET v_cmd =
-    'CHGOWN OBJ(''/QSYS.LIB/FLGHT400.LIB'') NEWOWN(' CONCAT TRIM(v_new_owner) CONCAT
-    ') ';
+    'CHGOWN OBJ(''/QSYS.LIB/' CONCAT TRIM(v_rst_lib) CONCAT '.LIB'') NEWOWN(' CONCAT TRIM(v_new_owner) CONCAT ')';
   CALL QSYS2.QCMDEXC(v_cmd);
 
   SET v_cmd =
-    'CHGOWN OBJ(''/QSYS.LIB/FLGHT400.LIB/*'') NEWOWN(' CONCAT TRIM(v_new_owner) CONCAT
-    ') SUBTREE(*ALL) ';
+    'CHGOWN OBJ(''/QSYS.LIB/' CONCAT TRIM(v_rst_lib) CONCAT '.LIB/*'') NEWOWN(' CONCAT TRIM(v_new_owner) CONCAT ') SUBTREE(*ALL)';
   CALL QSYS2.QCMDEXC(v_cmd);
 
 END;
@@ -94,5 +101,5 @@ END;
 -- It should return 0 rows when ownership transfer is complete
 -- =============================================================================
 -- SELECT OBJNAME, OBJTYPE, OBJOWNER
--- FROM TABLE(QSYS2.OBJECT_STATISTICS('FLGHT400', '*ALL')) AS x
+-- FROM TABLE(QSYS2.OBJECT_STATISTICS('FLGHT400', '*ALL')) AS x   -- replace FLGHT400 with your v_rst_lib value
 -- ORDER BY OBJTYPE, OBJNAME;
