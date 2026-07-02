@@ -11,13 +11,15 @@
 -- CONFIGURATION - edit these values before running
 -- -----------------------------------------------------------------------------
 -- IFS path where FLGHT400.FILE was uploaded
--- v_ifs_path   = '/home/BENOIT/builds/Flight400-demo/FLGHT400.FILE'
+-- v_ifs_path   = '/home/BENOIT/builds/Flight400-demo/FLIGHT74.FILE'
 --
 -- Target library name where the save file will be restored (max 10 chars)
 -- v_rst_lib    = 'FLGHT400'
 --
--- The owner is resolved automatically from the session user (CURRENT_USER).
--- No need to hard-code a profile name.
+-- Owner of the restored library (max 10 chars, uppercase).
+-- Leave v_owner as NULL to use the session user (CURRENT_USER) automatically.
+-- Set it explicitly to override, e.g.: DEFAULT 'MYPROFILE'
+-- v_owner      = NULL   -> resolves to CURRENT_USER at runtime
 -- -----------------------------------------------------------------------------
 
 ---- Initial version: 
@@ -35,17 +37,22 @@ BEGIN
   -- configurable variables ** edit these before running **
   DECLARE v_ifs_path  VARCHAR(256) DEFAULT '/home/BENOIT/builds/Flight400-demo/FLIGHT74.FILE'; -- path in the IFS (IBM i)
   DECLARE v_rst_lib   VARCHAR(10)  DEFAULT 'FLGHT400'; -- target library name after restore
-  DECLARE v_new_owner VARCHAR(10); -- resolved from CURRENT_USER at runtime
+  DECLARE v_owner     VARCHAR(10)  DEFAULT NULL; -- set to a profile name to override; NULL = use CURRENT_USER
 
   -- working variables
+  DECLARE v_new_owner VARCHAR(10);
   DECLARE v_exists    INT          DEFAULT 0;
   DECLARE v_cmd       VARCHAR(512);
 
   -- ignore CPF223A: some QSYS objects cannot have owner changed - that is expected
   DECLARE CONTINUE HANDLER FOR SQLSTATE '38501' BEGIN END;
 
-  -- resolve owner from the session user so no hard-coded profile is needed
-  SET v_new_owner = LEFT(CURRENT_USER, 10);
+  -- resolve owner: use explicit override if provided, otherwise fall back to session user
+  IF v_owner IS NOT NULL AND TRIM(v_owner) <> '' THEN
+    SET v_new_owner = LEFT(TRIM(v_owner), 10);
+  ELSE
+    SET v_new_owner = LEFT(CURRENT_USER, 10);
+  END IF;
 
   -- ==========================================================================
   -- Step 1: Create the save file in QGPL (skip if it already exists)

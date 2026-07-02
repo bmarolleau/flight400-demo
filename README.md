@@ -93,7 +93,10 @@ The Save File `FLGHT400.FILE` contains the code, programs, database files etc. E
 #### 1.6 — Update the SQL install script
 
 1. Open `Install-Flight400.sql` in the Bob IDE editor.
-2. Locate the `v_ifs_path` and `v_new_owner` variables  , and update them with the IFS path you just copied and the user profile used to connect to the IBM i. 
+2. Locate and update these variables at the top of the script:
+   - **`v_ifs_path`** — set to the IFS path you just copied (e.g. `/home/YOURUSER/builds/ibmi-lab/FLIGHT74.FILE`)
+   - **`v_rst_lib`** — target library name after restore (default: `FLGHT400`; change only if needed)
+   - **`v_owner`** — *(optional)* owner profile for the restored library. Leave as `NULL` to use `CURRENT_USER` automatically, or set explicitly (e.g. `DEFAULT 'MYPROFILE'`) to override.
 
 3. Save the file (`Ctrl+S` / `Cmd+S`).
 
