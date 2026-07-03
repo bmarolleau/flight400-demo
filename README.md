@@ -123,17 +123,19 @@ The Save File `FLGHT400.FILE` contains the code, programs, database files etc. E
 
 ![Flight400 React agentic demo](pics/Flight-react-agentic.png)
 
-### Prepare your Skill
+### Sharpen Your Skill 
 
-We want to create a React Application on IBM i (PASE) so let's help Bob by creating a sample Skill so it knows a bit better potential specificities of PASE with React and Vite.  
+Before generating the React app, give Bob some extra context about running React + Vite on IBM i PASE by creating a small helper Skill.
 
-- Click on the `+` button (top right) in Agent mode, choose local workspace in context of task, open [SKILL.md](./SAMPLE-SKILL.md) , copy the content and paste it in the chat input field (prompt), and add:
+1. In Agent mode, click the **`+`** button (top right) and select **Local Workspace** as the task context.
+2. Open [SAMPLE-SKILL.md](./SAMPLE-SKILL.md), copy its entire content, and paste it into the chat prompt.
+3. Append the following instruction and send:
 
-> *"Can you create a skill from the pasted text."*
+> *"Create a skill from the pasted text."*
 
 ### Expected Result
 
-Bob generates a new skill for writing better React / Vite applications in PASE. This is just a simple (sample) Skill that we'll use in the next step. The Skill will be detected automatically.  
+Bob creates a new Skill that improves its awareness of PASE-specific details for React and Vite projects. This lightweight Skill will be picked up automatically in the next step.
 
 ### Prompt in Bob Chat UI
 
