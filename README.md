@@ -123,11 +123,23 @@ The Save File `FLGHT400.FILE` contains the code, programs, database files etc. E
 
 ![Flight400 React agentic demo](pics/Flight-react-agentic.png)
 
+### Prepare your Skill
+
+We want to create a React Application on IBM i (PASE) so let's help Bob by creating a sample Skill so it knows a bit better potential specificities of PASE with React and Vite.  
+
+- Click on the `+` button (top right) in Agent mode, choose local workspace in context of task, open [SKILL.md](./SAMPLE-SKILL.md) , copy the content and paste it in the chat input field (prompt), and add:
+
+> *"Can you create a skill from the pasted text."*
+
+### Expected Result
+
+Bob generates a new skill for writing better React / Vite applications in PASE. This is just a simple (sample) Skill that we'll use in the next step. The Skill will be detected automatically.  
+
 ### Prompt in Bob Chat UI
 
-- Click on the `+` button (top right) in IBM i Developer mode, with the `FLGHT400` (library list) in context of task, paste this [screenshot](./pics/flight400.png) in the prompt, and ask:
+- Switch to IBM i Developer mode, then Click on the `+` button (top right) and select  the `FLGHT400` (library list) as a context of for the task. Paste this [screenshot](./pics/flight400.png) in the prompt, and ask:
 
-> *"Here is the Create Order screen of the FLGHT400 application, order screen. Generate the equivalent in React using the IBM Carbon Design System. Create the app in the IFS in my \$HOME directory in a dedicated folder."*
+> *"Given this screenshot of the 5250 flight order screen, Build a single-page React 18 + Vite 4 app on IBM i (PASE) using @carbon/react ^1.x with the g100 dark theme that modernises the IBM i 5250 screen shown in the attached screenshot. Create the app in the IFS at $HOME/flight400-frontend-apps/screen-name/.  Use dark theme, and list of values should  be proposed on each field.  Ensure that Node.js 22 is installed in PASE. "*
 
 ![alt text](pics/image.png)
 
@@ -152,6 +164,8 @@ Then open `http://<your-ibm-i-host>:3001` in your browser. Note that port number
 
 ### Skills & Tools Used Behind the Scene
 
+In addition to the sample Skill we created in step 1, we've just used a set of unique Skills that are shipped with the Premium Package for i : 
+
 | Tool / Skill | Role |
 |---|---|
 | `dds-primer-basics` skill | Parses `FRS001DF.DSPF` — screen layout, field names, subfile windows |
@@ -169,8 +183,8 @@ Then open `http://<your-ibm-i-host>:3001` in your browser. Note that port number
 
 ### 1a — Browse the Application in the Object Browser
 
-1. In the IBM i sidebar, expand **Object Browser**.
-2. Navigate to the **FLGHT400** library. You will see its contents organized by object type:
+1. In the IBM i sidebar, expand **User Library List** and **Object Browser**.
+2. Add **FLGHT400** to your library list if not done, and add a filter to the **FLGHT400** library. Navigate to the **FLGHT400** library. You will see its contents organized by object type:
    - `*PGM` — RPG and CL programs (e.g. `FRS001`, `FRS021`, `FRS409`)
    - `*FILE` — Display files and database physical/logical files
    - `*MENU` — Application menus
