@@ -305,16 +305,9 @@ Save this as `FRS409-Modernization-Report.md` in your workspace for documentatio
 
 ## Exercise 4 — Field Expansion: Adding a New Field to a Screen
 
-**Goal:** Using Bob in IBM i Developer mode, add a new business field — *Total Flight Hours* — to the Flight Maintenance screen, then perform a full impact analysis and propagate the change end-to-end: display file, RPG programs, and the underlying database physical file. Every step is driven by a prompt to Bob.
+**Goal:** Add a new business field — *Total Flight Hours* — to the Flight Maintenance screen, then perform a full impact analysis and propagate the change end-to-end: display file, RPG programs, and the underlying database physical file. Every step is driven by a prompt to Bob.
 
 ### 4a — Explore the Flight Maintenance Screen
-
-1. In the Object Browser, navigate to `FLGHT400/QDDSSRCD` and open `FRS021DF`.
-2. Use the **DDS Previewer** to visualize the current screen layout. Note the existing fields:
-   - Flight Number, Day of the Week, From/To City
-   - Departure/Arrival Time
-   - Mileage, Airline, Seats Available, Ticket Price
-3. You want to add a new field: **Total Flight Hours** (numeric, 4 digits) between Mileage and Airline.
 
 In the Bob chat panel (**IBM i Developer** mode), set the scope to **QSYS Library List** and type:
 
@@ -350,20 +343,20 @@ Display file FRS021DF created in library FLGHT400.
 
 ### 4c — Impact Analysis
 
-Before touching any program or database file, ask Bob to read each source member directly and extract data-flow and decision logic — the same source-level analysis the Business Rules Extraction workflow performs, focused on the impact of the new `SFLHRS` field:
+Before touching any program or database file, ask Bob:
 
-> *"Read the source of FRS021 from FLGHT400/QRPGSRC and FRS001 from FLGHT400/QRPGSRC. For each program: identify every data structure that maps to the FLIGHTS physical file, every opcode (READ, CHAIN, WRITE, UPDATE) that references FLIGHTS fields, and every screen field mapped to FRS021DF. Then read FRS021DF from FLGHT400/QDDSSRCD and list all record formats and fields. Produce a consolidated impact report for adding a new field SFLHRS (Total Flight Hours, NUMERIC 4,0) to FLIGHTS and FRS021DF — for each object state exactly what data structure, field list, or I/O statement must change, and flag any logical files built over FLIGHTS that will need recompiling."*
+> *"Perform an impact analysis for adding a new field SFLHRS (Total Flight Hours, numeric 4 digits) to the FLIGHT400 application. Identify all RPG and CL programs that use the display file FRS021DF or the physical file FLIGHTS, any data structures or field lists that reference FLIGHTS fields, all logical files built over FLIGHTS, and the database physical file that needs the new column. Produce a summary table of what needs to change in each object."*
 
-Bob reads the source members and produces a structured impact report. Expected output:
+Bob queries the system catalog (`QSYS2.BOUND_MODULE_INFO`, `QSYS2.PROGRAM_INFO`, `QSYS2.SYSCOLUMNS`, `QSYS2.SYSKEYS`) and the Object Browser to produce an impact report. Expected output:
 
 | Object | Type | Impact |
 |---|---|---|
 | `FLIGHTS` | `*FILE (PF)` | Add column `SFLHRS NUMERIC(4,0)` |
-| `FRS021` | `*PGM (RPG)` | Add `SFLHRS` to the `DFLIGHTS` data structure; map it to the screen field; include in `WRITE`/`UPDATE` opcodes |
+| `FRS021` | `*PGM (RPG)` | Add `SFLHRS` to data structure and screen I/O |
 | `FRS021DF` | `*FILE (DSPF)` | Already updated in step 4b |
-| `FRS001` | `*PGM (RPG)` | Read-only reference — verify no field list or `CHAIN` opcode is affected |
+| `FRS001` | `*PGM (RPG)` | Read-only reference — verify no field list is affected |
 
-Bob will also flag any logical files built over `FLIGHTS` that must be recompiled after the physical file change.
+Bob will also flag any logical files built over `FLIGHTS` that must be re-created after the physical file change.
 
 > 💡 To dig deeper into database relations, ask Bob: *"Show me all database relations for the FLIGHTS file using DSPDBR."* Bob will run `DSPDBR FILE(FLGHT400/FLIGHTS)` and summarise the result.
 
@@ -519,6 +512,17 @@ Bob will:
 4. Optionally generate the `CREATE INDEX` DDL statements for you to review and apply
 
 > ✅ You've validated, improved, and optimized a SQL query — without needing to be a Db2 expert!
+
+### 5d — Run the Index Advisor Workflow (Dynamic Analysis)
+
+Still in IBM i Database mode, use the **Index Advisor** workflow. In the Bob chat panel, open the workflow picker and select **Index Advisor**, then paste the query from 5b when prompted.
+
+Bob will:
+1. Use or capture new performance data. `DUMP PLAN CACHE`, `DBMON`, `DUMP PLAN CACHE TOPN`. 
+2. Parse the advisor output and identify recommended indexes
+3. Generate the `CREATE INDEX` DDL statements for you to review and apply
+
+> ✅ You've validated, improved, and optimized a SQL query using a guided workflow — without needing to be a Db2 expert!
 
 ---
 
