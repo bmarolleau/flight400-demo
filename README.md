@@ -141,7 +141,7 @@ Bob creates a new Skill that improves its awareness of PASE-specific details for
 
 - Switch to IBM i Developer mode, then Click on the `+` button (top right) and select  the `FLGHT400` (library list) as a context of for the task. Paste this [screenshot](./pics/flight400.png) in the prompt, and ask:
 
-> *"Given this screenshot of the 5250 flight order screen, Build a single-page React 18 + Vite 4 app on IBM i (PASE) using @carbon/react ^1.x with the g100 dark theme that modernises the IBM i 5250 screen shown in the attached screenshot. Create the app in the IFS at $HOME/flight400-frontend-apps/screen-name/.  Use dark theme, and list of values should  be proposed on each field.  Ensure that Node.js 22 is installed in PASE. "*
+> *"Given this screenshot of the 5250 flight order screen from the Application Flight400 in @FLGHT400, Build a single-page React 18 + Vite 4 app on IBM i (PASE) using @carbon/react ^1.x with the g100 dark theme that modernises the IBM i 5250 screen shown in the attached screenshot. Create the app in the IFS at $HOME/flight400-frontend-apps/screen-name/.  Use dark theme, and list of values should  be proposed on each field.  Ensure that Node.js 22 is installed in PASE. "*
 
 ![alt text](pics/image.png)
 
@@ -183,7 +183,7 @@ In addition to the sample Skill we created in step 1, we've just used a set of u
 
 **Goal:** Use Bob's IBM i Developer mode to automatically generate an architecture overview with diagrams, then switch to Database mode to produce an Entity Relationship Diagram.
 
-### 1a — Browse the Application in the Object Browser
+### 2a — Browse the Application in the Object Browser
 
 1. In the IBM i sidebar, expand **User Library List** and **Object Browser**.
 2. Add **FLGHT400** to your library list if not done, and add a filter to the **FLGHT400** library. Navigate to the **FLGHT400** library. You will see its contents organized by object type:
@@ -198,7 +198,7 @@ In addition to the sample Skill we created in step 1, we've just used a set of u
 > 💡 Again in the **Object Browser**, same library,  click on the program `FRS000.pgm`that is the flight reservation logon. You'll see in the `Detail` that this program was compiled in 1997, 30 years ago ! 
 
 
-### 1b — Generate an Architecture Explanation with Bob
+### 2b — Generate an Architecture Explanation with Bob
 
 1. Click the **Open Bob** icon in the top right Activity Bar to open the chat panel.
 2. If not already in **IBM i Developer** mode, switch to it using the mode selector at the top of the chat.
@@ -210,7 +210,7 @@ In addition to the sample Skill we created in step 1, we've just used a set of u
 5. Bob will analyze the programs, source members, and database files and return a structured Markdown document. Review the output — notice how it identifies the menu-driven architecture, the core transaction programs, and the underlying database schema.
 6. Copy the output to a new file `FLIGHT400-Architecture.md` in your workspace for reference.
 
-### 1c — Generate an Entity Relationship Diagram (Database Mode)
+### 2c — Generate an Entity Relationship Diagram (Database Mode)
 
 1. In the Bob chat panel, switch to **IBM i Database** mode using the mode selector.
 2. Type the following slash command:
@@ -225,7 +225,7 @@ In addition to the sample Skill we created in step 1, we've just used a set of u
 
 > ✅ You now have a living architecture document generated entirely from the legacy codebase — no manual reverse-engineering required!
 
-### 1d — *(Optional)* Generate a Draw.io Architecture Diagram
+### 2d — *(Optional)* Generate a Draw.io Architecture Diagram
 
 > **Prerequisite:** Install the **Draw.io Integration** extension in Bob IDE (`Cmd+Shift+X` → search *"Draw.io Integration"* → Install).
 
@@ -247,7 +247,7 @@ In addition to the sample Skill we created in step 1, we've just used a set of u
 
 **Goal:** Understand an old OPM RPG program, then modernize it to free-format ILE RPG using the Bob modernization workflow.
 
-### 2a — Understand FRS409 (Order Modification Confirmation)
+### 3a — Understand FRS409 (Order Modification Confirmation)
 
 1. Switch Bob back to **IBM i Developer** mode.
 2. In the Object Browser, navigate to `FLGHT400/QRPGSRC` and open `FRS409`.
@@ -257,7 +257,7 @@ In addition to the sample Skill we created in step 1, we've just used a set of u
 
 4. Bob will explain the program: `FRS409` is the **Order Modification Confirmation Window** — an OPM RPG program that displays a confirmation popup when a user modifies an order. It handles F3 (Exit), F12 (Cancel), and Enter key inputs via a `DOUEQ` loop with `CASEQ` dispatch subroutines, using a workstation data structure (`WSDS`) to capture the last key pressed.
 
-### 2b — Modernize FRS409 Using the RPG Modernization Workflow
+### 3b — Modernize FRS409 Using the RPG Modernization Workflow
 
 1. With `FRS409` still open in the editor, type in the Bob chat:
 
@@ -285,7 +285,7 @@ runs the **Code for IBM i** compile action for ILE RPG, triggering a `CRTBNDRPG`
 
 **Program FLGHT400/FRS409 was created successfully (highest severity: 00).**
 
-### 2c — Review the Modernization Summary
+### 3c — Review the Modernization Summary
 
 Bob automatically generates a **Modernization Summary Report** in Markdown. It includes:
 - What was changed and why
@@ -305,9 +305,9 @@ Save this as `FRS409-Modernization-Report.md` in your workspace for documentatio
 
 ## Exercise 4 — Field Expansion: Adding a New Field to a Screen
 
-**Goal:** Add a new business field — *Total Flight Hours* — to the Flight Maintenance screen, using Bob in IBM i Developer mode.
+**Goal:** Using Bob in IBM i Developer mode, add a new business field — *Total Flight Hours* — to the Flight Maintenance screen, then perform a full impact analysis and propagate the change end-to-end: display file, RPG programs, and the underlying database physical file. Every step is driven by a prompt to Bob.
 
-### 3a — Open the Flight Maintenance Screen
+### 4a — Explore the Flight Maintenance Screen
 
 1. In the Object Browser, navigate to `FLGHT400/QDDSSRCD` and open `FRS021DF`.
 2. Use the **DDS Previewer** to visualize the current screen layout. Note the existing fields:
@@ -316,76 +316,118 @@ Save this as `FRS409-Modernization-Report.md` in your workspace for documentatio
    - Mileage, Airline, Seats Available, Ticket Price
 3. You want to add a new field: **Total Flight Hours** (numeric, 4 digits) between Mileage and Airline.
 
-### 3b — Ask Bob to Add the New Field
+In the Bob chat panel (**IBM i Developer** mode), set the scope to **QSYS Library List** and type:
 
-1. With `FRS021DF` open and active in the editor, go to the Bob chat panel (IBM i Developer mode).
-2. Type:
+> *"Open the display file FRS021DF from FLGHT400/QDDSSRCD, show me its current screen layout using the DDS Previewer, and list all the fields currently defined on the Flight Maintenance screen."*
 
-   > *"In the flight maintenance screen, add a new field for the total number of flight hours for the airplane. Place it after the Mileage field."*
-
-3. Bob analyzes the DDS source and proposes the changes:
-   - A new field `SFLHRS` (e.g. 4 digits, numeric, bound input/output) at line 16
-   - A matching label `'Flight Hours. . . . . . . . .'` 
-   - Appropriate `COLHDG` and `CHECK(RZ)` keywords
-
-4. Review the diff in the editor. Use **Source Control** (`Ctrl+Shift+G` / `Cmd+Shift+G`) or the inline diff view to see exactly what changed in `FRS021DF`.
-
-5. If the changes look correct, accept and save. You can then deploy and recompile the display file using the Code for IBM i compile action (`CRTDSPF`).
-
-> ✅ Field expansion done — the screen now captures Total Flight Hours, ready for program-level integration.
+Bob opens `FRS021DF`, renders the DDS preview, and lists the existing fields:
+- Flight Number, Day of the Week, From/To City
+- Departure/Arrival Time
+- Mileage, Airline, Seats Available, Ticket Price
 
 ---
 
-## Exercise 5 — UI Modernization: Generate a React Application
+### 4b — Add the New Field to the Display File
 
-**Goal:** Take the Flight Maintenance 5250 screen and generate a modern React web UI equivalent as a proof-of-concept.
+In the Bob chat panel, type:
 
-### 4a — Ask Bob to Generate the React App
+> *"In the flight maintenance screen FRS021DF, add a new field SFLHRS for the total number of flight hours for the airplane (numeric, 4 digits). Place it after the Mileage field, with an appropriate label, COLHDG, and CHECK(RZ) keyword. Then compile the display file."*
 
-1. Make sure `FRS021DF` is still open in the editor.
-2. In the Bob chat panel (IBM i Developer mode), type:
+Bob analyzes the DDS source, proposes the changes:
+- A new field `SFLHRS` (4 digits, numeric, bound input/output)
+- A matching label `'Flight Hours. . . . . . . . .'`
+- Appropriate `COLHDG` and `CHECK(RZ)` keywords
 
-   > *"Can you modernize this 5250 screen by generating a corresponding React application? Use fake/sample data in the frontend for now — this is a quick proof-of-concept."*
+Review the diff in the editor, accept and save. Bob then compiles:
+```
+CRTDSPF FILE(FLGHT400/FRS021DF) SRCFILE(FLGHT400/QDDSSRCD) SRCMBR(FRS021DF)
+Display file FRS021DF created in library FLGHT400.
+```
 
-3. Bob generates a React application with:
-   - A `FlightMaintenance.jsx` component that mirrors the screen layout
-   - Input fields for all DDS fields (Flight Number, Day of Week, From/To City, Departure/Arrival Time, Mileage, Flight Hours, Airline, Seats Available, Ticket Price)
-   - Sample hardcoded data for a few flights
-   - Basic form validation and a Submit/Cancel button pair
-
-4. Bob creates the files in a `flight-maintenance-ui/` subfolder in your workspace:
-
-   ```
-   flight-maintenance-ui/
-   ├── src/
-   │   ├── App.jsx
-   │   ├── FlightMaintenance.jsx
-   │   └── sampleData.js
-   ├── package.json
-   └── index.html
-   ```
-
-### 4b — Run the React App
-
-1. Open a terminal in Bob IDE (`Ctrl+\`` / `Cmd+\``).
-2. Navigate to the app folder and install dependencies:
-
-   ```bash
-   cd flight-maintenance-ui
-   npm install
-   npm run dev
-   ```
-
-3. Open your browser at `http://localhost:5173` (or the port shown in the terminal).
-4. You should see the modernized Flight Maintenance form — same fields as the 5250 screen, now in a clean web UI with the sample data pre-populated.
-
-> 💡 This is a starting point. In a real project, you would connect the React app to IBM i via REST APIs or a BFF (Backend For Frontend) service, replacing the sample data with live Db2 for i queries.
-
-> ✅ In just a few prompts, you went from a 1997-era green screen to a modern React UI!
+> ✅ The screen now declares `SFLHRS`. Next: find every object affected by this new field.
 
 ---
 
-## Exercise 6 — Database Optimization
+### 4c — Impact Analysis
+
+Before touching any program or database file, ask Bob to read each source member directly and extract data-flow and decision logic — the same source-level analysis the Business Rules Extraction workflow performs, focused on the impact of the new `SFLHRS` field:
+
+> *"Read the source of FRS021 from FLGHT400/QRPGSRC and FRS001 from FLGHT400/QRPGSRC. For each program: identify every data structure that maps to the FLIGHTS physical file, every opcode (READ, CHAIN, WRITE, UPDATE) that references FLIGHTS fields, and every screen field mapped to FRS021DF. Then read FRS021DF from FLGHT400/QDDSSRCD and list all record formats and fields. Produce a consolidated impact report for adding a new field SFLHRS (Total Flight Hours, NUMERIC 4,0) to FLIGHTS and FRS021DF — for each object state exactly what data structure, field list, or I/O statement must change, and flag any logical files built over FLIGHTS that will need recompiling."*
+
+Bob reads the source members and produces a structured impact report. Expected output:
+
+| Object | Type | Impact |
+|---|---|---|
+| `FLIGHTS` | `*FILE (PF)` | Add column `SFLHRS NUMERIC(4,0)` |
+| `FRS021` | `*PGM (RPG)` | Add `SFLHRS` to the `DFLIGHTS` data structure; map it to the screen field; include in `WRITE`/`UPDATE` opcodes |
+| `FRS021DF` | `*FILE (DSPF)` | Already updated in step 4b |
+| `FRS001` | `*PGM (RPG)` | Read-only reference — verify no field list or `CHAIN` opcode is affected |
+
+Bob will also flag any logical files built over `FLIGHTS` that must be recompiled after the physical file change.
+
+> 💡 To dig deeper into database relations, ask Bob: *"Show me all database relations for the FLIGHTS file using DSPDBR."* Bob will run `DSPDBR FILE(FLGHT400/FLIGHTS)` and summarise the result.
+
+---
+
+### 4d — Add the Field to the Database Physical File
+
+Ask Bob:
+
+> *"Add the column SFLHRS (Total Flight Hours, numeric 4 digits, default 0) to the physical file FLIGHTS in library FLGHT400. Generate the ALTER TABLE statement, run it, and confirm the column was created by querying QSYS2.SYSCOLUMNS."*
+
+Bob generates and runs:
+```sql
+ALTER TABLE FLGHT400.FLIGHTS
+  ADD COLUMN SFLHRS NUMERIC(4, 0) DEFAULT 0;
+```
+Then immediately verifies by querying `QSYS2.SYSCOLUMNS` and confirms `SFLHRS` appears at the end of the column list.
+
+> ✅ The database schema is extended. Existing rows carry the default value `0` until updated by the maintenance program.
+
+---
+
+### 4e — Propagate the Field to the RPG Programs
+
+Ask Bob to update the main program:
+
+> *"Open program FRS021 from FLGHT400/QRPGSRC. Update it to handle the new field SFLHRS (Total Flight Hours) that was added to both the display file FRS021DF and the physical file FLIGHTS: add SFLHRS to the FLIGHTS data structure, map it to the screen field, and include it in the READ/WRITE/UPDATE logic. Keep the existing style and structure of the program."*
+
+Bob proposes changes:
+- Adds `SFLHRS` to the `DFLIGHTS` data structure (or externally described `E DS`)
+- Maps the screen field `SFLHRS` to the database field in the input/output cycle
+- Includes `SFLHRS` in any `WRITE` or `UPDATE` opcode writing back to `FLIGHTS`
+
+Review the diff, confirm, and save.
+
+For any other programs flagged in the impact analysis, ask Bob individually:
+
+> *"Does FRS001 need any changes to handle the new SFLHRS field in FLIGHTS? If yes, apply the minimal required changes."*
+
+---
+
+### 4f — Recompile and Validate
+
+Ask Bob to recompile and validate everything in one prompt:
+
+> *"Recompile FRS021 in FLGHT400, then validate the end-to-end change: confirm SFLHRS exists in the FLIGHTS table, that FRS021 compiled successfully, and that the field appears correctly on the FRS021DF screen preview."*
+
+Bob will:
+1. Trigger the compile:
+   ```
+   CRTBNDRPG PGM(FLGHT400/FRS021) SRCFILE(FLGHT400/QRPGSRC) SRCMBR(FRS021)
+   Program FRS021 created in library FLGHT400.
+   ```
+2. Query `QSYS2.SYSCOLUMNS` to confirm `SFLHRS` exists in `FLIGHTS`
+3. Check the `FRS021.PGM` compile timestamp in the Object Browser
+4. Preview `FRS021DF` with the DDS Previewer to show `SFLHRS` on screen
+
+> 💡 *(Optional)* To see the new field live in a 5250 session, ask Bob: *"Run the Flight Maintenance program FRS021 in FLGHT400 via a CALL command."*
+
+> ✅ End-to-end field expansion complete — `SFLHRS` is now in the database, on the screen, and handled by the RPG program. Full change cycle driven entirely by Bob: DDS → Impact Analysis → Database DDL → RPG → Compile → Validate.
+
+---
+
+## Exercise 5 — Database Optimization
 
 **Goal:** Review a complex SQL query written by a junior developer, validate it, and apply Bob's index advisor to improve performance.
 
@@ -480,7 +522,7 @@ Bob will:
 
 ---
 
-## Exercise 7 — Ask Bob About Your System
+## Exercise 6 — Ask Bob About Your System
 
 **Goal:** Use Bob in IBM i Developer mode to answer system-level questions using two natural language prompts.
 
@@ -505,12 +547,11 @@ Congratulations! In this lab you:
 | Exercise | What You Did |
 |---|---|
 | **Setup** | Restored the FLIGHT400 application onto IBM i from a save file |
-| **Exercise 1** | Optional : UI modernization, 5250 to React |
+| **Exercise 1** | Optional: UI modernization, 5250 to React |
 | **Exercise 2** | Generated architecture docs and an ERD with Bob |
 | **Exercise 3** | Explained and modernized OPM RPG `FRS409` to free-format ILE RPG |
 | **Exercise 4** | Added a new field to a 5250 display file with Bob's help |
-| **Exercise 5** | Generated a React UI from a classic green-screen definition |
-| **Exercise 6** | Reviewed and optimized a SQL query using Bob's database tools |
-| **Exercise 7** | Queried your IBM i system using natural language |
+| **Exercise 5** | Reviewed and optimized a SQL query using Bob's database tools |
+| **Exercise 6** | Queried your IBM i system using natural language |
 
 > **Next steps:** Explore connecting the React app to live IBM i data via a Node.js or Java REST API, or dive deeper into the RPG modernization workflow for the other FLIGHT400 programs.
