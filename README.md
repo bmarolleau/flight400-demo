@@ -536,7 +536,7 @@ Switch back to **IBM i Developer** mode and try these prompts:
 > *"What jobs are currently active on the system and which ones are consuming the most CPU?"*
 
 **Prompt 2:**
-> *"From this list, select the job consuming the most CPU, check the job log, and suggest ways to improve it.*
+> *"From this list, select the job consuming the most CPU, check the job log, and suggest ways to improve it."*
 
 Bob will query the system performance views (e.g. `QSYS2.ACTIVE_JOB_INFO`) and return a summary of active jobs with CPU utilization — giving you an instant health check on your LPAR, then use other tools to read the logs and other information, and create a first report.
 
