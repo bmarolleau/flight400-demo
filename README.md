@@ -535,9 +535,12 @@ Switch back to **IBM i Developer** mode and try these prompts:
 **Prompt 1:**
 > *"What jobs are currently active on the system and which ones are consuming the most CPU?"*
 
-Bob will query the system performance views (e.g. `QSYS2.ACTIVE_JOB_INFO`) and return a summary of active jobs with CPU utilization — giving you an instant health check on your LPAR.
-
 **Prompt 2:**
+> *"From this list, select the job consuming the most CPU, check the job log, and suggest ways to improve it.*
+
+Bob will query the system performance views (e.g. `QSYS2.ACTIVE_JOB_INFO`) and return a summary of active jobs with CPU utilization — giving you an instant health check on your LPAR, then use other tools to read the logs and other information, and create a first report.
+
+**Prompt 3:**
 > *"Which programs in the FLGHT400 library have not been recompiled in the last 5 years?"*
 
 Bob will query `QSYS2.OBJECT_STATISTICS` filtering on object type `*PGM` in `FLGHT400`, compare the `LAST_USED_TIMESTAMP` or `OBJCREATED` attributes, and list the stale programs — perfect input for a modernization backlog.
