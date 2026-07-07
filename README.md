@@ -202,7 +202,7 @@ In addition to the sample Skill we created in step 1, we've just used a set of u
 
 1. Click the **Open Bob** icon in the top right Activity Bar to open the chat panel.
 2. If not already in **IBM i Developer** mode, switch to it using the mode selector at the top of the chat.
-3. Click the **`+` (Scope) button** and add **QSYS Library List** as the context scope. This gives Bob visibility into the full application structure. Again, make sure that `FLGHT400` is in the library list. Bob will first search in this list before searching in all QSYS. 
+3. Click the **`+` (Scope) button** and select **(QSYS) Library List** as the context scope. This gives Bob visibility into the full application structure. Again, make sure that `FLGHT400` is in the library list. Bob will first search in this list before searching in all QSYS. 
 4. Type the following prompt:
 
    > *"Generate a comprehensive architecture overview of the FLIGHT400 application in Markdown format. Include a high-level description, the main program flows, key programs and their roles, a Mermaid architecture diagram, and a summary of the database tables used."*
@@ -229,7 +229,7 @@ In addition to the sample Skill we created in step 1, we've just used a set of u
 
 > **Prerequisite:** Install the **Draw.io Integration** extension in Bob IDE (`Cmd+Shift+X` → search *"Draw.io Integration"* → Install).
 
-1. In the Bob chat panel (**IBM i Developer** mode), make sure the scope is set to **QSYS Library List**.
+1. In the Bob chat panel (**IBM i Developer** mode), make sure the scope is set to **Library List (QSYS)**.
 2. Type:
 
    > *"Analyze the FLIGHT400 application from the library list and generate a draw.io architecture diagram showing the main programs, menus, and database files. Save the file as `FLGHT400-architecture.drawio` in `$HOME/docs/` on IBM i."*
@@ -309,7 +309,7 @@ Save this as `FRS409-Modernization-Report.md` in your workspace for documentatio
 
 ### 4a — Explore the Flight Maintenance Screen
 
-In the Bob chat panel (**IBM i Developer** mode), set the scope to **QSYS Library List** and type:
+In the Bob chat panel (**IBM i Developer** mode), set the scope to **Library List (QSYS)** and type:
 
 > *"Open the display file FRS021DF from FLGHT400/QDDSSRCD, show me its current screen layout using the DDS Previewer, and list all the fields currently defined on the Flight Maintenance screen."*
 
