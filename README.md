@@ -14,15 +14,33 @@
 To complete this lab, you need access to an IBM i environment. You can provision a free IBM i LPAR through **IBM TechZone**.
 
 1. Go to [https://techzone.ibm.com](https://techzone.ibm.com) and log in with your IBM ID.
-2. Search for **"IBM i"** in the catalog, and select an **IBM i 7.6** environment (e.g. *IBM i 7.6 - Sandbox*).
+2. Search for **"IBM i"** in the catalog, and select an **IBM i 7.6** environment (e.g. *IBM i 7.6 - Sandbox*).  Go to this Collection: https://techzone.ibm.com/collection/techzone-certified-power-vs-base-vms and book your IBM i 7.6 Virtual Machine.
+
 3. Click **Reserve** and fill in the reservation form:
-   - **Purpose:** Practice / Self-Education
-   - **Duration:** choose at least 8 hours (extend later if needed)
-   - **Geography:** pick the region closest to you
-4. Submit the reservation. Within a few minutes you'll receive an email with your LPAR's **hostname**, **port**, **user profile**, and **password**.
-5. Keep these credentials handy — you'll need them in the next step to connect Bob IDE to your IBM i.
+   - **Purpose:** Demo / Self-Education / Test / Pilot
+   - **Opportunity information:** misc. information related to your activity.
+   - **Geography:** pick the region closest to you (AP, EU, Americas)
+4. Submit the reservation. Within a few minutes you'll receive an email with your LPAR's **hostname/IP Address**, **port**, **user profile**, **private key** and **password**.
+5. Keep these credentials handy — you'll need them in the next step to connect Bob IDE to your IBM i. By default this TechZone provisoned IBM i VM will be reachable through Https (443) and SSH (22). Bob and Code for i extension uses ssh. If you want to access your VM with other protocols and services (5250, MCP, database etc.) , you'll have to establish a reverse ssh tunnel as mentioned [here on the IBM Cloud PVS docs web site](https://cloud.ibm.com/docs/power-iaas?topic=power-iaas-connect-ibmi#ssh-tunneling). Basically, each user must execute this ssh command on their laptop, and use the appropriate host and port to reach the corresponding service (In the example below, localhost on port 50000 with ACS for 5250, etc.).
+
+5.1 download the private key from TechZone 
+```bash
+#SSH TUNNEL (ACCESS TO 5250 and other services)
+chmod 600 ssh_private_key.pem
+```
+```bash
+##then (remove sudo on Windows and run your terminal as admin)
+sudo ssh -L 50000:localhost:23 -L 2001:localhost:2001 -L 449:localhost:449 -L 8470:localhost:8470 -L 8471:localhost:8471 -L 8472:localhost:8472 -L 2007:localhost:2007 -L 8473:localhost:8473 -L 8474:localhost:8474 -L 8475:localhost:8475 -L 8476:localhost:8476 -L 2003:localhost:2003 -L 2002:localhost:2002 -L 2006:localhost:2006 -L 2300:localhost:2300 -L 2323:localhost:2323 -L 3001:localhost:3001 -L 3002:localhost:3002 -L 2005:localhost:2005 -L 8076:localhost:8076 -L 3010:localhost:3010 -o ExitOnForwardFailure=yes -o ServerAliveInterval=15 -o ServerAliveCountMax=3 <myuser>@<myIPaddress> -i ssh_private_key.pem
+```
+where `<myuser>@<myIPaddress>` is extracted from the information sent by TechZone , 
+
+> 💡 on MacOS/Linux, you may need to use sudo ssh instead of ssh in the command above. Remove sudo on Windows (run as Administator instead).
 
 > 💡 If you don't have an IBM ID, create one for free at [https://www.ibm.com/account](https://www.ibm.com/account).
+
+> 💡 For 5250 or Database access to IBM i, please install the IBM supported [ACS client Solutions](https://www.ibm.com/support/pages/ibm-i-access-client-solutions).
+
+![alt text](pics/bob-lab-network.png)
 
 ---
 
