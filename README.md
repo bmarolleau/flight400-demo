@@ -354,120 +354,330 @@ You can copy and paste this as `FRS409-Modernization-Report.md` in your workspac
 
 ---
 
-## Exercise 4 — Field Expansion: Adding a New Field to a Screen
+## Exercise 4 — Field Expansion: Add Total Flight Hours
 
-**Goal:** Add a new business field — *Total Flight Hours* — to the Flight Maintenance screen, then perform a full impact analysis and propagate the change end-to-end: display file, RPG programs, and the underlying database physical file. Every step is driven by a prompt to Bob.
+**Goal:** Use Bob to explore the Flight Maintenance application and add a new business field — *Total Flight Hours* — across its DDS and RPG components. The completed field will use the following names:
+
+| Layer | Field Name |
+|---|---|
+| Database | `FLHRS` |
+| Logical / RPG | `FHRS` |
+| Screen | `SFLHRS` |
+
+The field will be a four-digit whole number (type: Numeric, digits: 4, decimal places: 0, valid range: 0–9999).
+
+This is a demonstration in the disposable `FLGHT4nn` lab environment. The objective is to show Bob exploring legacy IBM i code, performing an impact analysis, making coordinated source changes, compiling the direct application path, and validating the result.
+
+**Before You Begin**
+
+In the Bob chat panel:
+
+1. Select **IBM i Developer** mode.
+2. Set the scope to **Library List (QSYS)**.
+3. Confirm that `FLGHT4nn` is on the library list.
+
+For this demonstration, Bob should update only the direct Flight Maintenance path:
+
+```
+FLIGHTS → FLIGHTSZ → FRS021 → FRS021DF
+```
+
+Bob may identify other dependencies during impact analysis, but those objects should be listed as follow-up work rather than changed during the live demonstration.
+
+---
 
 ### 4a — Explore the Flight Maintenance Screen
 
-In the Bob chat panel (**IBM i Developer** mode), set the scope to **Library List (QSYS)** and type:
+Begin with the part of the application visible to the user. In the Bob chat panel, enter:
 
-> *"Open the display file FRS021DF from FLGHT400/QDDSSRCD, show me its current screen layout using the DDS Previewer, and list all the fields currently defined on the Flight Maintenance screen."*
+> *"Open the display file FRS021DF from FLGHT4nn/QDDSSRCD, show its current screen layout using the DDS Previewer, and list all the fields currently defined on the Flight Maintenance screen.*
+> *Also identify: the record format used by the screen; whether each field is input, output, or input/output; the naming convention used for screen fields, including examples such as SFLGHT, SMILES, SSEATS, and SPRICE; and how visible field labels are represented in the display-file DDS.*
+> *Do not modify, save, or compile anything."*
 
-Bob opens `FRS021DF`, renders the DDS preview, and lists the existing fields:
-- Flight Number, Day of the Week, From/To City
-- Departure/Arrival Time
+Bob should preview the Flight Maintenance screen and list fields such as:
+- Flight Number, Day of the Week, From City, To City
+- Departure Time, Arrival Time
 - Mileage, Airline, Seats Available, Ticket Price
 
----
+Bob should also identify the screen-field naming pattern, including `SFLGHT`, `SMILES`, `SSEATS`, `SPRICE`.
 
-### 4b — Add the New Field to the Display File
+> ⚠️ **Checkpoint:** Make sure Bob previews the `SELCTR` Flight Maintenance record format rather than a message subfile or another record format in `FRS021DF`.
 
-In the Bob chat panel, type:
-
-> *"In the flight maintenance screen FRS021DF, add a new field SFLHRS for the total number of flight hours for the airplane (numeric, 4 digits). Place it after the Mileage field, with an appropriate label, COLHDG, and CHECK(RZ) keyword. Then compile the display file."*
-
-Bob analyzes the DDS source, proposes the changes:
-- A new field `SFLHRS` (4 digits, numeric, bound input/output)
-- A matching label `'Flight Hours. . . . . . . . .'`
-- Appropriate `COLHDG` and `CHECK(RZ)` keywords
-
-Review the diff in the editor, accept and save. Bob then compiles:
-```
-CRTDSPF FILE(FLGHT400/FRS021DF) SRCFILE(FLGHT400/QDDSSRCD) SRCMBR(FRS021DF)
-Display file FRS021DF created in library FLGHT400.
-```
-
-> ✅ The screen now declares `SFLHRS`. Next: find every object affected by this new field.
+**After the prompt**
+- Approve changes? No changes should be proposed or made.
+- Save anything? No.
+- Compile anything? No.
+- Proceed when Bob has displayed the correct screen, listed its fields, and explained the screen-field naming convention.
 
 ---
 
-### 4c — Impact Analysis
+### 4b — Trace the Existing Pattern and Perform an Impact Analysis
 
-Before touching any program or database file, ask Bob:
+The new business requirement is to add *Total Flight Hours* to the Flight Maintenance application. Use these fixed requirements:
 
-> *"Perform an impact analysis for adding a new field SFLHRS (Total Flight Hours, numeric 4 digits) to the FLIGHT400 application. Identify all RPG and CL programs that use the display file FRS021DF or the physical file FLIGHTS, any data structures or field lists that reference FLIGHTS fields, all logical files built over FLIGHTS, and the database physical file that needs the new column. Produce a summary table of what needs to change in each object."*
+| Attribute | Value |
+|---|---|
+| Business meaning | Total Flight Hours |
+| Database field | `FLHRS` |
+| Logical / RPG field | `FHRS` |
+| Screen field | `SFLHRS` |
+| Type | Numeric |
+| Digits | 4 |
+| Decimal places | 0 |
+| Valid range | 0–9999 |
+| Screen placement | Immediately after Mileage |
 
-Bob queries the system catalog (`QSYS2.BOUND_MODULE_INFO`, `QSYS2.PROGRAM_INFO`, `QSYS2.SYSCOLUMNS`, `QSYS2.SYSKEYS`) and the Object Browser to produce an impact report. Expected output:
-
-| Object | Type | Impact |
-|---|---|---|
-| `FLIGHTS` | `*FILE (PF)` | Add column `SFLHRS NUMERIC(4,0)` |
-| `FRS021` | `*PGM (RPG)` | Add `SFLHRS` to data structure and screen I/O |
-| `FRS021DF` | `*FILE (DSPF)` | Already updated in step 4b |
-| `FRS001` | `*PGM (RPG)` | Read-only reference — verify no field list is affected |
-
-Bob will also flag any logical files built over `FLIGHTS` that must be re-created after the physical file change.
-
-> 💡 To dig deeper into database relations, ask Bob: *"Show me all database relations for the FLIGHTS file using DSPDBR."* Bob will run `DSPDBR FILE(FLGHT400/FLIGHTS)` and summarise the result.
-
----
-
-### 4d — Add the Field to the Database Physical File
+The database and screen fields use different names because this application uses an `S` prefix for screen fields.
 
 Ask Bob:
 
-> *"Add the column SFLHRS (Total Flight Hours, numeric 4 digits, default 0) to the physical file FLIGHTS in library FLGHT400. Generate the ALTER TABLE statement, run it, and confirm the column was created by querying QSYS2.SYSCOLUMNS."*
+> *"Perform a focused impact analysis for adding Total Flight Hours to the Flight Maintenance application in FLGHT4nn.*
+> *Use these requirements: add database field FLHRS; expose it to RPG as FHRS; display it on the screen as SFLHRS; use four numeric digits with zero decimal positions; place it immediately after Mileage on the Flight Maintenance screen.*
+> *First, trace the existing Mileage field through the application. Show how the database field in FLIGHTS is exposed through FLIGHTSZ, handled by FRS021, and displayed as SMILES in FRS021DF.*
+> *Then identify the minimum source members that must change to implement Total Flight Hours in the direct Flight Maintenance path. Confirm: whether FLIGHTS is defined by DDS; whether FLIGHTSZ explicitly lists and renames fields; how FRS021 defines the FLIGHTSZ record layout; how FRS021 maps database values to screen values; which objects must be rebuilt or recompiled.*
+> *Mention any additional affected programs as follow-up work, but do not analyze or modify those programs during this demonstration. Do not modify, save, or compile anything."*
 
-Bob generates and runs:
-```sql
-ALTER TABLE FLGHT400.FLIGHTS
-  ADD COLUMN SFLHRS NUMERIC(4, 0) DEFAULT 0;
+Bob should identify the existing Mileage flow and recommend the corresponding path for Total Flight Hours:
+
+| Existing Mileage path | New Total Flight Hours path |
+|---|---|
+| `FLIGHTS.MILEAGE` | `FLIGHTS.FLHRS` |
+| ↓ | ↓ |
+| `FLIGHTSZ.MILES` | `FLIGHTSZ.FHRS` |
+| ↓ | ↓ |
+| `FRS021.FMILES` | `FRS021.FHRS` |
+| ↓ | ↓ |
+| `FRS021DF.SMILES` | `FRS021DF.SFLHRS` |
+
+The minimum source members for the direct demonstration should be:
+- `FLGHT4nn/QDDSSRCF(FLIGHTS)`
+- `FLGHT4nn/QDDSSRCF(FLIGHTSZ)`
+- `FLGHT4nn/QDDSSRCD(FRS021DF)`
+- `FLGHT4nn/QRPGSRC(FRS021)`
+
+Bob may identify additional affected programs such as programs that use `FLIGHTS` or `FLIGHTSZ`. Those should be recorded as follow-up items but not changed during this demonstration.
+
+**After the prompt**
+- Approve changes? No changes should be proposed for approval yet.
+- Save anything? No.
+- Compile anything? No.
+- Proceed when Bob has explained the existing Mileage path and identified the four direct source members.
+
+---
+
+### 4c — Add the Database and Logical-File Fields
+
+Ask Bob to prepare the database DDS changes:
+
+> *"Update the DDS source for the direct database path:*
+> *In FLGHT4nn/QDDSSRCF(FLIGHTS), add FLHRS as a packed-decimal field with four digits and zero decimal positions. Add an appropriate COLHDG consistent with the existing physical-file DDS.*
+> *In FLGHT4nn/QDDSSRCF(FLIGHTSZ), add FHRS RENAME(FLHRS) so the new physical-file field is available to the RPG program.*
+> *Preserve the existing DDS style and fixed-column positioning. Do not add ALWNULL, do not change the field to 5P 1, and do not use SQL ALTER TABLE.*
+> *Show the proposed diffs. Do not save or compile anything until I review them."*
+
+**Expected changes**
+
+The physical-file DDS should add:
 ```
-Then immediately verifies by querying `QSYS2.SYSCOLUMNS` and confirms `SFLHRS` appears at the end of the column list.
+FLHRS          4P 0
+               COLHDG('FLIGHT_HOURS')
+```
+The exact spacing must follow the fixed-column format of the existing DDS member. The `FLIGHTSZ` logical file should add:
+```
+FHRS                      RENAME(FLHRS)
+```
 
-> ✅ The database schema is extended. Existing rows carry the default value `0` until updated by the maintenance program.
+**Review the diffs** — confirm that:
+- The PF field is named `FLHRS`.
+- The logical/RPG field is named `FHRS`.
+- The field has four digits and zero decimal positions.
+- `ALWNULL` was not added.
+- `COLHDG` appears only in the physical-file DDS.
+- Existing keys and fields were not changed.
+- `FLIGHTSZ` retains its existing record-format and key definitions.
+
+If the changes are correct, tell Bob:
+
+> *"I approve these two DDS source changes. Save both source members, but do not compile them yet."*
+
+**After approval**
+- Approve changes? Yes, approve the two reviewed DDS diffs.
+- Save anything? Yes, save `FLIGHTS` and `FLIGHTSZ`.
+- Compile anything? No.
+- Proceed when Bob confirms that both source members were saved and read back successfully.
 
 ---
 
-### 4e — Propagate the Field to the RPG Programs
+### 4d — Add the Screen Field
 
-Ask Bob to update the main program:
+Ask Bob:
 
-> *"Open program FRS021 from FLGHT400/QRPGSRC. Update it to handle the new field SFLHRS (Total Flight Hours) that was added to both the display file FRS021DF and the physical file FLIGHTS: add SFLHRS to the FLIGHTS data structure, map it to the screen field, and include it in the READ/WRITE/UPDATE logic. Keep the existing style and structure of the program."*
+> *"Update FLGHT4nn/QDDSSRCD(FRS021DF) to add an input/output screen field named SFLHRS for Total Flight Hours.*
+> *Requirements: four numeric digits; zero decimal positions; positioned immediately after Mileage; visible label: Flight Hours; use CHECK(RZ) to match the comparable numeric fields on this screen; preserve the existing display-file DDS style.*
+> *Do not add COLHDG — it is not valid in a display file.*
+> *Ensure that the label and field fit within the screen and do not overlap existing fields, message areas, or function-key text.*
+> *Show the proposed diff and updated DDS preview. Do not save or compile anything until I review it."*
 
-Bob proposes changes:
-- Adds `SFLHRS` to the `DFLIGHTS` data structure (or externally described `E DS`)
-- Maps the screen field `SFLHRS` to the database field in the input/output cycle
-- Includes `SFLHRS` in any `WRITE` or `UPDATE` opcode writing back to `FLIGHTS`
+**Review the diff and preview** — confirm that:
+- The screen field is named `SFLHRS`.
+- It is four digits with zero decimal positions.
+- It is an input/output field.
+- Its visible label is implemented as display constant text.
+- `CHECK(RZ)` is present.
+- `COLHDG` is not present.
+- The field appears immediately after Mileage.
+- No screen content overlaps or becomes truncated.
 
-Review the diff, confirm, and save.
+If it is correct, tell Bob:
 
-For any other programs flagged in the impact analysis, ask Bob individually:
+> *"I approve the display-file change. Save FRS021DF, but do not compile it yet."*
 
-> *"Does FRS001 need any changes to handle the new SFLHRS field in FLIGHTS? If yes, apply the minimal required changes."*
+**After approval**
+- Approve changes? Yes, approve the reviewed display-file diff.
+- Save anything? Yes, save `FRS021DF`.
+- Compile anything? No.
+- Proceed when Bob confirms that the source was saved and shows the updated preview.
 
 ---
 
-### 4f — Recompile and Validate
+### 4e — Update the RPG Program
 
-Ask Bob to recompile and validate everything in one prompt:
+Ask Bob:
 
-> *"Recompile FRS021 in FLGHT400, then validate the end-to-end change: confirm SFLHRS exists in the FLIGHTS table, that FRS021 compiled successfully, and that the field appears correctly on the FRS021DF screen preview."*
+> *"Update FLGHT4nn/QRPGSRC(FRS021) to handle Total Flight Hours using the existing Mileage implementation as the pattern.*
+> *Make the minimum changes needed to: increase the program-described FLIGHTSZ record length for the new packed field; add FHRS to the input specification at the correct record positions; load SFLHRS from FHRS when an existing record is retrieved; move SFLHRS to FHRS during add and update processing; include FHRS in the add and update output specifications; validate the screen value consistently with the existing numeric screen fields.*
+> *Preserve the existing OPM RPG style and fixed-column positioning.*
+> *After every successful CHAIN used to load an existing flight for display, explicitly move FHRS to SFLHRS, following the same database-to-screen pattern used for Mileage. Do not assume that the display file maps FHRS to SFLHRS automatically.*
+> *Do not modify any other programs during this demonstration. Show the proposed diff and explain each change briefly. Do not save or compile anything until I review it."*
 
-Bob will:
-1. Trigger the compile:
-   ```
-   CRTBNDRPG PGM(FLGHT400/FRS021) SRCFILE(FLGHT400/QRPGSRC) SRCMBR(FRS021)
-   Program FRS021 created in library FLGHT400.
-   ```
-2. Query `QSYS2.SYSCOLUMNS` to confirm `SFLHRS` exists in `FLIGHTS`
-3. Check the `FRS021.PGM` compile timestamp in the Object Browser
-4. Preview `FRS021DF` with the DDS Previewer to show `SFLHRS` on screen
+**Expected changes** — because `FLHRS` is a four-digit packed-decimal field, it occupies three bytes in the record. The expected RPG changes include:
+- Increasing the `FLIGHTSZ` record length from 233 to 236
+- Adding `FHRS` at positions 234–236
+- Mapping `FHRS` to `SFLHRS` when displaying a record
+- Mapping `SFLHRS` to `FHRS` during add and update
+- Adding `FHRS` to the `ADDFLT` and `UPDFLT` output specifications
+- Adding validation or an error indicator consistent with nearby numeric fields
 
-> 💡 *(Optional)* To see the new field live in a 5250 session, ask Bob: *"Run the Flight Maintenance program FRS021 in FLGHT400 via a CALL command."*
+**Review the diff** — confirm that:
+- Only `FRS021` is being changed.
+- The record length and field positions are correct.
+- Both retrieve and save directions are covered.
+- Both add and update output specifications include `FHRS`.
+- The existing style and fixed-column alignment are preserved.
+- Bob is not modifying secondary dependencies.
 
-> ✅ End-to-end field expansion complete — `SFLHRS` is now in the database, on the screen, and handled by the RPG program. Full change cycle driven entirely by Bob: DDS → Impact Analysis → Database DDL → RPG → Compile → Validate.
+If it is correct, tell Bob:
+
+> *"I approve the FRS021 changes. Save the source member, but do not compile it yet."*
+
+**After approval**
+- Approve changes? Yes, approve the reviewed RPG diff.
+- Save anything? Yes, save `FRS021`.
+- Compile anything? No.
+- Proceed when Bob confirms that the updated source was saved and read back successfully.
+
+---
+
+### 4f — Build the Direct Demo Path
+
+Compile only the objects required for the Flight Maintenance demonstration. Ask Bob:
+
+> *"Build only the direct Flight Maintenance path in this order:*
+> *1. Apply the updated DDS for FLGHT4nn/FLIGHTS*
+> *2. Rebuild FLGHT4nn/FLIGHTSZ*
+> *3. Compile FLGHT4nn/FRS021DF*
+> *4. Compile FLGHT4nn/FRS021*
+> *Use the correct IBM i command for each source type. Stop if one of these four objects fails — report the compile error briefly and wait for my direction. Do not modify or compile unrelated programs. List additional impacted programs as follow-up work only."*
+
+Bob should use commands appropriate to the discovered source types. The likely commands include:
+
+```
+CHGPF FILE(FLGHT4nn/FLIGHTS)
+      SRCFILE(FLGHT4nn/QDDSSRCF)
+      SRCMBR(FLIGHTS)
+```
+```
+CRTLF FILE(FLGHT4nn/FLIGHTSZ)
+      SRCFILE(FLGHT4nn/QDDSSRCF)
+      SRCMBR(FLIGHTSZ)
+```
+```
+CRTDSPF FILE(FLGHT4nn/FRS021DF)
+        SRCFILE(FLGHT4nn/QDDSSRCD)
+        SRCMBR(FRS021DF)
+```
+```
+CRTRPGPGM PGM(FLGHT4nn/FRS021)
+          SRCFILE(FLGHT4nn/QRPGSRC)
+          SRCMBR(FRS021)
+          REPLACE(*YES)
+```
+
+Bob should verify the exact commands against the environment before executing them.
+
+- **If a compile succeeds:** allow Bob to continue to the next object in the four-object sequence. No additional approval is needed between successful compiles.
+- **If a compile fails:** do not allow Bob to begin modifying secondary programs or exhaustively investigating the entire application. Ask Bob: *"Explain the direct cause of this compile error and propose the smallest correction limited to the four demo objects. Do not modify anything yet."* Review the proposed correction before approving it.
+
+**After the prompt**
+- Approve changes? The source changes have already been approved. No new approval is required unless Bob proposes another source edit.
+- Save anything? No additional save should be needed unless an error requires a reviewed correction.
+- Compile anything? Yes. Compile only `FLIGHTS`, `FLIGHTSZ`, `FRS021DF`, and `FRS021`.
+- Proceed when all four objects compile successfully, or Bob stops at the first failure and reports it.
+
+> ⚠️ **Demo boundary:** If another program such as `FRS003`, `FRS413`, or `BFLGHT` is also affected, record it as follow-up work. Do not update or compile it during the live demonstration.
+
+---
+
+### 4g — Validate the Result
+
+Ask Bob:
+
+> *"Validate the completed Total Flight Hours change for the direct Flight Maintenance path.*
+> *Confirm: FLHRS exists in FLGHT4nn/FLIGHTS; FHRS is available through FLGHT4nn/FLIGHTSZ; SFLHRS appears immediately after Mileage in the FRS021DF DDS Previewer; FRS021 compiled successfully; the display file does not contain the invalid COLHDG keyword.*
+> *Finish with a short summary of the end-to-end field mapping and list any additional impacted programs as follow-up work. Do not modify anything."*
+
+Bob should confirm the complete field path:
+
+```
+Database:  FLIGHTS.FLHRS
+                ↓
+Logical:   FLIGHTSZ.FHRS
+                ↓
+Program:   FRS021
+                ↓
+Screen:    FRS021DF.SFLHRS
+```
+
+**After the prompt**
+- Approve changes? No changes should be proposed.
+- Save anything? No.
+- Compile anything? No.
+- Proceed when Bob confirms the database, logical-file, RPG, and screen definitions.
+
+---
+
+### 4h — *(Optional)* Live Test
+
+If time and a 5250 test session are available, ask:
+
+> *"Call FLGHT4nn/FRS021 in a 5250 test session. Retrieve a test flight, enter a valid Total Flight Hours value, save the record, and retrieve it again to confirm that the value persisted.*
+> *Use only a disposable test record. Do not investigate or modify unrelated programs if the test encounters an application-wide dependency issue."*
+
+**After the prompt**
+- Approve changes? No source approval is needed.
+- Save anything? Save the test record only if it is safe to modify.
+- Compile anything? No.
+- Expected result: the value entered in `SFLHRS` is saved through `FRS021` into `FLIGHTS.FLHRS` and appears when the record is retrieved again.
+
+> 💡 This step is optional. For a shorter demonstration, the metadata checks and DDS Previewer result in 4g are sufficient.
+
+---
+
+> ✅ **Exercise 4 complete** — Bob explored the existing screen, traced the Mileage implementation, performed a focused impact analysis, updated the DDS and RPG sources, compiled the direct Flight Maintenance path, and validated the result. Total Flight Hours now flows end-to-end: `FLIGHTS.FLHRS` → `FLIGHTSZ.FHRS` → `FRS021` → `FRS021DF.SFLHRS`.
+
+**Follow-up Work**
+
+Bob may identify other programs that use `FLIGHTS` or `FLIGHTSZ`. Those dependencies are valuable impact-analysis findings, but they are outside the scope of this live demonstration. In a production change, those programs would be reviewed and recompiled separately.
 
 ---
 
