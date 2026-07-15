@@ -382,8 +382,6 @@ For this demonstration, Bob should update only the direct Flight Maintenance pat
 FLIGHTS → FLIGHTSZ → FRS021 → FRS021DF
 ```
 
-Bob may identify other dependencies during impact analysis, but those objects should be listed as follow-up work rather than changed during the live demonstration.
-
 ---
 
 ### 4a — Explore the Flight Maintenance Screen
@@ -402,12 +400,6 @@ Bob should preview the Flight Maintenance screen and list fields such as:
 Bob should also identify the screen-field naming pattern, including `SFLGHT`, `SMILES`, `SSEATS`, `SPRICE`.
 
 > ⚠️ **Checkpoint:** Make sure Bob previews the `SELCTR` Flight Maintenance record format rather than a message subfile or another record format in `FRS021DF`.
-
-**After the prompt**
-- Approve changes? No changes should be proposed or made.
-- Save anything? No.
-- Compile anything? No.
-- Proceed when Bob has displayed the correct screen, listed its fields, and explained the screen-field naming convention.
 
 ---
 
@@ -624,7 +616,7 @@ Bob should verify the exact commands against the environment before executing th
 - Compile anything? Yes. Compile only `FLIGHTS`, `FLIGHTSZ`, `FRS021DF`, and `FRS021`.
 - Proceed when all four objects compile successfully, or Bob stops at the first failure and reports it.
 
-> ⚠️ **Demo boundary:** If another program such as `FRS003`, `FRS413`, or `BFLGHT` is also affected, record it as follow-up work. Do not update or compile it during the live demonstration.
+> ⚠️ **Note:** If another program such as `FRS003`, `FRS413`, or `BFLGHT` is also affected, record it as follow-up work. Do not update or compile it during the Bobathon or leave it as an item at the end.
 
 ---
 
@@ -677,7 +669,7 @@ If time and a 5250 test session are available, ask:
 
 **Follow-up Work**
 
-Bob may identify other programs that use `FLIGHTS` or `FLIGHTSZ`. Those dependencies are valuable impact-analysis findings, but they are outside the scope of this live demonstration. In a production change, those programs would be reviewed and recompiled separately.
+Bob may identify other programs that use `FLIGHTS` or `FLIGHTSZ`. Those dependencies are valuable impact-analysis findings, but they are outside the scope of the exercise. In a production change, those programs would be reviewed and recompiled separately.
 
 ---
 
