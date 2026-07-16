@@ -1,7 +1,7 @@
 # FLIGHT400 Application — IBM i Modernization Lab Guide
 
 > **Estimated time:** 2–3 hours  
-> **Prerequisites:** IBM Bob IDE installed, internet access, IBM i TechZone LPAR (see below) , and the Premium Package for i 
+> **Prerequisites:** IBM Bob IDE installed, internet access, IBM i TechZone LPAR (see below), and the Premium Package for i 
 
 ![alt text](pics/flight400.png)
  
@@ -57,7 +57,7 @@ where `<myuser>@<myIPaddress>` is extracted from the information sent by TechZon
 
 ### Restore the FLIGHT400 Application
 
-In this section you will deploy the FLIGHT400 save file to your IBM i LPAR and restore the application library. Please Skip if Flight400 is already installed and go to the first Exercise.
+In this section you will deploy the FLIGHT400 save file to your IBM i LPAR and restore the application library. Please skip if Flight400 is already installed and go to the first Exercise.
 
 #### 1.1 — Create a new local workspace
 
@@ -85,7 +85,7 @@ Both files should now be visible in the IBM Bob IDE **Explorer** panel:
    - **IP/Host:** `<your-lpar-public-ip-address>`
    - **Username:** `<your-user-profile>`
    - **Password:** `<your-password>`
-   - **Private Key** If using PowerVS , let the **Password** field empty, download the private key, and set its path in this field.
+   - **Private Key:** If using PowerVS, let the **Password** field empty, download the private key, and set its path in this field.
 3. Click **Connect**. A green status bar message confirms a successful connection.
 
 #### 1.4 — Deploy the files to the IFS
@@ -97,7 +97,8 @@ Both files should now be visible in the IBM Bob IDE **Explorer** panel:
 4. Choose **Deploy Selected Files**. 
    This uploads the entire workspace to an IFS directory on IBM i. The target IFS path is shown in the output panel — note it (e.g. `/home/YOURUSER/builds/ibmi-lab`).
 
-> ☕ This may take a one minute or two, Perfect time for a coffee break! 
+> ☕ This may take a minute or two, Perfect time for a coffee break! 
+
 The Save File `FLGHT400.FILE` contains the code, programs, database files etc. Everything you need to run the application. 
 
 #### 1.5 — Verify the upload in the IFS Browser
@@ -122,13 +123,13 @@ The Save File `FLGHT400.FILE` contains the code, programs, database files etc. E
 
 1. In the **IFS Browser**, refresh the folder. You should see `Install-Flight400.sql` updated. **Note: If it is not automatically updated, manually edit them in the IFS as you did in 1.6 and save the file.**
 2. Right-click `Install-Flight400.sql` → **Run Action** → **Run SQL Statements**.
-3. Wait for the script execute (create save file, restore library, update library ownership).  
+3. Wait for the script to execute (create save file, restore library, update library ownership).  
    The output console will confirm each step. The final `RSTLIB` command restores the full **FLIGHT400** library including programs, source members, and database files.
 
 #### 1.8 - Copy the Library if you need a multi-user setup
 1. Run CPYLIB FROMLIB(FLGHT400) TOLIB(FLGHT401) (and so on) so each participant gets their own isolated copy.
 2. To do this, I asked Bob to run the command: 
-   > Run CPYLIB FROMLIB(FLGHT400) TOLIB(FLGHT401) (and so on) so each participant gets their own isolated copy. I have X participants."
+   > Run CPYLIB FROMLIB(FLGHT400) TOLIB(FLGHT401) (and so on) so each participant gets their own isolated copy. I have X participants.
 3. Bob will create libraries FLGHT401 through FLGHT4nn, each containing a full copy of all objects from FLGHT400. Each participant should then have their assigned library (e.g. FLGHT401) added to their library list.
 
 > **Instructor:** Share this table with students before the lab starts. Each student uses their assigned library and dev port throughout all exercises.
@@ -226,7 +227,7 @@ In addition to the sample Skill we created in step 1, we've just used a set of u
 |---|---|
 | `dds-primer-basics` skill | Parses `FRS001DF.DSPF` — screen layout, field names, subfile windows |
 | `rpg-primer-basics` skill | Reads `FRS001.RPG` — extracts pricing logic and field definitions |
-| IFS write tools | Creates project files directly in `$HOME/flight400-react/` on IBM i |
+| IFS write tools | Creates project files directly in `$HOME/flight4nn-react/` on IBM i |
 | IBM i PASE | Runs `npm install`, `npm run build`, `npm start` natively on IBM i |
 
 > ⚠️ This app runs with sample data only. The natural next step is to add a REST / Web Services layer connecting the React front end to the real IBM i business logic and Db2 for i database.
@@ -249,7 +250,7 @@ In addition to the sample Skill we created in step 1, we've just used a set of u
 
 > 💡 Try previewing `FRS021DF` as well — this is the **Flight Maintenance** screen you will work on later in Exercise 4.
 
-> 💡 Again in the **Object Browser**, same library,  click on the program `FRS000.pgm`that is the flight reservation logon. You'll see in the `Detail` that this program was compiled in 1997, 30 years ago ! 
+> 💡 Again in the **Object Browser**, same library,  click on the program `FRS000.pgm`that is the flight reservation logon. You'll see in the `Detail` that this program was compiled in 1997, 30 years ago! 
 
 
 ### 2b — Generate an Architecture Explanation with Bob
@@ -295,6 +296,7 @@ In addition to the sample Skill we created in step 1, we've just used a set of u
 > ✅ You now have a visual, editable architecture diagram of the legacy application — generated in seconds.
 
 ![alt text](pics/drawIo.png)
+
 ---
 
 ## Exercise 3 — Program-Level Explanation & Modernization
@@ -326,13 +328,13 @@ In addition to the sample Skill we created in step 1, we've just used a set of u
    - Accept the other defaults and click **Analyze Member**.
 
 Bob spins up a subagent to convert the fixed-format RPG to modern free-format ILE RPG.
-runs the **Code for IBM i** compile action for ILE RPG, triggering a `CRTBNDRPG` command on your LPAR. Watch the output in the terminal panel. 
+Then Bob runs the **Code for IBM i** compile action for ILE RPG, triggering a `CRTBNDRPG` command on your LPAR. Watch the output in the terminal panel. 
   ```
    > CRTBNDRPG PGM(FLGHT4nn/FRS409) SRCFILE(FLGHT4nn/QRPGSRC) SRCMBR(FRS409)
    Program FRS409 created in library FLGHT4nn.
    ```
 
-4. Bob will also prompt: **"Confirm Output Member Location** — choose the suggested location. Bob will use all its RPG skills to modernize this source code. Approve the requested tasks.
+4. Bob will also prompt: **"Confirm Output Member Location"** — choose the suggested location. Bob will use all its RPG skills to modernize this source code. Approve the requested tasks.
 
 **Program FLGHT4nn/FRS409 was created successfully (highest severity: 00).**
 
@@ -857,9 +859,9 @@ Switch back to **IBM i Developer** mode and try these prompts:
 Bob will query the system services such as the `QSYS2.ACTIVE_JOB_INFO` table function and return a summary of active jobs with CPU utilization — giving you an instant health check on your LPAR, then use other tools to read the logs and other information, and create a first report. You might see the Node.js job running if you completed Exercise 1 and never stopped the web server. 
 
 **Prompt 3:**
-> *"Which programs in the FLGHT400 library have not been recompiled in the last 5 years?"*
+> *"Which programs in the FLGHT4nn library have not been recompiled in the last 5 years?"*
 
-Bob will query `QSYS2.OBJECT_STATISTICS` filtering on object type `*PGM` in `FLGHT400`, compare the `LAST_USED_TIMESTAMP` or `OBJCREATED` attributes, and list the stale programs — perfect input for a modernization backlog.
+Bob will query `QSYS2.OBJECT_STATISTICS` filtering on object type `*PGM` in `FLGHT4nn`, compare the `LAST_USED_TIMESTAMP` or `OBJCREATED` attributes, and list the stale programs — perfect input for a modernization backlog.
 
 ---
 
@@ -877,4 +879,4 @@ Congratulations! In this lab you:
 | **Exercise 5** | Reviewed and optimized a SQL query using Bob's database tools |
 | **Exercise 6** | Queried your IBM i system using natural language |
 
-> **Next steps:** Explore connecting the React app to live IBM i data via a Node.js or Java REST API, or dive deeper into the RPG modernization workflow for the other FLIGHT400 programs.
+> **Next steps:** Explore connecting the React app to live IBM i data via a Node.js or Java REST API, or dive deeper into the RPG modernization workflow for the other FLIGHT4nn programs.
