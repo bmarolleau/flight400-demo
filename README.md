@@ -683,10 +683,14 @@ In the Bob chat panel, use the mode selector to switch to **IBM i Database** mod
 
 ### 5b — Review the Query with Bob
 
-A junior developer wrote the following query to summarize flight bookings per flight per agent. Copy it into the Bob chat using the `/review` slash command:
+A junior developer wrote the following query to summarize flight bookings per flight per agent. Change FLGHT4nn to your number and then paste it into the Bob chat using the `/review` slash command:
+
+**Note: Make sure to type `/review` first to ensure Bob recognizes the command, then paste the rest so `/review` is highlighted:**
+
+![alt text](pics/slash-review-1.jpeg)
+![alt text](pics/slash-review-2.jpeg)
 
 ```sql
-/review
 -- ============================================================
 -- Flight Booking Summary — Per Flight, Per Agent
 -- Shows: route details, airline, agent, ticket counts,
@@ -716,12 +720,13 @@ SELECT
     MIN(o.DEPAR00001)                               AS EARLIEST_BOOKING_DATE,
     MAX(o.DEPAR00001)                               AS LATEST_BOOKING_DATE
 
-FROM FLGHT400/FLIGHTS       f
-JOIN FLGHT400/ORDERS        o  ON o.FLIGH00001  = f.FLIGH00001
-JOIN FLGHT400/AGENTS        ag ON ag.AGENT_NO   = o.AGENT_NO
-LEFT JOIN FLGHT400/CUSTOMERS c  ON c.CUSTO00001  = o.CUSTO00001
+FROM FLGHT4nn/FLIGHTS       f
+JOIN FLGHT4nn/ORDERS        o  ON o.FLIGH00001  = f.FLIGH00001
+JOIN FLGHT4nn/AGENTS        ag ON ag.AGENT_NO   = o.AGENT_NO
+LEFT JOIN FLGHT4nn/CUSTOMERS c  ON c.CUSTO00001  = o.CUSTO00001
 
-WHERE o.DEPAR00001 >= CURRENT TIMESTAMP
+WHERE o.DEPAR00001 >= TIMESTAMP('2004-02-08-00.00.00')
+  AND o.DEPAR00001 <  TIMESTAMP('2004-02-11-00.00.00')
 
 GROUP BY
     f.FLIGH00001,
@@ -743,39 +748,97 @@ ORDER BY
 FETCH FIRST 100 ROWS ONLY;
 ```
 
-Bob will review the query and flag several observations, for example:
-- ⚠️ The `ORDER BY o.DEPAR00001` references a non-grouped, non-aggregated column — this may cause unexpected ordering or an error in strict SQL mode
-- ⚠️ The `LEFT JOIN` on `CUSTOMERS` is declared but `c.*` columns are never selected — it is unused and adds unnecessary overhead
-- ✅ The `CASE`-based class breakdown is correct
-- ✅ `FETCH FIRST 100 ROWS ONLY` is good practice for large datasets
-- 💡 Suggestion: use column aliases in the `GROUP BY` for readability (DB2 for i supports this)
+Bob may inspect the connected IBM i catalog to verify names and data types. Exact results may vary, but expect findings such as:
 
-### 5c — Run the Index Advisor
+- ❌ ORDER BY o.DEPAR00001 uses a non-grouped, non-aggregated column and may cause SQL0122. Bob may replace it with MIN(o.DEPAR00001).
+- ⚠️ The LEFT JOIN to CUSTOMERS is unused and can be removed.
+- ⚠️ o.DEPAR00001 is DEPARTURE_DATE, so the booking-date aliases are misleading.
+- ⚠️ TICKET_PRICE is stored as VARCHAR(22), which requires validation before numeric calculations.
+- ✅ The CASE-based class breakdown is a clear, set-based approach.
+- ✅ FETCH FIRST 100 ROWS ONLY is a useful testing safeguard.
+- 💡 Bob may recommend using descriptive SQL column names instead of generated IBM i system names.
 
-Still in IBM i Database mode, ask Bob:
+### 5c — *(Optional)* Explain the Performance Characteristics
 
-> *"Can you run the index advisor for this query and suggest what indexes should be created to improve its performance?"*
+After Bob has reviewed and corrected the query, ask:
 
-Bob will:
-1. Submit the query to the **Db2 for i Index Advisor** (via the `SYSDUMMY1` virtual table and Index Advisor services)
-2. Analyze the query access plan
-3. Recommend indexes, for example:
-   - An index on `ORDERS(FLIGH00001, DEPAR00001)` to optimize the join and `WHERE` filter
-   - An index on `ORDERS(AGENT_NO)` to speed up the join to `AGENTS`
-4. Optionally generate the `CREATE INDEX` DDL statements for you to review and apply
+> *"Is any table a performance bottleneck and why?"*
 
-> ✅ You've validated, improved, and optimized a SQL query — without needing to be a Db2 expert!
+Bob should identify that:
+- `ORDERS` is the largest table involved in the query
+- The query filters on `DEPARTURE_DATE`
+- Only a small fraction of rows qualify for the selected date range
+- The date-range predicate is highly selective and a strong candidate for index optimization
 
-### 5d — Run the Index Advisor Workflow (Dynamic Analysis)
+> 💡 This step is informational and may vary slightly depending on the optimizer and statistics available in your environment.
 
-Still in IBM i Database mode, use the **Index Advisor** workflow. In the Bob chat panel, open the workflow picker and select **Index Advisor**, then paste the query from 5b when prompted.
+---
 
-Bob will:
-1. Use or capture new performance data. `DUMP PLAN CACHE`, `DBMON`, `DUMP PLAN CACHE TOPN`. 
-2. Parse the advisor output and identify recommended indexes
-3. Generate the `CREATE INDEX` DDL statements for you to review and apply
+### 5d — Run the Index Advisor Workflow
 
-> ✅ You've validated, improved, and optimized a SQL query using a guided workflow — without needing to be a Db2 expert!
+Still in **IBM i Database** mode, click the workflow icon at the top of the Bob panel, choose to run workflow in library list, and select **Index Advisor**.
+
+![alt text](pics/workflows-icon.png)
+
+**Workflow Configuration**
+
+When prompted, use the following selections:
+
+| Setting | Value |
+|---|---|
+| Data Source | Capture New Performance Data |
+| Capture Method | `DUMP_PLAN_CACHE_TOPN` |
+| Output Library | FLGHT4nn |
+| Output Object Name | FLGHT4nnP or something short but custom to your number |
+| Top N Queries | 20 |
+| Top N Category | Runtime |
+
+Use an appropriate output library and object name when prompted.
+
+> ⚠️ **Important lab rule — only create indexes in your assigned schema:**
+> - `FLGHT400` attendees create indexes only in `FLGHT400`
+> - `FLGHT401` attendees create indexes only in `FLGHT401`
+> - `FLGHT402` attendees create indexes only in `FLGHT402`
+> - etc.
+>
+> Bob may discover similar recommendations in multiple `FLGHT4nn` schemas — this is expected because each schema contains a copy of the same application data. Do not create indexes in schemas that were not assigned to you.
+
+The workflow may:
+1. Capture and analyze SQL performance data
+2. Examine plan cache information
+3. Review Index Advisor recommendations
+4. Examine any temporary index activity (MTIs)
+5. Identify candidate permanent indexes
+6. Generate `CREATE INDEX` statements
+7. Explain the expected performance benefit of each index
+
+**Expected outcome** — recommendations may vary slightly depending on optimizer behavior, existing plan cache contents, and system state. Most attendees should receive recommendations similar to:
+
+```sql
+CREATE INDEX FLGHT4nn.ORDERS_IDX_DEPDT_FLT
+    ON FLGHT4nn.ORDERS (
+        DEPARTURE_DATE,
+        FLIGHT_NUMBER
+    );
+```
+
+or:
+
+```sql
+CREATE INDEX FLGHT4nn.ORDERS_IDX_AGT_DEP
+    ON FLGHT4nn.ORDERS (
+        AGENT_NO,
+        DEPARTURE_DATE
+    );
+```
+
+For this lab, review and create the highest-priority recommendation for your assigned schema — typically the index starting with `(DEPARTURE_DATE, FLIGHT_NUMBER)`. This index directly supports the query's selective date-range predicate and is generally the most impactful recommendation.
+
+After Bob has given the suggested indexes, ask:
+
+> *"Apply the highest-priority index only for FLGHT4nn"*
+
+> ✅ You've reviewed, corrected, analyzed, and optimized a Db2 for i SQL statement using Bob's guided Index Advisor workflow — without needing deep expertise in query optimization, Visual Explain, or Index Advisor internals.
 
 ---
 
