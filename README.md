@@ -252,8 +252,29 @@ In addition to the sample Skill we created in step 1, we've just used a set of u
 
 > 💡 Again in the **Object Browser**, same library,  click on the program `FRS000.pgm`that is the flight reservation logon. You'll see in the `Detail` that this program was compiled in 1997, 30 years ago! 
 
+### 2b — *(Optional)* Generate Business Rules Extraction (5 minutes)
+Generate a functional business document using the Business Rules Extraction workflow.
 
-### 2b — Generate an Architecture Explanation with Bob
+1. Click the workflow icon at the top of the Bob panel, choose to run workflow in library list, and select **Business Rules Extraction**
+
+![alt text](pics/workflows-icon.png)
+
+**Workflow Configuration**
+
+When prompted, use the following selections:
+
+| Option | Value |
+|---|---|
+| Select Library | FLGHT4nn |
+| Select Source File | QRPGLESRC |
+| Select Member | FRS401.RPGLE |
+
+2. Watch Bob create a guided workflow to get the necessary data and generate a complete report describing a business function. Bob will use subagents to create a document outlining business rules, decision logic, mermaid diagrams, process flows, etc. Documentation is written in business-friendly language, not technical jargon.
+
+3. At the end, specify an output location on the IFS **unique to your library number**. For example: /home/ITZUSER/flght400/docs/business-rules/FRS401-2026-07-16T19-34-14.md
+
+
+### 2c — Generate an Architecture Explanation with Bob
 
 1. Click the **Open Bob** icon in the top right Activity Bar to open the chat panel.
 2. If not already in **IBM i Developer** mode, switch to it using the mode selector at the top of the chat.
@@ -265,7 +286,7 @@ In addition to the sample Skill we created in step 1, we've just used a set of u
 5. Bob will analyze the programs, source members, and database files and return a structured Markdown document. Review the output — notice how it identifies the menu-driven architecture, the core transaction programs, and the underlying database schema.
 6. Copy the output to a new file `FLIGHT4nn-Architecture.md` in your workspace for reference.
 
-### 2c — Generate an Entity Relationship Diagram (Database Mode)
+### 2d — Generate an Entity Relationship Diagram (Database Mode)
 
 1. In the Bob chat panel, switch to **IBM i Database** mode using the mode selector.
 2. Type the following slash command:
@@ -280,7 +301,7 @@ In addition to the sample Skill we created in step 1, we've just used a set of u
 
 > ✅ You now have a living architecture document generated entirely from the legacy codebase — no manual reverse-engineering required!
 
-### 2d — *(Optional)* Generate a Draw.io Architecture Diagram
+### 2e — *(Optional)* Generate a Draw.io Architecture Diagram
 
 > **Prerequisite:** Install the **Draw.io Integration** extension in Bob IDE (`Cmd+Shift+X` → search *"Draw.io Integration"* → Install).
 
