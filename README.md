@@ -849,12 +849,12 @@ After Bob has given the suggested indexes, ask:
 Switch back to **IBM i Developer** mode and try these prompts:
 
 **Prompt 1:**
-> *"What jobs are currently active on the system and which ones are consuming the most CPU?"*
+> *"Which active jobs have accumulated the most CPU time? For the top jobs, distinguish cumulative CPU time from their current elapsed CPU percentage."*
 
-**Prompt 2:**
-> *"From this list, select the job consuming the most CPU, check the job log, and suggest ways to improve it."*
+**(Optional) Prompt 2:**
+> *"Inspect the job ranked first and determine whether it is currently CPU-bound. Check its job log and take one fresh elapsed CPU measurement. If the log is empty and the job is a PASE process, inspect its IFS job information for its executable, working directory, and open application or log files. Stop after that investigation. Distinguish facts from inferences and provide no more than two recommendations"*
 
-Bob will query the system performance views (e.g. `QSYS2.ACTIVE_JOB_INFO`) and return a summary of active jobs with CPU utilization — giving you an instant health check on your LPAR, then use other tools to read the logs and other information, and create a first report.
+Bob will query the system services such as the `QSYS2.ACTIVE_JOB_INFO` table function and return a summary of active jobs with CPU utilization — giving you an instant health check on your LPAR, then use other tools to read the logs and other information, and create a first report. You might see the Node.js job running if you completed Exercise 1 and never stopped the web server. 
 
 **Prompt 3:**
 > *"Which programs in the FLGHT400 library have not been recompiled in the last 5 years?"*
