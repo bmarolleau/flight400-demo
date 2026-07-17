@@ -730,7 +730,7 @@ Bob may identify other programs that use `FLIGHTS` or `FLIGHTSZ`. Those dependen
 
 ## Exercise 5 — Database Optimization
 
-**Goal:** Review a complex SQL query written by a junior developer, validate it, and apply Bob's index advisor to improve performance.
+**Goal:** Review a complex SQL query written by a junior developer, validate it, and apply Bob's index advisor to improve performance. This exercise takes about 15 minutes to complete.
 
 ### 5a — Switch to IBM i Database Mode
 
@@ -899,7 +899,7 @@ After Bob has given the suggested indexes, ask:
 
 ## Exercise 6 — Ask Bob About Your System
 
-**Goal:** Use Bob in IBM i Developer mode to answer system-level questions using two natural language prompts.
+**Goal:** Use Bob in IBM i Developer mode to answer system-level questions using two natural language prompts. This exercise takes about 10 minutes to complete.
 
 Switch back to **IBM i Developer** mode and try these prompts:
 
