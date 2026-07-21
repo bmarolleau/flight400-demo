@@ -391,3 +391,31 @@ from any host on the network, not just `localhost` inside PASE.
     └── styles/
         └── theme.scss          ← theme @use BEFORE components @use
 ```
+
+## IBM i Node Runtime Requirements
+Before performing any React, Vite, Carbon, npm, esbuild, or Node.js task:
+
+NODE=/QOpenSys/pkgs/lib/nodejs22/bin/node
+NPM_CLI=/QOpenSys/pkgs/lib/nodejs22/lib/node_modules/npm/bin/npm-cli.js
+
+Verify:
+
+`$NODE --version`
+`$NODE $NPM_CLI --version`
+
+Never assume node, npm, or npx are available in PATH.
+
+All shell scripts must export:
+
+PATH=/QOpenSys/pkgs/lib/nodejs22/bin:/QOpenSys/pkgs/bin:/QOpenSys/usr/bin:/usr/bin:/bin
+
+When starting development servers:
+
+- Use wrapper scripts.
+- Use nohup for background execution.
+- Log to /tmp/vite-dev.log.
+
+When a Node.js tool fails with:
+node: No such file or directory
+assume PATH inheritance is broken before assuming the package is broken.
+Prefer fixing PATH once globally rather than modifying installed dependencies.
