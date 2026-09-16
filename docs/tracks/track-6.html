@@ -1,0 +1,195 @@
+<div class="bubble-card track-6" id="card-6">
+  <div class="card-summary">
+    <div class="card-icon" aria-label="RPGUnit testing">
+      <svg viewBox="0 0 24 24" fill="none" stroke="var(--c6)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+      </svg>
+    </div>
+    <div class="card-text">
+      <div class="card-label">Exercise 6</div>
+      <div class="card-title">RPGUnit Test Planning &amp; Implementation</div>
+      <div class="card-desc">Use Bob's guided RPGUnit workflows to build a structured test plan for an IBM i program, then implement and run the test suites — without writing test boilerplate by hand.</div>
+      <div class="card-meta">
+        <span class="card-tag">~20 min</span>
+        <span class="card-tag">IBM i Developer mode</span>
+        <span class="card-tag">RPGUnit workflows</span>
+      </div>
+    </div>
+    <div class="card-chevron" aria-hidden="true">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5l5 5 5-5"/></svg>
+    </div>
+  </div>
+
+  <div class="card-detail">
+    <div class="card-detail-inner">
+      <div class="detail-intro">Two workflows work together in sequence:
+        <ul style="margin-top:8px;padding-left:18px;font-size:0.85rem;color:var(--muted);line-height:1.7">
+          <li><strong style="color:var(--text)">RPGUnit Test Plan Creation</strong> — analyzes exported procedures, generates Templates, Modules, Test Suites, and Test Utilities documents.</li>
+          <li><strong style="color:var(--text)">RPGUnit Test Suite Implementation</strong> — reads those documents, writes RPGUnit source members, runs the suites, and iterates until tests pass.</li>
+        </ul>
+      </div>
+
+      <div class="use-cases">
+
+        <div class="use-case">
+          <div class="use-case-header">
+            <div class="uc-num">1</div>
+            <div class="uc-title">Prerequisites — Install RPGUnit</div>
+            <div class="uc-arrow" aria-hidden="true"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 4l5 5 5-5"/></svg></div>
+          </div>
+          <div class="uc-body"><div class="uc-body-inner">
+            <div class="mode-steps">
+              <div class="mode-step">
+                <div class="step-num">1</div>
+                <div class="step-body">
+                  <div class="step-title">Verify the IBM i Testing Extension</div>
+                  <div class="step-desc">The <strong>IBM i Testing</strong> extension is included in the <strong>IBM Bob Premium Package for i</strong> installed during Setup. Open the Extensions panel (<code>Cmd+Shift+X</code> / <code>Ctrl+Shift+X</code>), search for <strong>"IBM i Testing"</strong>, and confirm it shows as <em>Installed</em>. If it is not installed, click <strong>Install</strong> now.</div>
+                </div>
+              </div>
+              <div class="mode-step">
+                <div class="step-num">2</div>
+                <div class="step-body">
+                  <div class="step-title">Install RPGUnit to IBM i</div>
+                  <div class="step-desc">Connect to your IBM i. Right-click your connection in the IBM i panel (named whatever you chose during Environment Setup — e.g. <strong>FA-Bobathon-2</strong>) and open its settings. Navigate to the <strong>Components</strong> tab → <strong>Add Component</strong> → select <strong>RPGUnit</strong> → <strong>Install</strong>.</div>
+                  <div class="step-screenshot">
+                    <img src="img/components-1.png" alt="Code for IBM i connection settings gear icon"/>
+                    <div class="step-screenshot-caption">Open connection settings with the gear icon at the bottom of the screen</div>
+                  </div>
+                  <div class="step-screenshot">
+                    <img src="img/components-2.png" alt="Components tab in Code for IBM i connection settings"/>
+                    <div class="step-screenshot-caption">Navigate to the Components tab</div>
+                  </div>
+                  <div class="step-screenshot">
+                    <img src="img/components-3.png" alt="Add Component option in the Components tab"/>
+                    <div class="step-screenshot-caption">Click Add Component and select RPGUnit</div>
+                  </div>
+                  <div class="step-screenshot">
+                    <img src="img/components-4.png" alt="RPGUnit installation confirmation"/>
+                    <div class="step-screenshot-caption">Click Install to install RPGUnit to your IBM i</div>
+                  </div>
+                </div>
+              </div>
+              <div class="mode-step">
+                <div class="step-num">3</div>
+                <div class="step-body">
+                  <div class="step-title">Update your library list</div>
+                  <div class="step-desc">Add <code>RPGUNIT</code> and <code>QDEVTOOLS</code> to your User Library List the same way you added your own library during Environment Setup — navigate to the <strong>User Library List</strong> section in the Code for IBM i extension, click the <strong>+</strong> icon, type the library name, and press <strong>Enter</strong>. Your list should include <code>FLGHT4nn</code>, <code>RPGUNIT</code>, and <code>QDEVTOOLS</code>.</div>
+                  <div class="step-screenshot">
+                    <img src="img/testing-libraries.png" alt="User Library List showing FLGHT4nn, RPGUNIT, and QDEVTOOLS"/>
+                    <div class="step-screenshot-caption">User Library List with FLGHT4nn, RPGUNIT, and QDEVTOOLS added</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div></div>
+        </div>
+
+        <div class="use-case">
+          <div class="use-case-header">
+            <div class="uc-num">2</div>
+            <div class="uc-title">6a — Create the CUSTCHK Source Member</div>
+            <div class="uc-arrow" aria-hidden="true"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 4l5 5 5-5"/></svg></div>
+          </div>
+          <div class="uc-body"><div class="uc-body-inner">
+            <p class="uc-desc">Create a clean, standalone SQLRPGLE module — the ideal target for RPGUnit. In the Object Browser, find the <code>QRPGLESRC</code> folder in your <code>FLGHT4nn</code> library. Right-click → <strong>New Member</strong>.</p>
+            <div class="step-screenshot">
+              <img src="img/add-member.png" alt="New member dialog in Code for IBM i"/>
+              <div class="step-screenshot-caption">Right-click QRPGLESRC → New Member</div>
+            </div>
+            <p class="uc-desc" style="margin-top:10px">Enter the name <strong><code>CUSTCHK.SQLRPGLE</code></strong> and confirm. Paste the following source into the new member and save with <strong>Ctrl/Cmd + S</strong>:</p>
+            <div class="step-prompt"><pre>**free
+ctl-opt nomain;
+
+dcl-proc checkCustomerExists export;
+  dcl-pi *n ind;
+    custId packed(9:0) const;
+  end-pi;
+
+  dcl-s rowCount int(10);
+
+  exec sql
+    select count(*)
+      into :rowCount
+      from CUSTOMRZ
+      where CUSTNO = :custId;
+
+  return (SQLCODE = 0 and rowCount > 0);
+end-proc;</pre><button class="copy-btn" aria-label="Copy">Copy</button></div>
+          </div></div>
+        </div>
+
+        <div class="use-case">
+          <div class="use-case-header">
+            <div class="uc-num">3</div>
+            <div class="uc-title">6b — Run the RPGUnit Test Plan Creation Workflow</div>
+            <div class="uc-arrow" aria-hidden="true"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 4l5 5 5-5"/></svg></div>
+          </div>
+          <div class="uc-body"><div class="uc-body-inner">
+            <p class="uc-desc">Click the <strong>workflow icon</strong> at the top of the Bob panel and choose <strong>RPGUnit Test Plan Creation</strong> in your library list.</p>
+            <div class="step-screenshot">
+              <img src="img/workflows-icon.png" alt="Workflows icon"/>
+              <div class="step-screenshot-caption">Workflows icon at the top of the Bob panel</div>
+            </div>
+            <div class="mode-steps">
+              <div class="mode-step">
+                <div class="step-num">1</div>
+                <div class="step-body"><div class="step-desc">Click <strong>Get Started</strong> and select your library <code>FLGHT4nn</code>.</div></div>
+              </div>
+              <div class="mode-step">
+                <div class="step-num">2</div>
+                <div class="step-body"><div class="step-desc">When prompted for the IFS project directory, enter a path unique to your library number, e.g. <code>/home/&lt;user&gt;/flght4nn</code>.</div></div>
+              </div>
+              <div class="mode-step">
+                <div class="step-num">3</div>
+                <div class="step-body"><div class="step-desc">If this is your first time, tell Bob to <strong>create a new test plan</strong> when asked. Select the <strong>default recommended path</strong> for the goal. Let Bob locate testable files automatically — it should find <code>CUSTCHK.SQLRPGLE</code> as the only suitable candidate. Select the exported procedure and proceed. Choose to <strong>validate the environment</strong>.</div></div>
+              </div>
+              <div class="mode-step">
+                <div class="step-num">4</div>
+                <div class="step-body"><div class="step-desc">If prompted to install <strong>RPGUnit</strong>, click <strong>Install</strong> and add it to your library list when asked. Do the same for <strong>QDEVTOOLS</strong> if prompted.</div></div>
+              </div>
+            </div>
+            <div class="info-box">💡 If Bob asks to run the RPGUnit Test Plan Creation workflow again at any point, select <strong>No thanks</strong>.</div>
+            <div class="info-box" style="margin-top:8px">Bob will write the test plan documents and store them in the IFS directory you specified. At the bottom of the chat panel, review the files it created — these Markdown documents will be used in 6c.</div>
+          </div></div>
+        </div>
+
+        <div class="use-case">
+          <div class="use-case-header">
+            <div class="uc-num">4</div>
+            <div class="uc-title">6c — Run the RPGUnit Test Suite Implementation Workflow</div>
+            <div class="uc-arrow" aria-hidden="true"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 4l5 5 5-5"/></svg></div>
+          </div>
+          <div class="uc-body"><div class="uc-body-inner">
+            <div class="mode-steps">
+              <div class="mode-step">
+                <div class="step-num">1</div>
+                <div class="step-body"><div class="step-desc">Click the <strong>workflow icon</strong> at the top of the Bob panel and choose <strong>RPGUnit Test Suite Implementation</strong> in your library list. Click <strong>Proceed</strong> (the test plan from 6b is already ready).</div></div>
+              </div>
+              <div class="mode-step">
+                <div class="step-num">2</div>
+                <div class="step-body"><div class="step-desc">Select your library <code>FLGHT4nn</code>.</div></div>
+              </div>
+              <div class="mode-step">
+                <div class="step-num">3</div>
+                <div class="step-body"><div class="step-desc">Enter the same IFS project directory used in 6b. Confirm the path to the test suites — Bob should pre-fill the correct default.</div></div>
+              </div>
+              <div class="mode-step">
+                <div class="step-num">4</div>
+                <div class="step-body">
+                  <div class="step-desc">Choose to <strong>validate the environment</strong>. If Bob prompts to download RPGUnit again, click <strong>Install</strong>, then <strong>Cancel</strong> on the follow-up popup that asks to delete the existing version. Bob will generate the test source members, run the suites, and iterate until the new tests pass or Bob discovers an error in the source code.</div>
+                  <div class="step-screenshot">
+                    <img src="img/tests-pass.png" alt="Tests passing in the IBM i Testing panel"/>
+                    <div class="step-screenshot-caption">Test results appear in the Test Results tab at the bottom of the screen</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="info-box">💡 If any tests fail, ask Bob to explain the failure and help fix it.</div>
+            <div class="info-box" style="margin-top:8px">✅ <strong>You've used Bob's guided workflows to go from untested legacy RPG to a structured, executed RPGUnit test suite</strong> — without writing test boilerplate by hand.</div>
+          </div></div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

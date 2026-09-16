@@ -1,0 +1,122 @@
+<div class="bubble-card track-7" id="card-7">
+  <div class="card-summary">
+    <div class="card-icon" aria-label="React warm-up">
+      <svg viewBox="0 0 24 24" fill="none" stroke="var(--c7)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="2"/><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z" stroke-dasharray="4 2"/>
+      </svg>
+    </div>
+    <div class="card-text">
+      <div class="card-label">Exercise 7</div>
+      <div class="card-title">Generate a React Carbon App from a Green Screen</div>
+      <div class="card-desc">Use Bob in IBM i Developer mode to analyze the FLIGHT400 5250 screen and generate a modern React web application styled with IBM Carbon, running directly on IBM i PASE.</div>
+      <div class="card-meta">
+        <span class="card-tag">~30 min</span>
+        <span class="card-tag">Optional</span>
+        <span class="card-tag">IBM i Developer mode</span>
+      </div>
+    </div>
+    <div class="card-chevron" aria-hidden="true">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5l5 5 5-5"/></svg>
+    </div>
+  </div>
+
+  <div class="card-detail">
+    <div class="card-detail-inner">
+      <div class="detail-intro">Use Bob to analyze the FLIGHT400 <em>Create Order</em> 5250 screen and generate a full React 18 + Vite app styled with IBM Carbon, running natively in IBM i PASE. This is an optional warm-up — it takes about 30 minutes.</div>
+
+      <div class="use-cases">
+
+        <div class="use-case">
+          <div class="use-case-header">
+            <div class="uc-num">1</div>
+            <div class="uc-title">Create a Helper Skill (Sharpen Your Skill)</div>
+            <div class="uc-arrow" aria-hidden="true"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 4l5 5 5-5"/></svg></div>
+          </div>
+          <div class="uc-body"><div class="uc-body-inner">
+            <p class="uc-desc">Before generating the React app, give Bob extra context about running React + Vite on IBM i PASE by creating a small helper Skill.</p>
+            <div class="mode-steps">
+              <div class="mode-step">
+                <div class="step-num">1</div>
+                <div class="step-body">
+                  <div class="step-title">Open a new task in Agent mode</div>
+                  <div class="step-desc">In Agent mode, click the <strong>+</strong> button (top right) and select <strong>Local Workspace</strong> as the task context.</div>
+                </div>
+              </div>
+              <div class="mode-step">
+                <div class="step-num">2</div>
+                <div class="step-body">
+                  <div class="step-title">Paste the SAMPLE-SKILL.md content and create the skill</div>
+                  <div class="step-desc">Open <a href="https://github.com/Cameronseitz/flight400-demo-select-t-ce/blob/main/SAMPLE-SKILL.md" target="_blank" rel="noopener"><code>SAMPLE-SKILL.md</code></a> from your workspace, copy its entire content, paste it into the Bob chat, then append this instruction and send:</div>
+                  <div class="step-prompt"><pre>Create a skill from the pasted text.</pre><button class="copy-btn" aria-label="Copy">Copy</button></div>
+                </div>
+              </div>
+            </div>
+          </div></div>
+        </div>
+
+        <div class="use-case">
+          <div class="use-case-header">
+            <div class="uc-num">2</div>
+            <div class="uc-title">Generate the React App</div>
+            <div class="uc-arrow" aria-hidden="true"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 4l5 5 5-5"/></svg></div>
+          </div>
+          <div class="uc-body"><div class="uc-body-inner">
+            <p class="uc-desc">Switch to <strong>IBM i Developer</strong> mode, then click the <strong>+</strong> button and select your <strong>FLGHT4nn</strong> library list as the context. Drag or paste the FLIGHT400 screenshot below into the Bob chat prompt, then replace <code>4nn</code> and <code>30nn</code> with your assigned numbers and send.</p>
+            <div class="step-screenshot">
+              <img src="img/flight400.png" alt="FLIGHT400 5250 Create Order screen — paste this screenshot into the Bob prompt"/>
+              <div class="step-screenshot-caption">Paste or drag this screenshot of the FLIGHT400 Create Order screen into the Bob prompt</div>
+            </div>
+            <div class="step-prompt"><pre>Given this screenshot of the 5250 flight order screen from the Application Flight4nn in @FLGHT4nn, Build a single-page React 18 + Vite 4 app on IBM i (PASE) using @carbon/react ^1.x with the g100 dark theme that modernises the IBM i 5250 screen shown in the attached screenshot. Create the app in the IFS at $HOME/flight4nn-frontend-apps/screen-name/. Use the g100 dark theme. All fields should have a list of values to select from. The dev server must run in the background using nohup … &amp; and write output to /tmp/vite-dev.log. Pin the Vite dev server to port 30nn if available.</pre><button class="copy-btn" aria-label="Copy">Copy</button></div>
+            <div class="step-screenshot">
+              <img src="img/Flight-react-agentic.png" alt="Example of the React Carbon app generated from a 5250 screen"/>
+              <div class="step-screenshot-caption">Example result — React Carbon app modernising a 5250 screen</div>
+            </div>
+          </div></div>
+        </div>
+
+        <div class="use-case">
+          <div class="use-case-header">
+            <div class="uc-num">3</div>
+            <div class="uc-title">Start the App and Open It in Your Browser</div>
+            <div class="uc-arrow" aria-hidden="true"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 4l5 5 5-5"/></svg></div>
+          </div>
+          <div class="uc-body"><div class="uc-body-inner">
+            <p class="uc-desc">After Bob generates the files, ask Bob to start the dev server for you:</p>
+            <div class="step-prompt"><pre>Please start the dev server for the app you just created.</pre><button class="copy-btn" aria-label="Copy">Copy</button></div>
+            <p class="uc-desc" style="margin-top:1rem">Then open <code>http://localhost:30nn</code> in your browser — replacing <code>30nn</code> with your Dev Port from the Setup table.</p>
+            <div class="info-box">💡 <strong>Nothing showing in your browser?</strong> Make sure you have completed Step 2 of Environment Setup (the SSH tunnel) and that it includes your port number. Note that the port number and the look &amp; feel of the generated app may differ from any examples shown.</div>
+          </div></div>
+        </div>
+
+        <!-- Wrap-Up accordion -->
+        <div class="use-case">
+          <div class="use-case-header">
+            <div class="uc-num">🎉</div>
+            <div class="uc-title">Wrap-Up &amp; Lessons Learned</div>
+            <div class="uc-arrow" aria-hidden="true"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 4l5 5 5-5"/></svg></div>
+          </div>
+          <div class="uc-body"><div class="uc-body-inner">
+            <p class="uc-desc">In addition to the sample Skill created in step 1, a set of unique Skills shipped with the <strong>IBM Bob Premium Package for i</strong> powered this exercise:</p>
+            <table class="data-table" style="font-size:0.83rem">
+              <thead>
+                <tr><th>Tool / Skill</th><th>Role</th></tr>
+              </thead>
+              <tbody>
+                <tr><td><code>dds-primer-basics</code> skill</td><td>Parses <code>FRS001DF.DSPF</code> — screen layout, field names, subfile windows</td></tr>
+                <tr><td><code>rpg-primer-basics</code> skill</td><td>Reads <code>FRS001.RPG</code> — extracts pricing logic and field definitions</td></tr>
+                <tr><td>IFS write tools</td><td>Creates project files directly in <code>$HOME/flight4nn-react/</code> on IBM i</td></tr>
+                <tr><td>IBM i PASE</td><td>Runs <code>npm install</code>, <code>npm run build</code>, <code>npm start</code> natively on IBM i</td></tr>
+              </tbody>
+            </table>
+            <div style="margin-top:1rem">
+              <p class="uc-desc">Once you finish playing around with the React app, ask Bob to stop it:</p>
+              <div class="step-prompt" style="margin-bottom:0.75rem"><pre>Stop the web service for FLGHT4nn on port 30nn</pre><button class="copy-btn" aria-label="Copy">Copy</button></div>
+              <div class="info-box">⚠️ <strong>This app runs with sample data only.</strong> The natural next step is to add a REST / Web Services layer connecting the React front end to the real IBM i business logic and Db2 for i database.</div>
+            </div>
+          </div></div>
+        </div>
+
+      </div><!-- end use-cases -->
+    </div>
+  </div>
+</div>

@@ -1,0 +1,245 @@
+<div class="bubble-card track-3" id="card-3">
+  <div class="card-summary">
+    <div class="card-icon" aria-label="Field expansion">
+      <svg viewBox="0 0 24 24" fill="none" stroke="var(--c3)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 5v14M5 12h14"/>
+      </svg>
+    </div>
+    <div class="card-text">
+      <div class="card-label">Exercise 3</div>
+      <div class="card-title">Field Expansion: Add Total Flight Hours</div>
+      <div class="card-desc">Use Bob's <em>IBM i Developer mode</em> to plan the change first, then implement it — adding a new business field, <em>Total Flight Hours</em>, from the physical file all the way to the 5250 screen.</div>
+      <div class="card-meta">
+        <span class="card-tag">~30 min</span>
+        <span class="card-tag">IBM i Developer mode</span>
+        <span class="card-tag">DDS + RPG</span>
+      </div>
+    </div>
+    <div class="card-chevron" aria-hidden="true">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5l5 5 5-5"/></svg>
+    </div>
+  </div>
+
+  <div class="card-detail">
+    <div class="card-detail-inner">
+      <div class="detail-intro">Add the field <strong>Total Flight Hours</strong> end-to-end through the Flight Maintenance application. You'll first give Bob the <strong>standing rules</strong>, ask it to <strong>plan the whole change</strong> with you, review that plan once, then execute it. The field names are fixed:
+        <table class="data-table" style="margin-top:12px;margin-bottom:0">
+          <thead><tr><th>Layer</th><th>Field Name</th><th>Definition</th></tr></thead>
+          <tbody>
+            <tr><td>Database (PF)</td><td><code>FLHRS</code></td><td>4P 0 (packed, 4 digits, 0 decimals)</td></tr>
+            <tr><td>Logical / RPG</td><td><code>FHRS</code></td><td>RENAME(FLHRS)</td></tr>
+            <tr><td>Screen (DDS)</td><td><code>SFLHRS</code></td><td>4/0, input/output, after Mileage</td></tr>
+          </tbody>
+        </table>
+        <div class="info-box" style="margin-top:10px"><strong>Before you begin:</strong> In the Bob chat panel, select <strong>IBM i Developer</strong> mode, set scope to <strong>Library List (QSYS)</strong>, and confirm <code>FLGHT4nn</code> is on the library list. You stay in Developer mode for the whole exercise.</div>
+      </div>
+
+      <div class="use-cases">
+
+        <div class="use-case">
+          <div class="use-case-header">
+            <div class="uc-num">1</div>
+            <div class="uc-title">3a — Create a Custom Rule for Bob</div>
+            <div class="uc-arrow" aria-hidden="true"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 4l5 5 5-5"/></svg></div>
+          </div>
+          <div class="uc-body"><div class="uc-body-inner">
+            <p class="uc-desc">Custom rules allow you to add personalized or organization-specific instructions to Bob's context window. Rather than pasting standing rules into chat every session, you can bake them permanently into the <strong>IBM i Developer</strong> mode so Bob always follows them. Follow these steps to add the rules through the UI.</p>
+
+            <ol class="uc-steps" style="margin:1rem 0 0 1.25rem;font-size:0.87rem;line-height:2">
+              <li>Click the <strong>settings icon</strong> at the top right of the Bob panel.
+                <div class="step-screenshot" style="margin-top:0.5rem">
+                  <img src="img/custom-mode-1.png" alt="Settings icon at the top right of the Bob panel"/>
+                </div>
+              </li>
+              <li>Click <strong>Modes</strong> on the left sidebar, then select <strong>IBM i Developer</strong>.
+                <div class="step-screenshot" style="margin-top:0.5rem">
+                  <img src="img/custom-mode-2.png" alt="Modes settings panel with IBM i Developer selected"/>
+                </div>
+              </li>
+              <li>Click the <strong>pencil (edit) icon</strong> in the top right to open the mode editor.
+                <div class="step-screenshot" style="margin-top:0.5rem">
+                  <img src="img/custom-mode-3.png" alt="IBM i Developer mode detail page with pencil edit icon highlighted"/>
+                </div>
+              </li>
+              <li>Scroll down to the <strong>Custom Instructions</strong> section and add the following prompt beneath the Interaction Guidelines. Then click <strong>Save</strong>.
+                <div class="step-prompt" style="margin-top:0.75rem"><pre>## When a user asks to plan or implement code changes
+- Make insert-only changes using apply_diff with surrounding context; do not use insert_content.
+- When inserting, anchor the diff on the line ABOVE the insertion point and do not include trailing structural lines (DDS key "K ..." or record-format "R ..." lines) in the replacement — leave those lines untouched.
+- When adding a fixed-form entry that mirrors an existing one (RPG I-spec, O-spec, or DDS field), copy the model line's EXACT column positions and change only the field name and value. Re-pad so numbers stay right-justified in their original columns and the data-type letter stays in its column. If the new field name is a different length than the model, adjust the padding so every downstream column is unchanged. Never eyeball the spacing.
+- Preserve exact DDS column positions for field-definition entries (name, length, type). Keyword continuation lines like COLHDG only need to start after position 44 — do not fixate on their exact alignment.
+- Preserve the existing OPM RPG fixed-column style.
+- Do not add ALWNULL, do not use SQL ALTER TABLE, do not change the field to 5P 1.
+- COLHDG belongs only in the physical file, never in the display file.
+- Always show the diff and wait for my approval before saving; never compile until I say so.</pre><button class="copy-btn" aria-label="Copy">Copy</button></div>
+                <div class="step-screenshot" style="margin-top:0.75rem">
+                  <img src="img/custom-mode-4.png" alt="Edit IBM i Developer mode dialog showing custom instructions and Save button"/>
+                </div>
+              </li>
+            </ol>
+
+            <div class="info-box" style="margin-top:1rem">✅ Bob will now apply these rules automatically whenever <strong>IBM i Developer</strong> mode is used — no need to paste them at the start of each session.</div>
+          </div></div>
+        </div>
+
+        <div class="use-case">
+          <div class="use-case-header">
+            <div class="uc-num">2</div>
+            <div class="uc-title">3b — Explore the Flight Maintenance Screen <span style="font-weight:500;opacity:0.7">(IBM i Developer mode)</span></div>
+            <div class="uc-arrow" aria-hidden="true"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 4l5 5 5-5"/></svg></div>
+          </div>
+          <div class="uc-body"><div class="uc-body-inner">
+            <div class="step-prompt"><pre>Preview the display file FRS021DF from FLGHT4nn/QDDSSRCD and list every field on the Flight Maintenance screen, noting the input/output type of each and the screen-field naming convention (e.g. SFLGHT, SMILES, SSEATS, SPRICE). Do not modify anything.</pre><button class="copy-btn" aria-label="Copy">Copy</button></div>
+            <p class="uc-desc" style="margin-top:1rem">Bob should preview the screen and list fields such as Flight Number, From/To City, Departure/Arrival Time, Mileage, Seats Available, and Ticket Price — and identify the <code>S</code>-prefix naming pattern (<code>SFLGHT</code>, <code>SMILES</code>, <code>SSEATS</code>, <code>SPRICE</code>).</p>
+
+            <div style="margin-top:1rem;padding-top:0.5rem">
+              <p class="uc-desc"><strong>Optional — see it live in a 5250 emulator:</strong> With the SSH tunnel from <strong>Environment Setup → Step 5 → Part 3</strong> running, open <a href="https://www.ibm.com/support/pages/ibm-i-access-client-solutions" target="_blank" rel="noopener" style="color:var(--ibm-blue)">IBM i Access Client Solutions</a>, connect, then:</p>
+              <div class="step-prompt" style="margin-top:8px"><pre>ADDLIBLE FLGHT4nn
+CALL FLGHT4nn/FRS021</pre><button class="copy-btn" aria-label="Copy">Copy</button></div>
+              <div class="step-screenshot">
+                <img src="img/ACS-green-screen.png" alt="Flight Maintenance screen in 5250 emulator"/>
+                <div class="step-screenshot-caption">Flight Maintenance screen before adding the new field</div>
+              </div>
+              <div class="warn-box">⚠️ Exit the 5250 screen with <strong>F3</strong> before continuing.</div>
+            </div>
+          </div></div>
+        </div>
+
+        <div class="use-case">
+          <div class="use-case-header">
+            <div class="uc-num">3</div>
+            <div class="uc-title">3c — Plan the Change <span style="font-weight:500;opacity:0.7">(IBM i Developer mode)</span></div>
+            <div class="uc-arrow" aria-hidden="true"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 4l5 5 5-5"/></svg></div>
+          </div>
+          <div class="uc-body"><div class="uc-body-inner">
+            <div class="info-box" style="margin-bottom:1rem"><strong>Stay in IBM i Developer mode.</strong> Here you ask Bob to plan the change <em>with</em> you first — reasoning through a step-by-step plan <em>without</em> writing, editing, saving, or compiling anything. This single prompt carries the full spec, and the execution steps that follow just reference the approved plan.</div>
+            <table class="data-table" style="margin-bottom:1rem;font-size:0.85rem">
+              <thead><tr><th>Attribute</th><th>Value</th></tr></thead>
+              <tbody>
+                <tr><td>Business meaning</td><td>Total Flight Hours</td></tr>
+                <tr><td>Database field</td><td><code>FLHRS</code> — 4P 0</td></tr>
+                <tr><td>Logical / RPG field</td><td><code>FHRS RENAME(FLHRS)</code></td></tr>
+                <tr><td>Screen field</td><td><code>SFLHRS</code> — 4/0, input/output</td></tr>
+                <tr><td>Screen placement</td><td>Immediately after Mileage</td></tr>
+                <tr><td>Valid range</td><td>0–9999</td></tr>
+              </tbody>
+            </table>
+            <div class="step-prompt"><pre>Let's plan this change together first — do not write, edit, save, or compile any code; just produce the plan with me. Produce a step-by-step implementation plan to add "Total Flight Hours" to the Flight Maintenance application in FLGHT4nn.
+
+Spec: database field FLHRS (4P 0); expose to RPG as FHRS RENAME(FLHRS); screen field SFLHRS (4 digits, 0 decimals, input/output) placed immediately after Mileage with the visible label "Flight Hours".
+
+Base the plan on how the existing Mileage field flows today: FLIGHTS.MILEAGE → FLIGHTSZ.MILES → FRS021 → FRS021DF.SMILES. Mirror that exact path for the new field.
+
+The plan must cover and bake in these constraints:
+- FLGHT4nn/QDDSSRCF(FLIGHTS): add FLHRS 4P 0 with a COLHDG consistent with the existing PF DDS.
+- FLGHT4nn/QDDSSRCF(FLIGHTSZ): add FHRS RENAME(FLHRS).
+- FLGHT4nn/QDDSSRCD(FRS021DF): add input/output field SFLHRS with visible label "Flight Hours", CHECK(RZ) to match nearby numeric fields, no COLHDG, no overlap with existing fields/message/function-key areas.
+- FLGHT4nn/QRPGSRC(FRS021): increase the FLIGHTSZ record length from 233 to 236 for the 3-byte packed field; add FHRS to the input spec at positions 234-236 — note FHRS is packed (4P 0, 3 bytes), so use the P data-type in column 43 of the I-spec, unlike the neighboring FMILES which is binary (B); after every successful CHAIN that loads an existing flight, explicitly move FHRS to SFLHRS; move SFLHRS to FHRS on add/update; include FHRS in the ADDFLT and UPDFLT output specs — mirror the exact column alignment of the neighboring FMILES O-spec entry so the end position stays right-justified; validate consistently with existing numeric screen fields.
+- Build order at the end: CHGPF FLIGHTS, CRTLF FLIGHTSZ, CRTDSPF FRS021DF, CRTRPGPGM FRS021.
+
+Only these four objects may change: FLIGHTS, FLIGHTSZ, FRS021DF, FRS021. Any other affected program is follow-up work only. Flag any other programs that use FLIGHTS or FLIGHTSZ as follow-up work only — do not include them in the plan's changes.</pre><button class="copy-btn" aria-label="Copy">Copy</button></div>
+            <p class="uc-desc" style="margin-top:1rem">Bob should return a numbered plan mapping the existing Mileage path to the new field:</p>
+            <table class="data-table" style="margin:0.5rem 0 1rem;font-size:0.85rem">
+              <thead><tr><th>Existing Mileage path</th><th>New Total Flight Hours path</th></tr></thead>
+              <tbody>
+                <tr><td><code>FLIGHTS.MILEAGE</code></td><td><code>FLIGHTS.FLHRS</code></td></tr>
+                <tr><td><code>FLIGHTSZ.MILES</code></td><td><code>FLIGHTSZ.FHRS</code></td></tr>
+                <tr><td><code>FRS021.FMILES</code></td><td><code>FRS021.FHRS</code></td></tr>
+                <tr><td><code>FRS021DF.SMILES</code></td><td><code>FRS021DF.SFLHRS</code></td></tr>
+              </tbody>
+            </table>
+
+            <div class="info-box">✅ <strong>This is the checkpoint that matters.</strong> Everything after this is execution. Before approving, confirm the plan touches only the four demo objects (<code>FLIGHTS</code>, <code>FLIGHTSZ</code>, <code>FRS021DF</code>, <code>FRS021</code>), uses <code>FLHRS</code>/<code>FHRS</code>/<code>SFLHRS</code> correctly, includes the 233→236 bump and the post-CHAIN <code>FHRS→SFLHRS</code> move, and lists any other program as follow-up only. When it's right, approve it (<em>"I approve this plan — let's implement it."</em>) and move on. The plan stays in the chat, which Bob keeps in context. <em>Optional: if you want a saved copy, ask Bob to write the plan to the IFS at <code>/home/ITZUSER/FLGHT4nn/plans</code>.</em></div>
+          </div></div>
+        </div>
+
+        <div class="use-case">
+          <div class="use-case-header">
+            <div class="uc-num">4</div>
+            <div class="uc-title">3d — Implement the DDS Files <span style="font-weight:500;opacity:0.7">(IBM i Developer mode)</span></div>
+            <div class="uc-arrow" aria-hidden="true"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 4l5 5 5-5"/></svg></div>
+          </div>
+          <div class="uc-body"><div class="uc-body-inner">
+            <div class="info-box" style="margin-bottom:1rem"><strong>Still in IBM i Developer mode.</strong> Implement the three DDS members first — the two database files and the screen. Bob shows a diff for each and waits for your approval before saving. No compiling yet.</div>
+            <div class="step-prompt"><pre>Execute the approved plan for the DDS members only, one at a time: (1) FLIGHTS, (2) FLIGHTSZ, (3) FRS021DF. For each, show the diff, wait for my approval, then save the source member only — do not compile. Follow the standing rules exactly.</pre><button class="copy-btn" aria-label="Copy">Copy</button></div>
+            <p class="uc-desc" style="margin-top:1rem">As Bob works through each member, quickly confirm:</p>
+            <ul style="margin:0.4rem 0 0.75rem 1.25rem;font-size:0.87rem;line-height:1.9">
+              <li><strong>FLIGHTS</strong>: <code>FLHRS 4P 0</code> with <code>COLHDG</code>; the <code>K FLIGH00001</code> key line untouched; existing keys/fields unchanged.</li>
+              <li><strong>FLIGHTSZ</strong>: <code>FHRS RENAME(FLHRS)</code> after <code>MILES</code>; the <code>K FLGHTN</code> key line untouched.</li>
+              <li><strong>FRS021DF</strong>: <code>SFLHRS</code> 4/0 input/output after Mileage; label "Flight Hours"; <code>CHECK(RZ)</code> present; <strong>no</strong> <code>COLHDG</code>; no overlap with existing fields.</li>
+            </ul>
+            <div class="info-box">✅ Approve each diff as it's correct (<em>"Approved — save this member, don't compile."</em>). Proceed when all three DDS members are saved. No compilation yet.</div>
+          </div></div>
+        </div>
+
+        <div class="use-case">
+          <div class="use-case-header">
+            <div class="uc-num">5</div>
+            <div class="uc-title">3e — Implement the RPG Program <span style="font-weight:500;opacity:0.7">(IBM i Developer mode)</span></div>
+            <div class="uc-arrow" aria-hidden="true"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 4l5 5 5-5"/></svg></div>
+          </div>
+          <div class="uc-body"><div class="uc-body-inner">
+            <div class="info-box" style="margin-bottom:1rem"><strong>Now the RPG program.</strong> <code>FRS021</code> is fixed-form OPM RPG and the most alignment-sensitive member, so implement it in <strong>three smaller diffs</strong> rather than one big one. Approve each before moving to the next. Still no compiling.</div>
+
+            <p class="uc-desc"><strong>5.1 — File &amp; Input specs</strong> (record length + the packed input field):</p>
+            <div class="step-prompt" style="margin-bottom:1rem"><pre>Apply just the F-spec and I-spec changes to FLGHT4nn/QRPGSRC(FRS021): increase the FLIGHTSZ record length from 233 to 236, and add the FHRS input-spec entry at positions 234-236 using data-type P (packed) in column 43, mirroring the exact column alignment of the neighboring FMILES entry. Show the diff and wait for my approval; do not compile.</pre><button class="copy-btn" aria-label="Copy">Copy</button></div>
+            <p class="uc-desc" style="margin-bottom:1rem">Confirm: F-spec now reads <code>236</code>; new I-spec line is <code>FHRS</code> at 234-236 with <code>P</code> in the data-type column (not <code>B</code>).</p>
+
+            <p class="uc-desc"><strong>5.2 — Calculation specs</strong> (screen ⇄ database moves + validation):</p>
+            <div class="step-prompt" style="margin-bottom:1rem"><pre>Now apply just the C-spec changes to FRS021: after every successful CHAIN that loads an existing flight, move FHRS to SFLHRS; move SFLHRS to FHRS on both the add and update paths (mirroring the existing Z-ADD SMILES/FMILES lines); and add an SFLHRS validation consistent with the SMILES check using the next free indicator. Show the diff and wait for my approval; do not compile.</pre><button class="copy-btn" aria-label="Copy">Copy</button></div>
+            <p class="uc-desc" style="margin-bottom:1rem">Confirm: <code>FHRS→SFLHRS</code> on retrieve; <code>SFLHRS→FHRS</code> on add and update; validation mirrors the Mileage check.</p>
+
+            <p class="uc-desc"><strong>5.3 — Output specs</strong> (the alignment-sensitive part):</p>
+            <div class="step-prompt" style="margin-bottom:1rem"><pre>Finally apply just the O-spec changes to FRS021: add FHRS to both the ADDFLT and UPDFLT output records. Copy the exact column positions of the neighboring FMILES O-spec line and change only the field name and end position — the end position must stay right-justified in the same columns, with the packed data-type letter in the same column as FMILES's B. Do not eyeball the spacing. Show the diff and wait for my approval; do not compile.</pre><button class="copy-btn" aria-label="Copy">Copy</button></div>
+            <div class="warn-box">⚠️ <strong>Alignment matters here.</strong> OPM RPG O-spec end positions are column-sensitive. If Bob mis-pads, the compiler reads the wrong end position (e.g. 238 instead of 236) and fails. Verify <code>FHRS</code>'s end position lines up in the same columns as <code>FMILES</code>'s <code>233</code> before approving.</div>
+            <div class="info-box" style="margin-top:1rem">✅ Approve each of the three diffs as it's correct. Proceed when all of <code>FRS021</code> is saved. No compilation yet.</div>
+          </div></div>
+        </div>
+
+        <div class="use-case">
+          <div class="use-case-header">
+            <div class="uc-num">6</div>
+            <div class="uc-title">3f — Build the Direct Demo Path <span style="font-weight:500;opacity:0.7">(IBM i Developer mode)</span></div>
+            <div class="uc-arrow" aria-hidden="true"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 4l5 5 5-5"/></svg></div>
+          </div>
+          <div class="uc-body"><div class="uc-body-inner">
+            <div class="step-prompt"><pre>Build only the four demo objects in order: (1) apply DDS for FLIGHTS, (2) rebuild FLIGHTSZ, (3) compile FRS021DF, (4) compile FRS021. Use the correct IBM i command for each source type. If one fails, stop, report the compile error briefly, and wait for my direction. Do not touch unrelated programs.</pre><button class="copy-btn" aria-label="Copy">Copy</button></div>
+            <p class="uc-desc" style="margin-top:1rem">Expected commands:</p>
+            <div class="step-prompt" style="margin-bottom:0.5rem"><pre>CHGPF FILE(FLGHT4nn/FLIGHTS) SRCFILE(FLGHT4nn/QDDSSRCF) SRCMBR(FLIGHTS)
+CRTLF FILE(FLGHT4nn/FLIGHTSZ) SRCFILE(FLGHT4nn/QDDSSRCF) SRCMBR(FLIGHTSZ)
+CRTDSPF FILE(FLGHT4nn/FRS021DF) SRCFILE(FLGHT4nn/QDDSSRCD) SRCMBR(FRS021DF)
+CRTRPGPGM PGM(FLGHT4nn/FRS021) SRCFILE(FLGHT4nn/QRPGSRC) SRCMBR(FRS021) REPLACE(*YES)</pre></div>
+            <p class="uc-desc">If a compile <strong>fails</strong>, keep Bob scoped to the four objects: <em>"Explain the direct cause and propose the smallest correction limited to the four demo objects. Do not modify anything yet."</em> If the fix is an OPM RPG column-alignment issue, remind Bob to copy the model line's exact columns rather than counting by eye.</p>
+            <div class="warn-box">⚠️ If a program like <code>FRS003</code>, <code>FRS413</code>, or <code>BFLGHT</code> is also affected, record it as follow-up work — do not update or compile it here.</div>
+          </div></div>
+        </div>
+
+        <div class="use-case">
+          <div class="use-case-header">
+            <div class="uc-num">7</div>
+            <div class="uc-title">3g — Validate the Result <span style="font-weight:500;opacity:0.7">(IBM i Developer mode)</span></div>
+            <div class="uc-arrow" aria-hidden="true"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 4l5 5 5-5"/></svg></div>
+          </div>
+          <div class="uc-body"><div class="uc-body-inner">
+            <div class="step-prompt"><pre>Validate the completed change: confirm FLHRS exists in FLGHT4nn/FLIGHTS, FHRS is available through FLIGHTSZ, SFLHRS appears immediately after Mileage in the FRS021DF Previewer, FRS021 compiled, and FRS021DF has no COLHDG. Finish with a one-line end-to-end field mapping and list any additional impacted programs as follow-up. Do not modify anything.</pre><button class="copy-btn" aria-label="Copy">Copy</button></div>
+            <p class="uc-desc" style="margin-top:1rem">Bob should confirm the complete path end-to-end:</p>
+            <table class="data-table" style="margin:0.5rem 0 1rem;font-size:0.85rem">
+              <thead><tr><th>Layer</th><th>Object</th></tr></thead>
+              <tbody>
+                <tr><td>Database</td><td><code>FLIGHTS.FLHRS</code></td></tr>
+                <tr><td>Logical file</td><td><code>FLIGHTSZ.FHRS</code></td></tr>
+                <tr><td>RPG program</td><td><code>FRS021</code></td></tr>
+                <tr><td>Screen</td><td><code>FRS021DF.SFLHRS</code></td></tr>
+              </tbody>
+            </table>
+            <div class="step-screenshot">
+              <img src="img/newfield.png" alt="New Flight Hours field visible on the Flight Maintenance screen"/>
+              <div class="step-screenshot-caption">The new Total Flight Hours field visible on the Flight Maintenance screen</div>
+            </div>
+            <p class="uc-desc" style="margin-top:1rem">Repeat step <strong>3b</strong> (and optionally the 5250 view) — you should now see the new <strong>Flight Hours</strong> field on the flight schedule screen! 🎉</p>
+          </div></div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

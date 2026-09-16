@@ -1,0 +1,338 @@
+<div class="bubble-card track-0" id="card-setup">
+  <div class="card-summary">
+    <div class="card-icon" aria-label="Environment setup">
+      <svg viewBox="0 0 24 24" fill="none" stroke="var(--c0)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M16.24 7.76a6 6 0 0 1 0 8.49M4.93 4.93a10 10 0 0 0 0 14.14M7.76 7.76a6 6 0 0 0 0 8.49"/>
+      </svg>
+    </div>
+    <div class="card-text">
+      <div class="card-label">Setup</div>
+      <div class="card-title">Environment Setup</div>
+      <div class="card-desc">Connect to your IBM i, install the required extensions, and confirm your assigned library number before starting the exercises.</div>
+      <div class="card-meta">
+        <span class="card-tag">~15 min</span>
+        <span class="card-tag">Required</span>
+      </div>
+    </div>
+    <div class="card-chevron" aria-hidden="true">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5l5 5 5-5"/></svg>
+    </div>
+  </div>
+
+  <div class="card-detail">
+    <div class="card-detail-inner">
+
+      <div class="detail-intro">Complete all steps below before starting any exercise. Start by installing and logging in to Bob, then verify your extensions, find your library number, and finally connect to IBM i.</div>
+
+      <div class="use-cases">
+
+        <!-- Step 1: Pre-Requisite Bob Setup -->
+        <div class="use-case">
+          <div class="use-case-header">
+            <div class="uc-num">1</div>
+            <div class="uc-title">Pre-Requisite Bob Setup</div>
+            <div class="uc-arrow" aria-hidden="true"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 4l5 5 5-5"/></svg></div>
+          </div>
+          <div class="uc-body"><div class="uc-body-inner">
+            <p class="uc-desc">Check your inbox for the <strong>"You've been invited to join your team"</strong> email, then follow these steps to install Bob and sign in for the first time.</p>
+            <div class="mode-steps">
+              <div class="mode-step">
+                <div class="step-num">1</div>
+                <div class="step-body">
+                  <div class="step-title">Create your IBM ID</div>
+                  <div class="step-desc">Open the invitation email and click the link to create your IBM ID. This gives you an account to access IBM Bob.</div>
+                </div>
+              </div>
+              <div class="mode-step">
+                <div class="step-num">2</div>
+                <div class="step-body">
+                  <div class="step-title">Download &amp; open Bob</div>
+                  <div class="step-desc">Download Bob using the correct installer for your computer, then open it. If Bob asks whether to import settings from another editor, click your regular IDE or <strong>Skip for now</strong>. If it asks about chat migration, click <strong>Skip migration</strong>.</div>
+                </div>
+              </div>
+              <div class="mode-step">
+                <div class="step-num">3</div>
+                <div class="step-body">
+                  <div class="step-title">Log in to Bob</div>
+                  <div class="step-desc">In the Bob chat window, click <strong>Log in to Bob</strong>. When asked to allow Bob to sign in, click <strong>Allow</strong>. Bob will then ask if you want to open a link — click <strong>Open</strong>. This opens your browser to complete the sign-in.</div>
+                </div>
+              </div>
+              <div class="mode-step">
+                <div class="step-num">4</div>
+                <div class="step-body">
+                  <div class="step-title">Verify your account is active</div>
+                  <div class="step-desc">Click the <strong>gear icon</strong> above the Bob chat window. If the chat window isn't open, click the Bob icon to the right of the center search bar to open it first.</div>
+                  <div class="step-screenshot">
+                    <img src="img/settings-pt1.png" alt="Bob settings panel showing the gear icon and General settings"/>
+                    <div class="step-screenshot-caption">Open Bob settings with the gear icon above the chat window</div>
+                  </div>
+                  <div class="step-desc">Under the <strong>General</strong> tab, confirm that coins are listed in your budget at <strong>100% remaining</strong> — this means your account is active and ready. You're all set even if you don't see a team name matching the screenshot below.</div>
+                  <div class="info-box">💡 <strong>Team dropdown:</strong> If you have used Bob before and belong to multiple teams, a team dropdown will appear — make sure it shows a team with <strong>Bobathon</strong> in the name. If you only belong to one team, the dropdown may not be visible at all, which is expected.</div>
+                  <div class="step-screenshot">
+                    <img src="img/change-team.png" alt="Bob team selector showing Bobathon account option"/>
+                    <div class="step-screenshot-caption">If a team dropdown appears, select the Bobathon team</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div></div>
+        </div>
+
+        <!-- Step 2: Verify/Install IBM Bob Premium Package for i -->
+        <div class="use-case">
+          <div class="use-case-header">
+            <div class="uc-num">2</div>
+            <div class="uc-title">Verify and Install Required Extensions</div>
+            <div class="uc-arrow" aria-hidden="true"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 4l5 5 5-5"/></svg></div>
+          </div>
+          <div class="uc-body"><div class="uc-body-inner">
+            <p class="uc-desc">Two extensions are required. The <strong>IBM Bob Premium Package for i</strong> is often pre-installed for your team — verify it below. The <strong>IBM i Development Pack</strong> must be installed manually.</p>
+            <div class="mode-steps">
+              <div class="mode-step">
+                <div class="step-num">1</div>
+                <div class="step-body">
+                  <div class="step-title">Open the Extensions view</div>
+                  <div class="step-desc">Press <code>Cmd+Shift+X</code> (macOS) or <code>Ctrl+Shift+X</code> (Windows/Linux) to open the Extensions panel.</div>
+                </div>
+              </div>
+              <div class="mode-step">
+                <div class="step-num">2</div>
+                <div class="step-body">
+                  <div class="step-title">Verify IBM Bob Premium Package for i</div>
+                  <div class="step-desc">Search for <strong>"IBM Bob Premium"</strong>. If <strong>IBM Bob Premium Package for i</strong> (publisher: IBM) appears under <em>Installed</em>, you're all set — skip to step 3. If it is not installed, click <strong>Install</strong> now. This package includes Code for IBM i (source editing, object browser, IFS browser, Db2 for i, and more).</div>
+                </div>
+              </div>
+              <div class="mode-step">
+                <div class="step-num">3</div>
+                <div class="step-body">
+                  <div class="step-title">Confirm it is activated in Bob</div>
+                  <div class="step-desc">In the Bob Activity sidebar, open the Bob extension settings and verify <strong>IBM Bob Premium Package for i</strong> is activated. If you just installed it, reload Bob when prompted first. Activation unlocks the IBM i Developer and IBM i Database modes.</div>
+                </div>
+              </div>
+              <div class="mode-step">
+                <div class="step-num">4</div>
+                <div class="step-body">
+                  <div class="step-title">Install IBM i Development Pack</div>
+                  <div class="step-desc">Search for <strong>"IBM i Development Pack"</strong> in the Extensions panel. This extension is <strong>not</strong> pre-installed — click <strong>Install</strong> if it does not appear under <em>Installed</em>. Reload Bob if prompted.</div>
+                </div>
+              </div>
+            </div>
+          </div></div>
+        </div>
+
+        <!-- Step 3: Library number -->
+        <div class="use-case">
+          <div class="use-case-header">
+            <div class="uc-num">3</div>
+            <div class="uc-title">Find Your Assigned Library Number</div>
+            <div class="uc-arrow" aria-hidden="true"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 4l5 5 5-5"/></svg></div>
+          </div>
+          <div class="uc-body"><div class="uc-body-inner">
+            <p class="uc-desc">Your instructor will assign you a library number. Each participant has their own copy of the FLIGHT400 application in a library named <strong>FLGHT4nn</strong> (e.g. FLGHT401, FLGHT402). <strong>Use only your assigned number throughout all exercises so everyone can work independently. To update all references in this guide with your number, select your name below.</strong></p>
+            <div class="info-box">💡 <strong>Spelling note:</strong> The library name is <code>FLGHT4nn</code> — note there is <strong>no "I"</strong> in FLGHT. Your instructor may say "Flight 4-nn" verbally, but when typing always use <code>FLGHT4nn</code> (F‑L‑G‑H‑T).</div>
+            <table class="data-table" id="attendee-table">
+              <thead>
+                <tr>
+                  <th style="text-align:center">Student #</th>
+                  <th>Library</th>
+                  <th style="text-align:center">Dev Port</th>
+                  <th>React App URL</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td style="text-align:center">1</td><td><code>FLGHT401</code></td><td style="text-align:center">3001</td><td><code>http://localhost:3001</code></td></tr>
+                <tr><td style="text-align:center">2</td><td><code>FLGHT402</code></td><td style="text-align:center">3002</td><td><code>http://localhost:3002</code></td></tr>
+                <tr><td style="text-align:center">3</td><td><code>FLGHT403</code></td><td style="text-align:center">3003</td><td><code>http://localhost:3003</code></td></tr>
+                <tr><td style="text-align:center">4</td><td><code>FLGHT404</code></td><td style="text-align:center">3004</td><td><code>http://localhost:3004</code></td></tr>
+                <tr><td style="text-align:center">5</td><td><code>FLGHT405</code></td><td style="text-align:center">3005</td><td><code>http://localhost:3005</code></td></tr>
+                <tr><td style="text-align:center">6</td><td><code>FLGHT406</code></td><td style="text-align:center">3006</td><td><code>http://localhost:3006</code></td></tr>
+                <tr><td style="text-align:center">7</td><td><code>FLGHT407</code></td><td style="text-align:center">3007</td><td><code>http://localhost:3007</code></td></tr>
+                <tr><td style="text-align:center">8</td><td><code>FLGHT408</code></td><td style="text-align:center">3008</td><td><code>http://localhost:3008</code></td></tr>
+                <tr><td style="text-align:center">9</td><td><code>FLGHT409</code></td><td style="text-align:center">3009</td><td><code>http://localhost:3009</code></td></tr>
+                <tr><td style="text-align:center">10</td><td><code>FLGHT410</code></td><td style="text-align:center">3010</td><td><code>http://localhost:3010</code></td></tr>
+                <tr><td style="text-align:center">11</td><td><code>FLGHT411</code></td><td style="text-align:center">3011</td><td><code>http://localhost:3011</code></td></tr>
+                <tr><td style="text-align:center">12</td><td><code>FLGHT412</code></td><td style="text-align:center">3012</td><td><code>http://localhost:3012</code></td></tr>
+                <tr><td style="text-align:center">13</td><td><code>FLGHT413</code></td><td style="text-align:center">3013</td><td><code>http://localhost:3013</code></td></tr>
+                <tr><td style="text-align:center">14</td><td><code>FLGHT414</code></td><td style="text-align:center">3014</td><td><code>http://localhost:3014</code></td></tr>
+                <tr><td style="text-align:center">15</td><td><code>FLGHT415</code></td><td style="text-align:center">3015</td><td><code>http://localhost:3015</code></td></tr>
+                <tr><td style="text-align:center">16</td><td><code>FLGHT416</code></td><td style="text-align:center">3016</td><td><code>http://localhost:3016</code></td></tr>
+                <tr><td style="text-align:center">17</td><td><code>FLGHT417</code></td><td style="text-align:center">3017</td><td><code>http://localhost:3017</code></td></tr>
+                <tr><td style="text-align:center">18</td><td><code>FLGHT418</code></td><td style="text-align:center">3018</td><td><code>http://localhost:3018</code></td></tr>
+                <tr><td style="text-align:center">19</td><td><code>FLGHT419</code></td><td style="text-align:center">3019</td><td><code>http://localhost:3019</code></td></tr>
+                <tr><td style="text-align:center">20</td><td><code>FLGHT420</code></td><td style="text-align:center">3020</td><td><code>http://localhost:3020</code></td></tr>
+                <tr><td style="text-align:center">21</td><td><code>FLGHT421</code></td><td style="text-align:center">3021</td><td><code>http://localhost:3021</code></td></tr>
+                <tr><td style="text-align:center">22</td><td><code>FLGHT422</code></td><td style="text-align:center">3022</td><td><code>http://localhost:3022</code></td></tr>
+                <tr><td style="text-align:center">23</td><td><code>FLGHT423</code></td><td style="text-align:center">3023</td><td><code>http://localhost:3023</code></td></tr>
+                <tr><td style="text-align:center">24</td><td><code>FLGHT424</code></td><td style="text-align:center">3024</td><td><code>http://localhost:3024</code></td></tr>
+                <tr><td style="text-align:center">25</td><td><code>FLGHT425</code></td><td style="text-align:center">3025</td><td><code>http://localhost:3025</code></td></tr>
+                <tr><td style="text-align:center">26</td><td><code>FLGHT426</code></td><td style="text-align:center">3026</td><td><code>http://localhost:3026</code></td></tr>
+                <tr><td style="text-align:center">27</td><td><code>FLGHT427</code></td><td style="text-align:center">3027</td><td><code>http://localhost:3027</code></td></tr>
+                <tr><td style="text-align:center">28</td><td><code>FLGHT428</code></td><td style="text-align:center">3028</td><td><code>http://localhost:3028</code></td></tr>
+                <tr><td style="text-align:center">29</td><td><code>FLGHT429</code></td><td style="text-align:center">3029</td><td><code>http://localhost:3029</code></td></tr>
+                <tr><td style="text-align:center">30</td><td><code>FLGHT430</code></td><td style="text-align:center">3030</td><td><code>http://localhost:3030</code></td></tr>
+                <tr><td style="text-align:center">31</td><td><code>FLGHT431</code></td><td style="text-align:center">3031</td><td><code>http://localhost:3031</code></td></tr>
+                <tr><td style="text-align:center">32</td><td><code>FLGHT432</code></td><td style="text-align:center">3032</td><td><code>http://localhost:3032</code></td></tr>
+                <tr><td style="text-align:center">33</td><td><code>FLGHT433</code></td><td style="text-align:center">3033</td><td><code>http://localhost:3033</code></td></tr>
+                <tr><td style="text-align:center">34</td><td><code>FLGHT434</code></td><td style="text-align:center">3034</td><td><code>http://localhost:3034</code></td></tr>
+                <tr><td style="text-align:center">35</td><td><code>FLGHT435</code></td><td style="text-align:center">3035</td><td><code>http://localhost:3035</code></td></tr>
+                <tr><td style="text-align:center">36</td><td><code>FLGHT436</code></td><td style="text-align:center">3036</td><td><code>http://localhost:3036</code></td></tr>
+                <tr><td style="text-align:center">37</td><td><code>FLGHT437</code></td><td style="text-align:center">3037</td><td><code>http://localhost:3037</code></td></tr>
+                <tr><td style="text-align:center">38</td><td><code>FLGHT438</code></td><td style="text-align:center">3038</td><td><code>http://localhost:3038</code></td></tr>
+                <tr><td style="text-align:center">39</td><td><code>FLGHT439</code></td><td style="text-align:center">3039</td><td><code>http://localhost:3039</code></td></tr>
+                <tr><td style="text-align:center">40</td><td><code>FLGHT440</code></td><td style="text-align:center">3040</td><td><code>http://localhost:3040</code></td></tr>
+                <tr><td style="text-align:center">41</td><td><code>FLGHT441</code></td><td style="text-align:center">3041</td><td><code>http://localhost:3041</code></td></tr>
+                <tr><td style="text-align:center">42</td><td><code>FLGHT442</code></td><td style="text-align:center">3042</td><td><code>http://localhost:3042</code></td></tr>
+                <tr><td style="text-align:center">43</td><td><code>FLGHT443</code></td><td style="text-align:center">3043</td><td><code>http://localhost:3043</code></td></tr>
+                <tr><td style="text-align:center">44</td><td><code>FLGHT444</code></td><td style="text-align:center">3044</td><td><code>http://localhost:3044</code></td></tr>
+                <tr><td style="text-align:center">45</td><td><code>FLGHT445</code></td><td style="text-align:center">3045</td><td><code>http://localhost:3045</code></td></tr>
+                <tr><td style="text-align:center">46</td><td><code>FLGHT446</code></td><td style="text-align:center">3046</td><td><code>http://localhost:3046</code></td></tr>
+                <tr><td style="text-align:center">47</td><td><code>FLGHT447</code></td><td style="text-align:center">3047</td><td><code>http://localhost:3047</code></td></tr>
+                <tr><td style="text-align:center">48</td><td><code>FLGHT448</code></td><td style="text-align:center">3048</td><td><code>http://localhost:3048</code></td></tr>
+                <tr><td style="text-align:center">49</td><td><code>FLGHT449</code></td><td style="text-align:center">3049</td><td><code>http://localhost:3049</code></td></tr>
+                <tr><td style="text-align:center">50</td><td><code>FLGHT450</code></td><td style="text-align:center">3050</td><td><code>http://localhost:3050</code></td></tr>
+              </tbody>
+            </table>
+            <div class="info-box">💡 The <strong>Dev Port</strong> is only needed for <strong>Exercise 7</strong>. When Bob asks you to pin your Vite dev server to a port, use your Dev Port. Your React app will be reachable at the React App URL shown — provided your SSH tunnel later in Step 5 is active.</div>
+          </div></div>
+        </div>
+
+        <!-- Step 4: Connect Bob IDE to IBM i -->
+        <div class="use-case">
+          <div class="use-case-header">
+            <div class="uc-num">4</div>
+            <div class="uc-title">Connect Bob IDE to IBM i</div>
+            <div class="uc-arrow" aria-hidden="true"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 4l5 5 5-5"/></svg></div>
+          </div>
+          <div class="uc-body"><div class="uc-body-inner">
+            <div class="mode-steps">
+              <div class="mode-step">
+                <div class="step-num">1</div>
+                <div class="step-body">
+                  <div class="step-title">Open the IBM i panel in Bob IDE</div>
+                  <div class="step-desc">Click the IBM i icon in the left Activity Bar to open the IBM i panel.</div>
+                </div>
+              </div>
+              <div class="mode-step">
+                <div class="step-num">2</div>
+                <div class="step-body">
+                  <div class="step-title">Add a new connection</div>
+                  <div class="step-desc">Click <strong>New Connection</strong> and enter the host IP, user profile, and <code>ssh_private_key</code> provided in <span id="box-folder-link-container">the Box folder↗</span>. When prompted for the private key, browse to the downloaded <code>ssh_private_key.pem</code> file on your computer. <strong>Do not use the password here — use only the <code>ssh_private_key.pem</code> private key file.</strong></div>
+                  <div class="step-screenshot">
+                    <img src="img/i-connection.png" alt="IBM i connection dialog in Bob IDE"/>
+                    <div class="step-screenshot-caption">IBM i connection panel</div>
+                  </div>
+                </div>
+              </div>
+              <div class="mode-step">
+                <div class="step-num">3</div>
+                <div class="step-body">
+                  <div class="step-title">Add your assigned library to the User Library List</div>
+                  <div class="step-desc">In the Code for IBM i extension (arrow in the picture below), navigate to the <strong>User Library List</strong> section and click the <strong>+</strong> icon. An input field will pop up at the top of the screen — type <code>FLGHT4nn</code> (replace <code>nn</code> with your assigned number) and press <strong>Enter</strong>. You'll then see your library added to the list. Remember: <strong>no "I"</strong> — it's <code>FLGHT</code>, not <code>FLIGHT</code>.</div>
+                  <div class="step-screenshot" style="max-width:380px">
+                    <img src="img/add-library.png" alt="User Library List section in the Code for IBM i extension"/>
+                    <div class="step-screenshot-caption">Navigate to User Library List and click the + icon</div>
+                  </div>
+                  <div class="step-screenshot">
+                    <img src="img/add-library-name.png" alt="Input field prompting for library name"/>
+                    <div class="step-screenshot-caption">Type FLGHT4nn and press Enter to add your library</div>
+                  </div>
+                  <div class="info-box">✅ If you have a 5250 terminal, you can also add the library with: <code>ADDLIBLE FLGHT4nn</code> and launch the app with: <code>GO FLGHT4nn/FRSMAIN</code></div>
+                </div>
+              </div>
+
+              <div class="mode-step">
+                <div class="step-num">4</div>
+                <div class="step-body">
+                  <div class="step-title">Add your assigned library to the Object Browser</div>
+                  <div class="step-desc">While still in the Code for IBM i extension, go to the <strong>Object Browser</strong> section and click the funnel icon or the <strong>Create new filter</strong> button.</div>
+                  <div class="step-screenshot">
+                    <img src="img/add-object-filter.png" alt="Object Browser section showing the funnel/Create new filter button"/>
+                    <div class="step-screenshot-caption">Object Browser — click the funnel icon or Create new filter</div>
+                  </div>
+                  <div class="step-desc">Name your filter (e.g. your assigned number). In <strong>Libraries</strong>, enter your assigned library <code>FLGHT4nn</code>. For <strong>Object types</strong>, keep the default or change it to <strong>*ALL</strong> to see all object types: <code>*PGM</code> (RPG and CL programs), <code>*FILE</code> (display and database files), <code>*MENU</code> (application menus).</div>
+                  <div class="warn-box">⚠️ <strong>Use <code>*ALL</code>, not <code>*</code></strong> — the wildcard <code>*</code> does not work for filtering object types in the Object Browser. You must type <code>*ALL</code> exactly.</div>
+                  <div class="step-screenshot">
+                    <img src="img/object-filter-fields.png" alt="Object Browser filter fields showing library and object type inputs"/>
+                    <div class="step-screenshot-caption">Enter FLGHT4nn as the library and choose your object types</div>
+                  </div>
+                  <div class="step-desc">Scroll down and click <strong>Save Settings</strong>. Your named filter will now appear in the Object Browser, and you can navigate and expand the members inside your library.</div>
+                </div>
+              </div>
+
+              <div class="mode-step">
+                <div class="step-num">5</div>
+                <div class="step-body">
+                  <div class="step-title">Set the workspace to Library List</div>
+                  <div class="step-desc">Throughout the labs you'll see references to setting the scope or workspace to <strong>QSYS</strong> or your <strong>Library List</strong>. This is because Bob can work on local files on your laptop <em>and</em> on the IBM i you just connected to — all the labs focus on the IBM i.</div>
+                  <div class="step-desc">Click the <strong>+</strong> icon above the Bob chat window. When the options appear in the center of the screen, make sure your library is listed under <strong>New Task in Library List</strong> and select that option.</div>
+                  <div class="step-screenshot">
+                    <img src="img/set-workspace.png" alt="Bob scope picker showing New Task in Library List option"/>
+                    <div class="step-screenshot-caption">Select "New Task in Library List" — confirm your FLGHT4nn library is listed</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div></div>
+        </div>
+
+        <!-- Step 5: IBM i Credentials & SSH Tunnel -->
+        <div class="use-case">
+          <div class="use-case-header">
+            <div class="uc-num">5</div>
+            <div class="uc-title">SSH Tunnel - Only Needed For Green-Screen and Exercise 7 <span class="card-tag" style="font-size:0.7rem;vertical-align:middle;margin-left:6px">Optional</span></div>
+            <div class="uc-arrow" aria-hidden="true"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 4l5 5 5-5"/></svg></div>
+          </div>
+          <div class="uc-body"><div class="uc-body-inner">
+            <p class="uc-desc">Your instructor will give you the host IP address, user profile, and password for your IBM i environment. You will also need to download a private key from TechZone and run an SSH tunnel command on your laptop.</p>
+            <div class="mode-steps">
+              <div class="mode-step">
+                <div class="step-num">1</div>
+                <div class="step-body">
+                  <div class="step-title">Download the private key from TechZone</div>
+                  <div class="step-desc">In your TechZone reservation, download <code>ssh_private_key.pem</code>, then set its permissions so OpenSSH will accept it.</div>
+                  <div class="step-desc"><strong>macOS / Linux</strong> — run in <strong>Terminal</strong>:</div>
+                  <div class="step-prompt"><pre>chmod 600 ssh_private_key.pem</pre><button class="copy-btn" aria-label="Copy">Copy</button></div>
+                  <div class="step-desc" style="margin-top:10px"><strong>Windows</strong> — run in <strong>PowerShell</strong> (run as Administrator if the command fails):</div>
+                  <div class="step-prompt"><pre>icacls ssh_private_key.pem /inheritance:r /grant:r "$($env:USERNAME):R"</pre><button class="copy-btn" aria-label="Copy">Copy</button></div>
+                  <div class="step-desc" style="font-size:0.85rem;color:var(--text-secondary)">This removes inherited permissions and grants only your user read access — required by OpenSSH on Windows.</div>
+                </div>
+              </div>
+              <div class="mode-step">
+                <div class="step-num">2</div>
+                <div class="step-body">
+                  <div class="step-title">Open the SSH tunnel (required for 5250, Database access &amp; React app ports)</div>
+                  <div class="step-desc">Run the command below from the folder containing <code>ssh_private_key.pem</code>, or replace <code>ssh_private_key.pem</code> in the command with the full path to the file. Replace <code>&lt;myuser&gt;@&lt;myIPaddress&gt;</code> with the values from your TechZone reservation.</div>
+                  <div class="step-desc"><strong>macOS / Linux</strong> — run in <strong>Terminal</strong> (no <code>sudo</code> needed — all forwarded ports are above 1024). <strong>Windows</strong> — run in <strong>PowerShell</strong> or <strong>Windows Terminal</strong>; no <code>sudo</code>.</div>
+ <div class="step-screenshot">
+ <img src="img/bob-lab-network.png" alt="Lab network diagram — Bob IDE and ACS connecting via SSH tunnel to IBM i on TechZone"/>
+ <div class="step-screenshot-caption">Lab connectivity overview — Bob IDE and ACS connect through an SSH tunnel to your IBM i TechZone LPAR</div>
+ </div>
+                  <div class="step-prompt"><pre>ssh -L 50000:localhost:23 -L 2001:localhost:2001 -L 449:localhost:449 -L 8470:localhost:8470 -L 8471:localhost:8471 -L 8472:localhost:8472 -L 2007:localhost:2007 -L 8473:localhost:8473 -L 8474:localhost:8474 -L 8475:localhost:8475 -L 8476:localhost:8476 -L 2003:localhost:2003 -L 2002:localhost:2002 -L 2006:localhost:2006 -L 2300:localhost:2300 -L 2323:localhost:2323 -L 2005:localhost:2005 -L 8076:localhost:8076 -L 3001:localhost:3001 -L 3002:localhost:3002 -L 3003:localhost:3003 -L 3004:localhost:3004 -L 3005:localhost:3005 -L 3006:localhost:3006 -L 3007:localhost:3007 -L 3008:localhost:3008 -L 3009:localhost:3009 -L 3010:localhost:3010 -L 3011:localhost:3011 -L 3012:localhost:3012 -L 3013:localhost:3013 -L 3014:localhost:3014 -L 3015:localhost:3015 -L 3016:localhost:3016 -L 3017:localhost:3017 -L 3018:localhost:3018 -L 3019:localhost:3019 -L 3020:localhost:3020 -L 3021:localhost:3021 -L 3022:localhost:3022 -L 3023:localhost:3023 -L 3024:localhost:3024 -L 3025:localhost:3025 -L 3026:localhost:3026 -L 3027:localhost:3027 -L 3028:localhost:3028 -L 3029:localhost:3029 -L 3030:localhost:3030 -L 3031:localhost:3031 -L 3032:localhost:3032 -L 3033:localhost:3033 -L 3034:localhost:3034 -L 3035:localhost:3035 -L 3036:localhost:3036 -L 3037:localhost:3037 -L 3038:localhost:3038 -L 3039:localhost:3039 -L 3040:localhost:3040 -L 3041:localhost:3041 -L 3042:localhost:3042 -L 3043:localhost:3043 -L 3044:localhost:3044 -L 3045:localhost:3045 -L 3046:localhost:3046 -L 3047:localhost:3047 -L 3048:localhost:3048 -L 3049:localhost:3049 -L 3050:localhost:3050 -o ExitOnForwardFailure=yes -o ServerAliveInterval=15 -o ServerAliveCountMax=3 &lt;myuser&gt;@&lt;myIPaddress&gt; -i ssh_private_key.pem</pre><button class="copy-btn" aria-label="Copy">Copy</button></div>
+                  <div class="info-box">💡 <strong>No IBM ID yet?</strong> Create one for free at <a href="https://www.ibm.com/account" target="_blank" rel="noopener" style="color:var(--ibm-blue)">ibm.com/account</a>. For 5250 or database access, install <a href="https://www.ibm.com/support/pages/ibm-i-access-client-solutions" target="_blank" rel="noopener" style="color:var(--ibm-blue)">IBM i Access Client Solutions</a>.</div>
+                </div>
+              </div>
+              <div class="mode-step">
+                <div class="step-num">3</div>
+                <div class="step-body">
+                  <div class="step-title">Connect IBM i Access Client Solutions for 5250 <span class="card-tag" style="font-size:0.7rem;vertical-align:middle;margin-left:6px">Optional</span></div>
+                  <div class="step-desc">Only needed if you want to view the green screen. Install <a href="https://www.ibm.com/support/pages/ibm-i-access-client-solutions" target="_blank" rel="noopener" style="color:var(--ibm-blue)">IBM i Access Client Solutions</a>, then make sure the SSH tunnel from step 2 is running.</div>
+                  <div class="warn-box" style="margin-bottom:10px">⚠️ <strong>ACS requires Java.</strong> If ACS does not open after installation, install a supported Java runtime (e.g. <a href="https://adoptium.net" target="_blank" rel="noopener" style="color:var(--ibm-blue)">Eclipse Temurin</a>) and try again.</div>
+                  <div class="step-desc">Open the 5250 Emulator. Set IP Address to <code>127.0.0.1</code> and port to <code>50000</code>. If it tries port 23, override it in Communication → Configure → Destination Port: <code>50000</code>. Log in with your username and password.</div>
+                  <div class="step-desc">Add your library and open the Flight Maintenance screen:</div>
+                  <div class="step-prompt"><pre>ADDLIBLE FLGHT4nn</pre><button class="copy-btn" aria-label="Copy">Copy</button></div>
+                  <div class="step-prompt" style="margin-top:8px"><pre>CALL FLGHT4nn/FRS021</pre><button class="copy-btn" aria-label="Copy">Copy</button></div>
+                  <div class="step-screenshot">
+                    <img src="img/ACS-green-screen.png" alt="Flight Maintenance screen in 5250 emulator"/>
+                    <div class="step-screenshot-caption">Flight Maintenance screen in the 5250 emulator</div>
+                  </div>
+                  <div class="warn-box">⚠️ When finished, exit the 5250 screen by pressing <strong>F3</strong>.</div>
+                </div>
+              </div>
+            </div>
+          </div></div>
+        </div>
+
+      </div><!-- end use-cases -->
+    </div><!-- end card-detail-inner -->
+  </div><!-- end card-detail -->
+</div>

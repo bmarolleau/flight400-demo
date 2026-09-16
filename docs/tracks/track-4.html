@@ -1,0 +1,173 @@
+<div class="bubble-card track-4" id="card-4">
+  <div class="card-summary">
+    <div class="card-icon" aria-label="Database optimization">
+      <svg viewBox="0 0 24 24" fill="none" stroke="var(--c4)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/>
+      </svg>
+    </div>
+    <div class="card-text">
+      <div class="card-label">Exercise 4</div>
+      <div class="card-title">Database Optimization</div>
+      <div class="card-desc">Review a complex SQL query written by a junior developer, validate and correct it with Bob, analyze performance bottlenecks, and apply the Index Advisor workflow to improve query efficiency.</div>
+      <div class="card-meta">
+        <span class="card-tag">~15 min</span>
+        <span class="card-tag">IBM i Database mode</span>
+        <span class="card-tag">Index Advisor workflow</span>
+      </div>
+    </div>
+    <div class="card-chevron" aria-hidden="true">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5l5 5 5-5"/></svg>
+    </div>
+  </div>
+
+  <div class="card-detail">
+    <div class="card-detail-inner">
+      <div class="detail-intro">Use Bob's IBM i Database mode to review, correct, and optimize a Db2 for i SQL query — without needing deep expertise in query optimization, Visual Explain, or Index Advisor internals.</div>
+
+      <div class="use-cases">
+
+        <div class="use-case">
+          <div class="use-case-header">
+            <div class="uc-num">1</div>
+            <div class="uc-title">4a — Switch to IBM i Database Mode</div>
+            <div class="uc-arrow" aria-hidden="true"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 4l5 5 5-5"/></svg></div>
+          </div>
+          <div class="uc-body"><div class="uc-body-inner">
+            <p class="uc-desc">In the Bob chat panel, use the mode selector to switch to <strong>IBM i Database</strong> mode.</p>
+          </div></div>
+        </div>
+
+        <div class="use-case">
+          <div class="use-case-header">
+            <div class="uc-num">2</div>
+            <div class="uc-title">4b — Review the Query with Bob</div>
+            <div class="uc-arrow" aria-hidden="true"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 4l5 5 5-5"/></svg></div>
+          </div>
+          <div class="uc-body"><div class="uc-body-inner">
+            <p class="uc-desc">Type <code>/review_SQL</code> first so it is highlighted in the Bob chat, then paste the query below. Replace <strong>all four</strong> occurrences of <code>FLGHT4nn</code> with your library number.</p>
+            <div class="step-screenshot">
+              <img src="img/slash-review-1.jpeg" alt="Typing /review_SQL in Bob chat"/>
+              <img src="img/slash-review-2.jpeg" alt="/review_SQL command highlighted in Bob chat" style="margin-top:4px"/>
+              <div class="step-screenshot-caption">Type /review_SQL first so Bob recognizes the slash command</div>
+            </div>
+            <div class="step-prompt"><pre>SELECT
+    f.FLIGH00001                                    AS FLIGHT_NUMBER,
+    f.DEPARTURE                                     AS FROM_CITY,
+    f.ARRIVAL                                       AS TO_CITY,
+    f.AIRLINES                                      AS AIRLINE,
+    f.DAY_O00001                                    AS DAY_OF_WEEK,
+    f.DEPAR00002                                    AS DEPARTURE_TIME,
+    f.ARRIV00002                                    AS ARRIVAL_TIME,
+    f.MILEAGE,
+    f.TICKE00001                                    AS TICKET_PRICE,
+    f.SEATS00001                                    AS SEATS_AVAILABLE,
+    ag.AGENT_NAME,
+    COUNT(DISTINCT o.CUSTO00001)                    AS UNIQUE_CUSTOMERS,
+    SUM(o.TICKE00001)                               AS TOTAL_TICKETS_SOLD,
+    SUM(CASE WHEN o.CLASS = 'F' THEN o.TICKE00001 ELSE 0 END) AS FIRST_CLASS_TICKETS,
+    SUM(CASE WHEN o.CLASS = 'B' THEN o.TICKE00001 ELSE 0 END) AS BUSINESS_TICKETS,
+    SUM(CASE WHEN o.CLASS = 'E' THEN o.TICKE00001 ELSE 0 END) AS ECONOMY_TICKETS,
+    MIN(o.DEPAR00001)                               AS EARLIEST_BOOKING_DATE,
+    MAX(o.DEPAR00001)                               AS LATEST_BOOKING_DATE
+FROM FLGHT4nn/FLIGHTS       f
+JOIN FLGHT4nn/ORDERS        o  ON o.FLIGH00001  = f.FLIGH00001
+JOIN FLGHT4nn/AGENTS        ag ON ag.AGENT_NO   = o.AGENT_NO
+LEFT JOIN FLGHT4nn/CUSTOMERS c  ON c.CUSTO00001  = o.CUSTO00001
+WHERE o.DEPAR00001 >= TIMESTAMP('2004-02-08-00.00.00')
+  AND o.DEPAR00001 &lt;  TIMESTAMP('2004-02-11-00.00.00')
+GROUP BY
+    f.FLIGH00001, f.DEPARTURE, f.ARRIVAL, f.AIRLINES,
+    f.DAY_O00001, f.DEPAR00002, f.ARRIV00002,
+    f.MILEAGE, f.TICKE00001, f.SEATS00001, ag.AGENT_NAME
+ORDER BY
+    o.DEPAR00001,
+    f.FLIGH00001
+FETCH FIRST 100 ROWS ONLY;</pre><button class="copy-btn" aria-label="Copy">Copy</button></div>
+            <div class="info-box">💡 <strong>Intentional issue to spot:</strong> <code>o.DEPAR00001</code> appears in the <code>ORDER BY</code> but not in the <code>GROUP BY</code> clause — logically incorrect on strict SQL engines. Bob's <code>/review_SQL</code> should flag this along with any other issues.</div>
+            <p class="uc-desc">Bob may inspect the connected IBM i catalog to verify names and data types. Exact results may vary, but expect findings such as:</p>
+            <ul class="findings-list">
+              <li class="finding-error">❌ <code>ORDER BY o.DEPAR00001</code> uses a non-grouped, non-aggregated column and may cause SQL0122. Bob may replace it with <code>MIN(o.DEPAR00001)</code>.</li>
+              <li class="finding-warn">⚠️ The <code>LEFT JOIN</code> to <code>CUSTOMERS</code> is unused and can be removed.</li>
+              <li class="finding-warn">⚠️ <code>o.DEPAR00001</code> is <code>DEPARTURE_DATE</code>, so the booking-date aliases are misleading.</li>
+              <li class="finding-warn">⚠️ <code>TICKET_PRICE</code> is stored as <code>VARCHAR(22)</code>, which requires validation before numeric calculations.</li>
+              <li class="finding-ok">✅ The <code>CASE</code>-based class breakdown is a clear, set-based approach.</li>
+              <li class="finding-ok">✅ <code>FETCH FIRST 100 ROWS ONLY</code> is a useful testing safeguard.</li>
+              <li class="finding-tip">💡 Bob may recommend using descriptive SQL column names instead of generated IBM i system names.</li>
+            </ul>
+          </div></div>
+        </div>
+
+        <div class="use-case">
+          <div class="use-case-header">
+            <div class="uc-num">3</div>
+            <div class="uc-title">4c — (Optional) Explain the Performance Characteristics</div>
+            <div class="uc-arrow" aria-hidden="true"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 4l5 5 5-5"/></svg></div>
+          </div>
+          <div class="uc-body"><div class="uc-body-inner">
+            <div class="step-prompt"><pre>Is any table a performance bottleneck and why?</pre><button class="copy-btn" aria-label="Copy">Copy</button></div>
+            <p class="uc-desc">Bob should identify that:</p>
+            <ul class="findings-list">
+              <li class="finding-ok">✅ <code>ORDERS</code> is the largest table involved in the query.</li>
+              <li class="finding-ok">✅ The query filters on <code>DEPARTURE_DATE</code>.</li>
+              <li class="finding-ok">✅ Only a small fraction of rows qualify for the selected date range.</li>
+              <li class="finding-tip">💡 The date-range predicate is highly selective and a strong candidate for index optimization.</li>
+            </ul>
+            <div class="info-box" style="margin-top:8px">💡 This step is informational and may vary slightly depending on the optimizer and statistics available in your environment.</div>
+          </div></div>
+        </div>
+
+        <div class="use-case">
+          <div class="use-case-header">
+            <div class="uc-num">4</div>
+            <div class="uc-title">4d — Run the Index Advisor Workflow</div>
+            <div class="uc-arrow" aria-hidden="true"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 4l5 5 5-5"/></svg></div>
+          </div>
+          <div class="uc-body"><div class="uc-body-inner">
+            <p class="uc-desc">Still in IBM i Database mode, click the <strong>workflow icon</strong> at the top of the Bob panel. When the workflow options appear, select <strong>Library List</strong> as the scope first, then choose <strong>SQL Index Strategy Advisor</strong>. When prompted, use these settings:</p>
+            <div class="step-screenshot">
+              <img src="img/workflows-icon.png" alt="Workflows icon in Bob IDE"/>
+              <div class="step-screenshot-caption">Click the workflows icon at the top of the Bob panel</div>
+            </div>
+            <table class="data-table">
+              <thead><tr><th>Setting</th><th>Value</th></tr></thead>
+              <tbody>
+                <tr><td>Data Source</td><td>Capture New Performance Data</td></tr>
+                <tr><td>Capture Method</td><td><code>DUMP_PLAN_CACHE_TOPN</code></td></tr>
+                <tr><td>Output Library</td><td><code>FLGHT4nn</code></td></tr>
+                <tr><td>Output Object Name</td><td><code>FLGHT4nnP</code> (short, unique to your number)</td></tr>
+                <tr><td>Top N Queries</td><td>20</td></tr>
+                <tr><td>Top N Category</td><td>Runtime</td></tr>
+              </tbody>
+            </table>
+            <div class="warn-box">⚠️ <strong>Only create indexes in your assigned schema.</strong> Bob may discover similar recommendations across multiple FLGHT4nn schemas — only apply the index for your own. When Bob gives the suggested indexes, ask:<br><br><em>"Apply the highest-priority index only for FLGHT4nn"</em> (replace nn with your number).</div>
+            <p class="uc-desc" style="margin-top:14px">The workflow may:</p>
+            <ul class="findings-list">
+              <li class="finding-ok">✅ Capture and analyze SQL performance data.</li>
+              <li class="finding-ok">✅ Examine plan cache information.</li>
+              <li class="finding-ok">✅ Review Index Advisor recommendations.</li>
+              <li class="finding-ok">✅ Examine any temporary index activity (MTIs).</li>
+              <li class="finding-ok">✅ Identify candidate permanent indexes.</li>
+              <li class="finding-ok">✅ Generate <code>CREATE INDEX</code> statements.</li>
+              <li class="finding-ok">✅ Explain the expected performance benefit of each index.</li>
+            </ul>
+            <p class="uc-desc" style="margin-top:14px"><strong>Expected outcome</strong> — recommendations may vary slightly depending on optimizer behavior, existing plan cache contents, and system state. Most attendees should receive recommendations similar to:</p>
+            <div class="step-prompt"><pre>CREATE INDEX FLGHT4nn.ORDERS_IDX_DEPDT_FLT
+    ON FLGHT4nn.ORDERS (
+        DEPARTURE_DATE,
+        FLIGHT_NUMBER
+    );</pre><button class="copy-btn" aria-label="Copy">Copy</button></div>
+            <p class="uc-desc" style="margin-top:10px">or:</p>
+            <div class="step-prompt"><pre>CREATE INDEX FLGHT4nn.ORDERS_IDX_AGT_DEP
+    ON FLGHT4nn.ORDERS (
+        AGENT_NO,
+        DEPARTURE_DATE
+    );</pre><button class="copy-btn" aria-label="Copy">Copy</button></div>
+            <p class="uc-desc" style="margin-top:10px">For this lab, review and create the highest-priority recommendation for your assigned schema — typically the index starting with <code>(DEPARTURE_DATE, FLIGHT_NUMBER)</code>. This index directly supports the query's selective date-range predicate and is generally the most impactful recommendation.</p>
+            <div class="info-box">✅ <strong>You've reviewed, corrected, analyzed, and optimized a Db2 for i SQL statement</strong> using Bob's guided Index Advisor workflow — without needing deep expertise in query optimization, Visual Explain, or Index Advisor internals.</div>
+          </div></div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

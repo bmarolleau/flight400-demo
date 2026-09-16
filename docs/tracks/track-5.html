@@ -1,0 +1,68 @@
+<div class="bubble-card track-5" id="card-5">
+  <div class="card-summary">
+    <div class="card-icon" aria-label="System queries">
+      <svg viewBox="0 0 24 24" fill="none" stroke="var(--c5)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35M11 8v3M11 14h.01"/>
+      </svg>
+    </div>
+    <div class="card-text">
+      <div class="card-label">Exercise 5</div>
+      <div class="card-title">Ask Bob About Your System</div>
+      <div class="card-desc">Use natural language prompts to query your IBM i system for active job CPU usage, job health, and stale programs — getting instant answers without needing to know the underlying system commands.</div>
+      <div class="card-meta">
+        <span class="card-tag">~10 min</span>
+        <span class="card-tag">IBM i Developer mode</span>
+      </div>
+    </div>
+    <div class="card-chevron" aria-hidden="true">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5l5 5 5-5"/></svg>
+    </div>
+  </div>
+
+  <div class="card-detail">
+    <div class="card-detail-inner">
+      <div class="detail-intro">Switch back to <strong>IBM i Developer</strong> mode and try these natural language prompts against your live IBM i system.</div>
+
+      <div class="use-cases">
+
+        <div class="use-case">
+          <div class="use-case-header">
+            <div class="uc-num">1</div>
+            <div class="uc-title">Prompt 1 — CPU Usage by Active Jobs</div>
+            <div class="uc-arrow" aria-hidden="true"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 4l5 5 5-5"/></svg></div>
+          </div>
+          <div class="uc-body"><div class="uc-body-inner">
+            <div class="step-prompt"><pre>Which active jobs have accumulated the most CPU time? For the top jobs, distinguish cumulative CPU time from their current elapsed CPU percentage.</pre><button class="copy-btn" aria-label="Copy">Copy</button></div>
+            <div class="info-box">Bob will query the system services such as the <code>QSYS2.ACTIVE_JOB_INFO</code> table function and return a summary of active jobs with CPU utilization — giving you an instant health check on your LPAR, then use other tools to read the logs and other information, and create a first report. You might see the Node.js job running if you completed Exercise 7 and never stopped the web server.</div>
+          </div></div>
+        </div>
+
+        <div class="use-case">
+          <div class="use-case-header">
+            <div class="uc-num">2</div>
+            <div class="uc-title">Prompt 2 — (Optional) Inspect the Top Job</div>
+            <div class="uc-arrow" aria-hidden="true"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 4l5 5 5-5"/></svg></div>
+          </div>
+          <div class="uc-body"><div class="uc-body-inner">
+            <div class="step-prompt"><pre>Inspect the job ranked first and determine whether it is currently CPU-bound. Check its job log and take one fresh elapsed CPU measurement. If the log is empty and the job is a PASE process, inspect its IFS job information for its executable, working directory, and open application or log files. Stop after that investigation. Distinguish facts from inferences and provide no more than two recommendations.</pre><button class="copy-btn" aria-label="Copy">Copy</button></div>
+            <div class="info-box">Bob will drill into the top job using tools like <code>QSYS2.JOBLOG_INFO</code> and <code>QSYS2.ACTIVE_JOB_INFO</code>, take a live CPU snapshot, and — if the job is a PASE process with no log entries — switch to IFS inspection to identify the executable and any open files. The response will clearly separate what Bob observed from what it inferred, and surface at most two actionable recommendations.</div>
+          </div></div>
+        </div>
+
+        <div class="use-case">
+          <div class="use-case-header">
+            <div class="uc-num">3</div>
+            <div class="uc-title">Prompt 3 — Stale Programs in Your Library</div>
+            <div class="uc-arrow" aria-hidden="true"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 4l5 5 5-5"/></svg></div>
+          </div>
+          <div class="uc-body"><div class="uc-body-inner">
+            <p class="uc-desc">Replace <code>FLGHT4nn</code> with your library number:</p>
+            <div class="step-prompt"><pre>Which programs in the FLGHT4nn library have not been recompiled in the last 5 years?</pre><button class="copy-btn" aria-label="Copy">Copy</button></div>
+            <div class="info-box">Bob will query <code>QSYS2.OBJECT_STATISTICS</code> filtering on object type <code>*PGM</code> in <code>FLGHT4nn</code>, compare the <code>LAST_USED_TIMESTAMP</code> or <code>OBJCREATED</code> attributes, and list the stale programs — perfect input for a modernization backlog.</div>
+          </div></div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

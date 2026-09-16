@@ -10,8 +10,9 @@ To complete this lab, you need access to an IBM i environment. You can provision
 3. Click **Reserve** and fill in the reservation form:
    - **Purpose:** Demo / Self-Education / Test / Pilot
    - **Opportunity information:** misc. information related to your activity.
-   - **Geography:** pick the region closest to you (AP, EU, Americas)
+   - **Geography:** pick the region closest to the client
 4. Submit the reservation. Within a few minutes you'll receive an email with your LPAR's **hostname/IP Address**, **port**, **user profile**, **private key** and **password**.
+5. Ensure that this reservation is extended to at least the end of the Bob account reservation
 
 ## IBM i LPAR Setup for FLGHT400 (pick EITHER Option 1 OR Option 2)
 
@@ -39,7 +40,7 @@ To complete this lab, you need access to an IBM i environment. You can provision
 - Click **Connect**. 
 
 #### 4 — Deploy the files to the IFS
-- In the Bob IDE **Explorer**, right-click **`setup_flight400_lab.sh`** and choose **Deploy Selected Files**. Note the target IFS path shown in the output panel (e.g. `/home/YOURUSER/builds/ibmi-lab`).
+- In the Bob IDE **Explorer**, right-click **`setup_flight400_lab.sh`** and choose **Deploy Selected Files**. You might have to first set the deployment target on the iseries to something like `/home/YOURUSER/builds/ibmi-lab`. Note the target IFS path shown in the output panel (e.g. `/home/YOURUSER/builds/ibmi-lab`).
 - Right-click **`FLGHT400.FILE`** and choose **Deploy Selected Files** to upload it to the same IFS directory.
   ☕ This may take a minute or two — perfect time for a coffee break!
 
