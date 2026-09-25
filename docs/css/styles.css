@@ -114,12 +114,16 @@ body {
   background: var(--bg);
   color: var(--text);
   min-height: 100dvh;
-  overflow-x: hidden;
   font-size: 16px;
   line-height: 1.65;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+/* Clip horizontal overflow on html — this does NOT create a containing block
+   for position:fixed (unlike body or any other element), so Firefox & Safari fixed
+   elements work correctly. */
+html { overflow-x: hidden; }
 
 pre, code, kbd, samp {
   font-family: var(--font-mono);
