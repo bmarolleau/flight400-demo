@@ -2,6 +2,8 @@
 
 > **🎓 Running a Bobathon?** Use the GitHub Pages–hosted version of this guide instead of this README — it provides a polished, event-specific experience for participants. See the [GitHub Pages Instructor Guide](instructor-setup/Github-Pages-Instructor-Guide.md) for how to set that up.
 
+> 🌐 **[Open the Lab Website](https://bmarolleau.github.io/flight400-demo/)** — interactive, copy-ready lab instructions with step-by-step exercises.
+
 > **Estimated time:** 2–3 hours
 > **Prerequisites:** IBM Bob IDE installed, internet access, IBM i TechZone LPAR (see below), and the Premium Package for i
 

@@ -35,6 +35,11 @@
   --surface-glass: rgba(28,31,38,0.72);
   --border-subtle: rgba(255,255,255,0.06);
 
+  /* ── Theme toggle ── */
+  --toggle-bg:     rgba(255,255,255,0.07);
+  --toggle-border: rgba(255,255,255,0.14);
+  --toggle-color:  #c8cfe0;
+
   /* ── Typography ── */
   --font-sans: 'Inter', -apple-system, 'Segoe UI', system-ui, sans-serif;
   --font-mono: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace;
@@ -46,6 +51,61 @@
   --ease-out:       cubic-bezier(0.0, 0, 0.2, 1);
   --ease-in:        cubic-bezier(0.4, 0, 1, 1);
 }
+
+/* ── LIGHT THEME ── */
+[data-theme="light"] {
+  --bg:        #f4f6fb;
+  --surface:   #ffffff;
+  --border:    #d4d9e8;
+  --text:      #111318;
+  --muted:     #5a6280;
+
+  --glow-0-shadow: rgba(0,87,184,0.08);
+  --glow-1-shadow: rgba(14,116,144,0.08);
+  --glow-2-shadow: rgba(26,122,74,0.08);
+  --glow-3-shadow: rgba(194,121,10,0.08);
+  --glow-4-shadow: rgba(194,18,10,0.08);
+  --glow-5-shadow: rgba(124,58,237,0.08);
+  --glow-6-shadow: rgba(190,24,93,0.08);
+  --glow-7-shadow: rgba(194,85,10,0.08);
+
+  --surface-glass: rgba(255,255,255,0.80);
+  --border-subtle: rgba(0,0,0,0.06);
+  --toggle-bg:     rgba(0,0,0,0.06);
+  --toggle-border: rgba(0,0,0,0.14);
+  --toggle-color:  #444c6a;
+}
+
+[data-theme="light"] body { background: var(--bg); }
+
+[data-theme="light"] #stars-canvas { opacity: 0 !important; animation: none; }
+
+[data-theme="light"] .hero::before {
+  background:
+    radial-gradient(ellipse 55% 45% at 50% 40%, rgba(0,87,184,0.07), transparent 70%),
+    radial-gradient(ellipse 40% 30% at 60% 60%, rgba(15,98,254,0.04), transparent 60%);
+}
+
+[data-theme="light"] .bubble-card {
+  background: linear-gradient(150deg, #ffffff 0%, #f0f3fa 100%);
+  box-shadow: 0 2px 16px rgba(0,0,0,0.08);
+}
+
+[data-theme="light"] .use-case { background: #f8f9fd; }
+[data-theme="light"] .use-case-header:hover { background: #eef1f8; }
+[data-theme="light"] .mode-step { background: #f4f6fb; }
+[data-theme="light"] .step-prompt { background: #e8edf8; }
+[data-theme="light"] .step-prompt pre { color: #2a3a6a; }
+[data-theme="light"] .code-block { background: #e8edf8; border-color: rgba(0,87,184,0.15); }
+[data-theme="light"] .code-block pre { color: #2a3a6a; }
+[data-theme="light"] .copy-btn { background: rgba(0,0,0,0.07); border-color: rgba(0,0,0,0.14); color: #111318; }
+[data-theme="light"] .copy-btn:hover { background: rgba(0,0,0,0.13); }
+[data-theme="light"] .ntb-modal { background: #ffffff; border-color: rgba(0,0,0,0.10); }
+[data-theme="light"] .ntb-action-card { background: #f4f6fb; }
+[data-theme="light"] .ntb-screenshot-box { background: #f4f6fb; }
+[data-theme="light"] .ntb-screenshot-box .ntb-ss-caption { background: #eef1f8; color: var(--muted); }
+[data-theme="light"] .global-footer { background: rgba(244,246,251,0.92); }
+[data-theme="light"] .student-badge { background: rgba(255,255,255,0.92); box-shadow: 0 4px 24px rgba(0,0,0,0.12), 0 0 0 1px rgba(15,98,254,0.15); }
 
 html { scroll-behavior: smooth; }
 
@@ -725,6 +785,29 @@ pre, code, kbd, samp {
   font-size: 0.72rem; color: var(--muted); background: #181b24; padding: 6px 12px;
   border-top: 1px solid var(--border); text-align: center;
 }
+
+/* ── THEME TOGGLE BUTTON ── */
+.theme-toggle {
+  position: fixed; top: 16px; right: 16px; z-index: 200;
+  width: 42px; height: 42px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--toggle-bg);
+  border: 1px solid var(--toggle-border);
+  color: var(--toggle-color);
+  cursor: pointer;
+  transition:
+    background 200ms var(--ease-out),
+    border-color 200ms var(--ease-out),
+    color 200ms var(--ease-out),
+    transform 200ms var(--ease-spring);
+}
+.theme-toggle:hover { transform: scale(1.1); background: var(--toggle-bg); filter: brightness(1.25); }
+.theme-toggle:active { transform: scale(0.93); }
+.theme-toggle svg { width: 18px; height: 18px; display: block; }
+.theme-toggle .icon-sun  { display: none; }
+.theme-toggle .icon-moon { display: block; }
+[data-theme="light"] .theme-toggle .icon-sun  { display: block; }
+[data-theme="light"] .theme-toggle .icon-moon { display: none; }
 
 /* ── FOOTER ── */
 footer {
