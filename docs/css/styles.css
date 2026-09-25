@@ -799,6 +799,11 @@ pre, code, kbd, samp {
   border: 1px solid var(--toggle-border);
   color: var(--toggle-color);
   cursor: pointer;
+  outline: none;
+  -webkit-appearance: none;
+  appearance: none;
+  padding: 0;
+  margin: 0;
   transition:
     background 200ms var(--ease-out),
     border-color 200ms var(--ease-out),
@@ -807,7 +812,7 @@ pre, code, kbd, samp {
 }
 .theme-toggle:hover { transform: scale(1.1); background: var(--toggle-bg); filter: brightness(1.25); }
 .theme-toggle:active { transform: scale(0.93); }
-.theme-toggle svg { width: 18px; height: 18px; display: block; }
+.theme-toggle svg { width: 18px; height: 18px; display: block; pointer-events: none; }
 .theme-toggle .icon-sun  { display: none; }
 .theme-toggle .icon-moon { display: block; }
 [data-theme="light"] .theme-toggle .icon-sun  { display: block; }

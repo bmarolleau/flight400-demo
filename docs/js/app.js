@@ -2,16 +2,21 @@
 
   // ── THEME TOGGLE ──────────────────────────────────────────────────────────
   var html = document.documentElement;
-  var savedTheme = localStorage.getItem('flight400-theme');
-  html.setAttribute('data-theme', savedTheme || 'dark');
+  var savedTheme = 'dark';
+  try {
+    savedTheme = localStorage.getItem('flight400-theme') || 'dark';
+  } catch (e) {}
+  html.setAttribute('data-theme', savedTheme);
 
   var themeBtn = document.getElementById('theme-toggle-btn');
   if (themeBtn) {
     themeBtn.addEventListener('click', function () {
-      var current = html.getAttribute('data-theme');
+      var current = html.getAttribute('data-theme') || 'dark';
       var next = current === 'light' ? 'dark' : 'light';
       html.setAttribute('data-theme', next);
-      localStorage.setItem('flight400-theme', next);
+      try {
+        localStorage.setItem('flight400-theme', next);
+      } catch (e) {}
     });
   }
 
