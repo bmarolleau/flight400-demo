@@ -132,7 +132,21 @@
                 <div class="step-num">2</div>
                 <div class="step-body">
                   <div class="step-title">Explore the Application Inventory</div>
-                  <div class="step-desc">Once the scan completes, review the inventory panel: how many programs, how many OPM vs ILE, how many physical files, any service programs, any dynamic SQL? The numbers are shown directly on the dashboard.</div>
+                  <div class="step-desc">Once the scan completes, the dashboard shows a summary of every object in the application. Review the inventory and answer these questions — the numbers are shown directly on the dashboard:</div>
+                  <table style="width:100%;border-collapse:collapse;margin:0.75rem 0;font-size:0.875rem">
+                    <thead><tr style="background:var(--surface,#f7f8fa)">
+                      <th style="text-align:left;padding:0.4rem 0.6rem;border:1px solid var(--border,#e5e7eb)">Question</th>
+                      <th style="text-align:left;padding:0.4rem 0.6rem;border:1px solid var(--border,#e5e7eb)">Where to look</th>
+                    </tr></thead>
+                    <tbody>
+                      <tr><td style="padding:0.4rem 0.6rem;border:1px solid var(--border,#e5e7eb)">How many programs are there?</td><td style="padding:0.4rem 0.6rem;border:1px solid var(--border,#e5e7eb)">Objects panel — <code>PGM</code> row</td></tr>
+                      <tr><td style="padding:0.4rem 0.6rem;border:1px solid var(--border,#e5e7eb)">How many are OPM (legacy RPG/CL) vs ILE?</td><td style="padding:0.4rem 0.6rem;border:1px solid var(--border,#e5e7eb)">Objects panel — OPM/ILE column</td></tr>
+                      <tr><td style="padding:0.4rem 0.6rem;border:1px solid var(--border,#e5e7eb)">How many physical files (tables)?</td><td style="padding:0.4rem 0.6rem;border:1px solid var(--border,#e5e7eb)">Objects panel — <code>FILE / PF</code> row</td></tr>
+                      <tr><td style="padding:0.4rem 0.6rem;border:1px solid var(--border,#e5e7eb)">Are there any service programs?</td><td style="padding:0.4rem 0.6rem;border:1px solid var(--border,#e5e7eb)">Objects panel — <code>SRVPGM</code> row</td></tr>
+                      <tr><td style="padding:0.4rem 0.6rem;border:1px solid var(--border,#e5e7eb)">Is there any dynamic SQL?</td><td style="padding:0.4rem 0.6rem;border:1px solid var(--border,#e5e7eb)">Insight panel — Dynamic SQL risks</td></tr>
+                    </tbody>
+                  </table>
+                  <div class="info-box">💡 <strong>What you should find for FLGHT4nn:</strong> ~42 programs (39 OPM, 3 ILE), 15 physical files, 6 ILE service programs (the REST API layer), and 0 dynamic SQL objects. These numbers confirm this is a classic OPM RPG application with a modern REST layer added on top.</div>
                   <div class="step-screenshot"><img src="../pics/understand3.png" alt="Understand Dashboard application inventory"/></div>
                 </div>
               </div>

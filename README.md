@@ -264,15 +264,15 @@ The **Understand Dashboard** scans your IBM i library and builds a live dependen
 
 #### Explore the Application Inventory
 
-Once the scan completes, the dashboard shows a summary of every object in the library. Review the inventory and answer these questions — the numbers are shown directly on the dashboard:
+Once the scan completes, the dashboard shows a summary of every object in the application. Review the inventory and answer these questions — the numbers are shown directly on the dashboard:
 
 | Question | Where to look |
 |---|---|
-| How many programs are there? | Inventory panel — `PGM` row |
-| How many are OPM (legacy RPG/CL) vs ILE? | Inventory panel — OPM/ILE column |
-| How many physical files (tables)? | Inventory panel — `FILE / PF` row |
-| Are there any service programs? | Inventory panel — `SRVPGM` row |
-| Is there any dynamic SQL? | Signals panel — Dynamic SQL objects |
+| How many programs are there? | Objects panel — `PGM` row |
+| How many are OPM (legacy RPG/CL) vs ILE? | Objects panel — OPM/ILE column |
+| How many physical files (tables)? | Objects panel — `FILE / PF` row |
+| Are there any service programs? | Objects panel — `SRVPGM` row |
+| Is there any dynamic SQL? | Insight panel — Dynamic SQL risks |
 
 > 💡 **What you should find for FLGHT4nn:** ~42 programs (39 OPM, 3 ILE), 15 physical files, 6 ILE service programs (the REST API layer), and 0 dynamic SQL objects. These numbers confirm this is a classic OPM RPG application with a modern REST layer added on top.
 
