@@ -31,8 +31,8 @@ Check your inbox for the **"You've been invited to join your team"** email, then
 
 4. **Verify you're on the correct team** — Click the **gear icon** above the Bob chat window. Under **General** settings, you'll see a team selector. Make sure it shows a team with **Bobathon** in the name. If not, click it and select the Bobathon account from the list.
 
-![Bob settings panel](docs/img/settings-pt1.png)
-![Bob team selector](docs/img/change-team.png)
+<img src="docs/img/settings-pt1.png" alt="Bob settings panel" width="600"/>
+<img src="docs/img/change-team.png" alt="Bob team selector" width="500"/>
 
 ---
 
@@ -121,24 +121,24 @@ Your instructor will assign you a library number. Each participant has their own
 
 2. **Add a new connection** — Click **New Connection** and enter the host IP, user profile, and `ssh_private_key` provided by your instructor. **Do not use the password here — use only the `ssh_private_key`.**
 
-   ![IBM i connection dialog](docs/img/i-connection.png)
+   <img src="docs/img/i-connection.png" alt="IBM i connection dialog" width="480"/>
 
 3. **Add your assigned library to the User Library List** — In the Code for IBM i extension, navigate to the **User Library List** section and click the **+** icon. Type `FLGHT4nn` (replace `nn` with your assigned number) and press **Enter**.
 
-   ![User Library List](docs/img/add-library.png)
-   ![Add library name input](docs/img/add-library-name.png)
+   <img src="docs/img/add-library.png" alt="User Library List" width="240"/>
+   <img src="docs/img/add-library-name.png" alt="Add library name input" width="500"/>
 
    > ✅ If you have a 5250 terminal, you can also run: `ADDLIBLE FLGHT4nn`
 
 4. **Add your assigned library to the Object Browser** — Go to the **Object Browser** section and click the funnel icon or **Create new filter**. Name your filter, set **Libraries** to `FLGHT4nn`, and set **Object types** to `*ALL` to see all types: `*PGM` (RPG and CL programs), `*FILE` (display and database files), `*MENU` (application menus). Click **Save Settings**.
 > **📝 Note:** Replace `nn` in `FLGHT4nn` with your team number (e.g. `FLGHT401`, `FLGHT402`…). If you are working alone on the system, use `FLGHT400`.
 
-   ![Object Browser filter](docs/img/add-object-filter.png)
-   ![Object Browser filter fields](docs/img/object-filter-fields.png)
+   <img src="docs/img/add-object-filter.png" alt="Object Browser filter" width="450"/>
+   <img src="docs/img/object-filter-fields.png" alt="Object Browser filter fields" width="480"/>
 
 5. **Set the workspace to Library List** — Click the **+** icon above the Bob chat window. When the options appear, make sure your library is listed under **New Task in Library List** and select that option.
 
-   ![Bob scope picker](docs/img/set-workspace.png)
+   <img src="docs/img/set-workspace.png" alt="Bob scope picker" width="580"/>
 
 ---
 
@@ -154,7 +154,7 @@ chmod 600 ssh_private_key.pem
 
 2. **Open the SSH tunnel** — Run the command below on your laptop. Replace `<myuser>@<myIPaddress>` with the values from your TechZone reservation. On macOS/Linux you may need `sudo ssh`. On Windows, remove `sudo` and run as Administrator.
 
-   ![Lab network diagram](docs/img/bob-lab-network.png)
+   <img src="docs/img/bob-lab-network.png" alt="Lab network diagram" width="700"/>
 
 ```bash
 sudo ssh -L 50000:localhost:23 -L 2001:localhost:2001 -L 449:localhost:449 -L 8470:localhost:8470 -L 8471:localhost:8471 -L 8472:localhost:8472 -L 2007:localhost:2007 -L 8473:localhost:8473 -L 8474:localhost:8474 -L 8475:localhost:8475 -L 8476:localhost:8476 -L 2003:localhost:2003 -L 2002:localhost:2002 -L 2006:localhost:2006 -L 2300:localhost:2300 -L 2323:localhost:2323 -L 2005:localhost:2005 -L 8076:localhost:8076 -L 3001:localhost:3001 -L 3002:localhost:3002 -L 3003:localhost:3003 -L 3004:localhost:3004 -L 3005:localhost:3005 -L 3006:localhost:3006 -L 3007:localhost:3007 -L 3008:localhost:3008 -L 3009:localhost:3009 -L 3010:localhost:3010 -L 3011:localhost:3011 -L 3012:localhost:3012 -L 3013:localhost:3013 -L 3014:localhost:3014 -L 3015:localhost:3015 -L 3016:localhost:3016 -L 3017:localhost:3017 -L 3018:localhost:3018 -L 3019:localhost:3019 -L 3020:localhost:3020 -L 3021:localhost:3021 -L 3022:localhost:3022 -L 3023:localhost:3023 -L 3024:localhost:3024 -L 3025:localhost:3025 -L 3026:localhost:3026 -L 3027:localhost:3027 -L 3028:localhost:3028 -L 3029:localhost:3029 -L 3030:localhost:3030 -L 3031:localhost:3031 -L 3032:localhost:3032 -L 3033:localhost:3033 -L 3034:localhost:3034 -L 3035:localhost:3035 -L 3036:localhost:3036 -L 3037:localhost:3037 -L 3038:localhost:3038 -L 3039:localhost:3039 -L 3040:localhost:3040 -L 3041:localhost:3041 -L 3042:localhost:3042 -L 3043:localhost:3043 -L 3044:localhost:3044 -L 3045:localhost:3045 -L 3046:localhost:3046 -L 3047:localhost:3047 -L 3048:localhost:3048 -L 3049:localhost:3049 -L 3050:localhost:3050 -o ExitOnForwardFailure=yes -o ServerAliveInterval=15 -o ServerAliveCountMax=3 <myuser>@<myIPaddress> -i ssh_private_key.pem
@@ -171,7 +171,7 @@ ADDLIBLE FLGHT4nn
 CALL FLGHT4nn/FRS021
 ```
 
-   ![Flight Maintenance in 5250](docs/img/ACS-green-screen.png)
+   <img src="docs/img/ACS-green-screen.png" alt="Flight Maintenance in 5250" width="600"/>
 
    > ⚠️ When finished, exit the 5250 screen by pressing **F3**.
 
@@ -252,7 +252,7 @@ The **Understand Dashboard** scans your IBM i library and builds a live dependen
 
 1. In the Bob Activity Bar, click the **Understand** icon (the graph/network icon in the IBM i section), or run the command **"Get Started with Understand"** from the Bob command palette (`Cmd/Ctrl+Shift+P`). If not already done, Install the Understand Component on IBM i. 
 
-![alt text](pics/understand1.png)
+<img src="docs/img/understand1.png" alt="Get Started with Understand command palette" width="480"/>
  
 
 2. If no application exists yet, click **New Application**, name it `FLGHT4nn` (replace `nn` with your number), add your library (library that don't necessarily exist that will be used to store the application metadata), and click **Scan**. The scan takes about 30–60 seconds.
@@ -260,7 +260,7 @@ The **Understand Dashboard** scans your IBM i library and builds a live dependen
 > 💡 If an application named `FLGHT4nn` already exists and shows **SCANNED**, skip directly to the next step.
 
 
-![alt text](pics/understand2.png)
+<img src="docs/img/understand2.png" alt="New Application dialog in Understand Dashboard" width="560"/>
 
 #### Explore the Application Inventory
 
@@ -277,13 +277,13 @@ Once the scan completes, the dashboard shows a summary of every object in the ap
 > 💡 **What you should find for FLGHT4nn:** ~42 programs (39 OPM, 3 ILE), 15 physical files, 6 ILE service programs (the REST API layer), and 0 dynamic SQL objects. These numbers confirm this is a classic OPM RPG application with a modern REST layer added on top.
 
 
-![alt text](pics/understand3.png)
+<img src="docs/img/understand3.png" alt="Understand Dashboard application inventory" width="600"/>
 
 #### Identify the Most Referenced Objects
 
 In the **Insights** tab, explore the **Most referenced objects** list. It shows which objects have the most inbound dependencies — these are your highest change-risk objects. Note which types of objects appear at the top and what that tells you about where the application's core data dependencies lie.
 
-![alt text](pics/understand4.png)
+<img src="docs/img/understand4.png" alt="Most referenced objects in Understand Insights tab" width="600"/>
 
 > ✅ **Summary of what Understand tells you in under 5 minutes:** Map the programs, files and dependencies in your IBM i applications. Find the most referenced objects, reveal dependencies, and review dynamic SQL, triggers and foreign keys.
 
@@ -423,15 +423,15 @@ Custom rules allow you to add personalized or organization-specific instructions
 
 1. Click the **settings icon** at the top right of the Bob panel.
 
-   ![Settings icon at the top right of the Bob panel](docs/img/custom-mode-1.png)
+   <img src="docs/img/custom-mode-1.png" alt="Settings icon at the top right of the Bob panel" width="580"/>
 
 2. Click **Modes** on the left sidebar, then select **IBM i Developer**.
 
-   ![Modes settings panel with IBM i Developer selected](docs/img/custom-mode-2.png)
+   <img src="docs/img/custom-mode-2.png" alt="Modes settings panel with IBM i Developer selected" width="580"/>
 
 3. Click the **pencil (edit) icon** in the top right to open the mode editor.
 
-   ![IBM i Developer mode detail page with pencil edit icon highlighted](docs/img/custom-mode-3.png)
+   <img src="docs/img/custom-mode-3.png" alt="IBM i Developer mode detail page with pencil edit icon highlighted" width="580"/>
 
 4. Scroll down to the **Custom Instructions** section and add the following prompt beneath the Interaction Guidelines. Then click **Save**.
 
@@ -447,7 +447,7 @@ Custom rules allow you to add personalized or organization-specific instructions
    - Always show the diff and wait for my approval before saving; never compile until I say so.
    ```
 
-   ![Edit IBM i Developer mode dialog showing custom instructions and Save button](docs/img/custom-mode-4.png)
+   <img src="docs/img/custom-mode-4.png" alt="Edit IBM i Developer mode dialog showing custom instructions and Save button" width="580"/>
 
 > ✅ Bob will now apply these rules automatically whenever **IBM i Developer** mode is used — no need to paste them at the start of each session.
 
@@ -468,7 +468,7 @@ ADDLIBLE FLGHT4nn
 CALL FLGHT4nn/FRS021
 ```
 
-![Flight Maintenance screen](docs/img/ACS-green-screen.png)
+<img src="docs/img/ACS-green-screen.png" alt="Flight Maintenance screen" width="600"/>
 
 > ⚠️ Exit the 5250 screen with **F3** before continuing.
 
@@ -604,7 +604,7 @@ Bob should confirm the complete path end-to-end:
 
 Repeat step **3b** (and optionally the 5250 view) — you should now see the new **Flight Hours** field on the flight schedule screen! 🎉
 
-![New field on screen](docs/img/newfield.png)
+<img src="docs/img/newfield.png" alt="New field on screen" width="600"/>
 
 > ✅ **Exercise 3 complete** — Total Flight Hours now flows end-to-end: `FLIGHTS.FLHRS` → `FLIGHTSZ.FHRS` → `FRS021` → `FRS021DF.SFLHRS`.
 
@@ -626,8 +626,8 @@ Type `/review` first so it is highlighted in the Bob chat, then paste the query 
 
 **Note:** Make sure to type `/review` first to ensure Bob recognizes the command.
 
-![review slash 1](docs/img/slash-review-1.jpeg)
-![review slash 2](docs/img/slash-review-2.jpeg)
+<img src="docs/img/slash-review-1.jpeg" alt="review slash 1" width="480"/>
+<img src="docs/img/slash-review-2.jpeg" alt="review slash 2" width="480"/>
 
 ```sql
 SELECT
@@ -785,20 +785,20 @@ These two workflows work together in sequence:
 
 2. **Install RPGUnit to IBM i** — Connect to your IBM i. Right-click your connection in the IBM i panel and open its settings. Navigate to the **Components** tab → **Add Component** → select **RPGUnit** → **Install**.
 
-   ![Connection settings gear icon](docs/img/components-1.png)
-   ![Components tab](docs/img/components-2.png)
-   ![Add Component](docs/img/components-3.png)
-   ![RPGUnit installation](docs/img/components-4.png)
+   <img src="docs/img/components-1.png" alt="Connection settings gear icon" width="500"/>
+   <img src="docs/img/components-2.png" alt="Components tab" width="500"/>
+   <img src="docs/img/components-3.png" alt="Add Component" width="500"/>
+   <img src="docs/img/components-4.png" alt="RPGUnit installation" width="500"/>
 
 3. **Update your library list** — Add `RPGUNIT` and `QDEVTOOLS` to your User Library List the same way you added your own library during Setup. Your list should include `FLGHT4nn`, `RPGUNIT`, and `QDEVTOOLS`.
 
-   ![Library list with testing libraries](docs/img/testing-libraries.png)
+   <img src="docs/img/testing-libraries.png" alt="Library list with testing libraries" width="480"/>
 
 ### 6a — Create the CUSTCHK Source Member
 
 In the Object Browser, find the `QRPGLESRC` folder in your `FLGHT4nn` library. Right-click → **New Member**.
 
-![New member dialog](docs/img/add-member.png)
+<img src="docs/img/add-member.png" alt="New member dialog" width="320"/>
 
 Enter the name **`CUSTCHK.SQLRPGLE`** and confirm. Paste the following source into the new member and save with **Ctrl/Cmd + S**:
 
