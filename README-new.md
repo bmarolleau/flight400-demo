@@ -181,9 +181,29 @@ CALL FLGHT4nn/FRS021
 
 **Goal:** Use Bob's Understand Dashboard to map the application's programs, files, and dependencies — then generate a written architecture overview and an Entity Relationship Diagram. This exercise takes about 40 minutes to complete.
 
+> 📦 **IBM Bob Premium Package for i (PPi) — two features that change how you work with large codebases:**
+>
+> - **`/init`** — scans your library once and writes a persistent `AGENTS` context file. Every subsequent Bob session reads it automatically, so Bob always knows your source layout, compile conventions, and project-specific gotchas without re-reading source each time.
+> - **Understand** — builds a persistent, scanned dependency graph of your entire application. Instead of feeding source members to the AI, Bob queries the pre-built metadata: object inventory, inbound/outbound dependencies, signals, and usage statistics are answered instantly from the scan.
+>
+> Together, these two features make IBM i modernisation tasks **more accurate and dramatically cheaper in Bob Coins** — Bob reasons from structured metadata rather than consuming tokens re-reading hundreds of source members on every question. Less token usage, deterministic dependency data, and shared metadata across your whole team: this is what PPi is designed for.
+
 ---
 
-### 1a — Initialize Bob's Context with `/init`
+### 1a — Browse the Application in the Object Browser
+
+1. In the IBM i sidebar, expand **User Library List** and **Object Browser**.
+2. Add a filter for `FLGHT4nn` in the Object Browser if not already done, and set Object types to `*ALL` so you see: `*PGM` (RPG and CL programs), `*FILE` (display and database files), `*MENU` (application menus).
+3. Expand **Source Files** and open a few programs from `QRPGSRC` to get a feel for the classic fixed-format style.
+4. Navigate to `QDDSSRCD` and open `FRS001DF`. Click **Preview All** on the first line to see the green-screen layout rendered visually.
+
+   > 💡 Try previewing `FRS021DF` as well — this is the **Flight Maintenance** screen used in Exercise 3.
+
+5. In the Object Browser, click `FRS000.pgm` — the flight reservation logon. Check its **Detail**: it was compiled in 1997, over 30 years ago!
+
+---
+
+### 1b — Initialize Bob's Context with `/init`
 
 > **New feature of IBM Bob Premium Package for i** — `/init` works in QSYS (library list), IFS, and local workspace modes.
 
@@ -209,7 +229,7 @@ Bob will scan your library — measuring source files, member types, service pro
 
 #### Explore the result
 
-Open the **Object Browser**, expand `FLGHT4nn` → `QBOBSRC`, and click **AGENTS** to view the generated member. It contains IBM i–specific facts discovered directly from your source, for example:
+Open the **Object Browser**, expand `FLGHT4nn` → `QBOBSRC`, and click **agents.md** to view the generated member. It contains IBM i–specific facts discovered directly from your source, for example:
 
 - Which source file holds IWS REST service programs (`EVFTEMPF01`) and why they must be compiled with `CRTSQLRPGI` instead of `CRTBNDRPG`
 - The `*Z` logical files (`AGENTSZ`, `FLIGHTSZ`, etc.) exist only for legacy Query/400 — do not use them as access paths in new code
@@ -222,19 +242,6 @@ Open the **Object Browser**, expand `FLGHT4nn` → `QBOBSRC`, and click **AGENTS
 
 ---
 
-### 1b — Browse the Application in the Object Browser
-
-1. In the IBM i sidebar, expand **User Library List** and **Object Browser**.
-2. Add a filter for `FLGHT4nn` in the Object Browser if not already done, and set Object types to `*ALL` so you see: `*PGM` (RPG and CL programs), `*FILE` (display and database files), `*MENU` (application menus).
-3. Expand **Source Files** and open a few programs from `QRPGSRC` to get a feel for the classic fixed-format style.
-4. Navigate to `QDDSSRCD` and open `FRS001DF`. Click **Preview All** on the first line to see the green-screen layout rendered visually.
-
-   > 💡 Try previewing `FRS021DF` as well — this is the **Flight Maintenance** screen used in Exercise 3.
-
-5. In the Object Browser, click `FRS000.pgm` — the flight reservation logon. Check its **Detail**: it was compiled in 1997, over 30 years ago!
-
----
-
 ### 1c — Understand, Application Map & Dependency Analysis
 
 > **New feature of IBM Bob Premium Package for i.** The **Understand Dashboard** is included in the Premium Package — confirm it is active under Extensions before starting.
@@ -243,10 +250,17 @@ The **Understand Dashboard** scans your IBM i library and builds a live dependen
 
 #### Open the Understand Dashboard
 
-1. In the Bob Activity Bar, click the **Understand** icon (the graph/network icon in the IBM i section), or run the command **"Open Understand Dashboard"** from the Bob command palette (`Cmd/Ctrl+Shift+P`).
+1. In the Bob Activity Bar, click the **Understand** icon (the graph/network icon in the IBM i section), or run the command **"Get Started with Understand"** from the Bob command palette (`Cmd/Ctrl+Shift+P`). If not already done, Install the Understand Component on IBM i. 
+
+![alt text](pics/understand1.png)
+ 
+
 2. If no application exists yet, click **New Application**, name it `FLGHT4nn` (replace `nn` with your number), add your library (library that don't necessarily exist that will be used to store the application metadata), and click **Scan**. The scan takes about 30–60 seconds.
 
 > 💡 If an application named `FLGHT4nn` already exists and shows **SCANNED**, skip directly to the next step.
+
+
+![alt text](pics/understand2.png)
 
 #### Explore the Application Inventory
 
@@ -262,9 +276,14 @@ Once the scan completes, the dashboard shows a summary of every object in the li
 
 > 💡 **What you should find for FLGHT4nn:** ~42 programs (39 OPM, 3 ILE), 15 physical files, 6 ILE service programs (the REST API layer), and 0 dynamic SQL objects. These numbers confirm this is a classic OPM RPG application with a modern REST layer added on top.
 
+
+![alt text](pics/understand3.png)
+
 #### Identify the Most Referenced Objects
 
 In the **Insights** tab, explore the **Most referenced objects** list. It shows which objects have the most inbound dependencies — these are your highest change-risk objects. Note which types of objects appear at the top and what that tells you about where the application's core data dependencies lie.
+
+![alt text](pics/understand4.png)
 
 > ✅ **Summary of what Understand tells you in under 5 minutes:** Map the programs, files and dependencies in your IBM i applications. Find the most referenced objects, reveal dependencies, and review dynamic SQL, triggers and foreign keys.
 
