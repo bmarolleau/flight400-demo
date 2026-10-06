@@ -116,14 +116,15 @@
           </div>
           <div class="uc-body"><div class="uc-body-inner">
             <p class="uc-desc"><strong>New feature of IBM Bob Premium Package for i.</strong> The <strong>Understand Dashboard</strong> scans your IBM i library and builds a live dependency graph of every program, file, service program, menu, and command — without you reading a single line of source.</p>
+            <div class="info-box" style="margin-bottom:1rem">💡 <strong>Metadata Database &amp; Multi-Developer Sharing:</strong> Understand is configured with a metadata database (library) to store the scanned application metadata. In a team environment, this metadata library can be shared across multiple developers so everyone benefits from a single scan, assuming each developer has the necessary authority to access the 'understand' library (ex: BOBLIB). For these labs on a shared IBM i, each lab practitioner can also create and use their own metadata library (e.g., <code>BOBLIBnn</code>, replacing <code>nn</code> with your assigned number), though in practice it could be shared.</div>
             <div class="mode-steps">
               <div class="mode-step">
                 <div class="step-num">1</div>
                 <div class="step-body">
                   <div class="step-title">Open the Understand Dashboard</div>
-                  <div class="step-desc">In the Bob Activity Bar, click the <strong>Understand</strong> icon, or run <strong>"Get Started with Understand"</strong> from the Bob command palette (<code>Cmd/Ctrl+Shift+P</code>). If not already done, install the Understand Component on IBM i.</div>
+                  <div class="step-desc">In the Bob Activity Bar, click the <strong>Understand</strong> icon, or run <strong>"Get Started with Understand"</strong> from the Bob command palette (<code>Cmd/Ctrl+Shift+P</code>). If not already done, install the Understand Component on IBM i, specifying the 'understand' library and other necessary information.</div>
                   <div class="step-screenshot"><img src="img/understand1.png" alt="Get Started with Understand command palette" style="max-width:480px"/></div>
-                  <div class="step-desc" style="margin-top:0.75rem">If no application exists yet, click <strong>New Application</strong>, name it <code>FLGHT4nn</code> (replace <code>nn</code> with your number), add your library (the library that will be used to store the application metadata), and click <strong>Scan</strong>. The scan takes about 30–60 seconds.</div>
+                  <div class="step-desc" style="margin-top:0.75rem">If no application exists yet, click <strong>New Application</strong>, name it <code>FLGHT4nn</code> (replace <code>nn</code> with your number), add your application library <code>FLGHT4nn</code> (the library containing compiled objects, not source) and metadata library <code>BOBLIBnn</code>, then click <strong>Scan</strong>. The scan takes about 30–60 seconds.</div>
                   <div class="step-screenshot"><img src="img/understand2.png" alt="New Application dialog in Understand Dashboard" style="max-width:560px"/></div>
                   <div class="info-box">If an application named <code>FLGHT4nn</code> already exists and shows <strong>SCANNED</strong>, skip directly to the next step.</div>
                 </div>
@@ -168,6 +169,8 @@
                 </div>
               </div>
             </div>
+            <div class="info-box" style="margin-top:0.75rem">💡 <strong>Tip:</strong> The <strong>Understand</strong> component and <strong>Documentation</strong> (IBM i Documentation RAG-based tool) can be leveraged across all other steps and exercises (such as Documentation, Refactoring, and Testing). Make sure to enable both <strong>Documentation</strong> and <strong>Understand</strong> in the <strong>Permissions</strong> menu for each Bob Task (chat) to fully leverage these capabilities.</div>
+            <div class="step-screenshot" style="margin:0.75rem 0"><img src="img/enable-permissions.png" alt="Enable Documentation and Understand permissions in Bob chat" style="max-width:560px"/></div>
             <div class="info-box">✅ <strong>What Understand tells you in under 5 minutes:</strong> Map programs, files and dependencies. Find the most referenced objects, reveal dependencies, and review dynamic SQL, triggers and foreign keys.</div>
           </div></div>
         </div>

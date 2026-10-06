@@ -248,14 +248,16 @@ Open the **Object Browser**, expand `FLGHT4nn` → `QBOBSRC`, and click **agents
 
 The **Understand Dashboard** scans your IBM i library and builds a live dependency graph of every program, file, service program, menu, and command — without you reading a single line of source. Use it to answer "what is this application made of?" and "what breaks if I change X?" before touching any code.
 
+> 💡 **Metadata Database & Multi-Developer Sharing:** Understand is configured with a metadata database (library) to store the scanned application metadata. In a team environment, this metadata library can be shared across multiple developers so everyone benefits from a single scan, assuming each developer has the necessary authority to access the 'understand' library (ex: BOBLIB). For these labs on a shared IBM i, each lab practitioner can also create and use their own metadata library (e.g., `BOBLIBnn`, replacing `nn` with your assigned number), though in practice it could be shared.
+
 #### Open the Understand Dashboard
 
-1. In the Bob Activity Bar, click the **Understand** icon (the graph/network icon in the IBM i section), or run the command **"Get Started with Understand"** from the Bob command palette (`Cmd/Ctrl+Shift+P`). If not already done, Install the Understand Component on IBM i. 
+1. In the Bob Activity Bar, click the **Understand** icon (the graph/network icon in the IBM i section), or run the command **"Get Started with Understand"** from the Bob command palette (`Cmd/Ctrl+Shift+P`). If not already done, Install the Understand Component on IBM i, specifying the 'understand' library and other necessary information. 
 
 <img src="docs/img/understand1.png" alt="Get Started with Understand command palette" width="480"/>
  
 
-2. If no application exists yet, click **New Application**, name it `FLGHT4nn` (replace `nn` with your number), add your library (library that don't necessarily exist that will be used to store the application metadata), and click **Scan**. The scan takes about 30–60 seconds.
+2. If no application exists yet, click **New Application**, name it `FLGHT4nn` (replace `nn` with your number), add your application library `FLGHT4nn` (the library that contains the compiled objects, not the source) and metadata library `BOBLIBnn`, then click **Scan**. The scan takes about 30–60 seconds.
 
 > 💡 If an application named `FLGHT4nn` already exists and shows **SCANNED**, skip directly to the next step.
 
@@ -294,6 +296,10 @@ Switch to **IBM i Developer** mode, set the scope to your library list, and ask:
 > *"What are the high-level functional areas of FLGHT4nn?"*
 
 Bob activates the **understand-app-overview** skill and uses the Understand scan data to return an application overview — functional areas, key programs, and architecture diagrams — without reading individual source members.
+
+> 💡 **Tip:** The **Understand** component and **Documentation** (IBM i Documentation RAG-based tool) can be leveraged across all other steps and exercises (such as Documentation, Refactoring, and Testing). Make sure to enable both **Documentation** and **Understand** in the **Permissions** menu for each Bob Task (chat) to fully leverage these capabilities.
+
+<img src="pics/enable-permissions.png" alt="Enable Documentation and Understand permissions in Bob chat" width="560"/>
 
 ---
 
